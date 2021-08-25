@@ -1,0 +1,7 @@
+{
+  "name": "pwf-web",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
