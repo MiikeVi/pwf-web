@@ -33,10 +33,8 @@ export class AuthService {
     this.user = platformObs.pipe(
       switchMap(() => from(this.storage.get(TOKEN))),
       map((token) => {
-        console.log('Token from storage: ', token);
         if (!token) {return null;}
         const decoded = helper.decodeToken(token);
-        console.log('decoded', decoded);
         this.userData.next(decoded);
         return true;
       })
@@ -54,7 +52,6 @@ export class AuthService {
     })).pipe(
       take(1),
       map((res) => {
-        console.log(res);
         if (res.status !== 401) {
           const token: string = res.data.access_token;
           return token;
@@ -65,7 +62,6 @@ export class AuthService {
       switchMap((element) => {
         if (element !== null && element !== undefined && typeof(element) === 'string') {
           const decoded = helper.decodeToken(element);
-          console.log('login decoded', decoded);
           this.userData.next(decoded);
           const storageObs = from(this.storage.set(TOKEN, element));
           return storageObs;

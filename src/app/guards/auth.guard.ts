@@ -21,7 +21,6 @@ export class AuthGuard implements CanActivate {
     return this.authService.user.pipe(
       take(1),
       map(user => {
-        console.log('canActivate guard: ', user);
         if (!user) {
           this.alertController.create({
             header: 'Unauthorized',
