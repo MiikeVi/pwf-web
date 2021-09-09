@@ -8,13 +8,10 @@ import { AlertController } from '@ionic/angular';
 })
 export class MyProfileScreenPage implements OnInit {
 
-  nombre: string = "pedrito";
-  fechaNacimiento: Date = new Date();
-
   data = {
     name: '',
-    adress: '',
-    adress2: '',
+    address: '',
+    address2: '',
     city: '',
     birthday: Date,
     postalCode: '',
@@ -23,15 +20,6 @@ export class MyProfileScreenPage implements OnInit {
   constructor(public alertController: AlertController) { }
 
   ngOnInit() {
-  }
-  
-  setInput() {
-    this.nombre = "juan";
-  }
-
-  cambiarFecha (event) {
-    console.log(this.fechaNacimiento);
-    console.log('ionChange', event);
   }
 
   onSubmitTemplate() {
