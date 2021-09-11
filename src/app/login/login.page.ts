@@ -19,7 +19,7 @@ export class LoginPage implements OnInit {
   }
 
   login() {
-    this.authService.login({ email: '111', password: '222' }).subscribe(async res => {
+    this.authService.login({ email: 'test7@pwf.com', password: '1234' }).subscribe(async res => {
 
       if (typeof (res) !== 'string') {
         await this.alertController.create({
