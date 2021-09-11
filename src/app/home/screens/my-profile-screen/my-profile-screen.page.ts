@@ -9,10 +9,13 @@ import { AlertController } from '@ionic/angular';
 export class MyProfileScreenPage implements OnInit {
 
   data = {
-    name: '',
+    name: 'carlitos',
     address: '',
+    email:'holi@holi.com',
     address2: '',
     city: '',
+    numberPhone:'',
+    numberPhone2:'',
     birthday: Date,
     postalCode: '',
   }
