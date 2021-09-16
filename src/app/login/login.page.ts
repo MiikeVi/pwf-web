@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
+import { Credentials } from './types';
 
 @Component({
   selector: 'app-login',
@@ -9,6 +10,10 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+  credentials: Credentials = {
+    email: '',
+    password: '',
+  };
 
   constructor(
     private authService: AuthService,
@@ -19,7 +24,7 @@ export class LoginPage implements OnInit {
   }
 
   login() {
-    this.authService.login({ email: 'test7@pwf.com', password: '1234' }).subscribe(async res => {
+    this.authService.login(this.credentials).subscribe(async res => {
 
       if (typeof (res) !== 'string') {
         await this.alertController.create({
