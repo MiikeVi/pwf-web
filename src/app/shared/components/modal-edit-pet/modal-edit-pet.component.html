@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons>
+        <ion-button (click)="dismiss()">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
+        <ion-title>Editar Mascota</ion-title>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+  <ion-card-content>
+    <form #formulario="ngForm" (ngSubmit)="onSubmitTemplate()">
+
+      <ion-item>
+        <ion-label position="floating">Nombre</ion-label>
+        <ion-input name="name" value="{{pet.name}}" [(ngModel)]="pet.name"></ion-input>
+      </ion-item>
+
+      <ion-item>
+       <ion-label position="floating">Edad</ion-label>
+        <ion-input name="age" [(ngModel)]="pet.age"></ion-input>
+      </ion-item>
+
+      <ion-radio-group name="type" [(ngModel)]="pet.type">
+        <ion-card-header>
+          <ion-label>Tipo</ion-label>
+        </ion-card-header>
+        <ion-item>
+          <ion-label>Perro</ion-label>
+          <ion-radio name="dog" slot="start" value="Perro"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Gato</ion-label>
+          <ion-radio name="cat" slot="start" value="Gato"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+
+      <br>
+      <ion-button type="submit" expand="full" (click)="presentAlertConfirm(); dismiss()">
+        Actualizar <ion-icon name="checkmark-outline" style="text-align: center"></ion-icon>
+      </ion-button>
+    </form>
+  </ion-card-content>
+</ion-card>
+</ion-content>
