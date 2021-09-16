@@ -5,5 +5,19 @@
 </ion-header>
 
 <ion-content>
-  <ion-button (click)="login()">Login</ion-button>
+  <div class="login-logo">
+    <img src="https://chaitanyahr.com/wp-content/uploads/2015/02/logo_dummy.png" alt="">
+  </div>
+  <ion-card>
+    <ion-item lines='none'>
+      <ion-input placeholder='Enter email' [(ngModel)]='credentials.email'></ion-input>>
+    </ion-item>
+
+    <ion-item lines='none'>
+      <ion-input placeholder='Password' type='Password' [(ngModel)]='credentials.password'></ion-input>>
+    </ion-item>
+  
+  </ion-card>
+  <ion-button color='dark' expand='block' (click)="login()">Login</ion-button>
+  <ion-button fill='clear'> Don't have an account? signup here</ion-button>
 </ion-content>
