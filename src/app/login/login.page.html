@@ -3,21 +3,37 @@
     <ion-title>login</ion-title>
   </ion-toolbar>
 </ion-header>
+<ion-grid>
+  <ion-row>
+    <ion-col size="12" offset="0" size-lg="12" offset-lg="0" size-sm="12" offset-sm="0" size-xs="8" offset-xs="2">
+      <div class="login-logo" >
+        <img class="logo" src="https://chaitanyahr.com/wp-content/uploads/2015/02/logo_dummy.png" alt="">
+      </div>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="10" offset="1" size-lg="10" offset-lg="1" size-md="10" offset-md="1" size-sm="10" offset-sm="1" size-xs="8" offset-xs="2">
+      <ion-card>
+        <ion-item lines='none'>
+          <ion-input placeholder='Enter email' [(ngModel)]='credentials.email'></ion-input>>
+        </ion-item>
+    
+        <ion-item lines='none'>
+          <ion-input placeholder='Password' type='Password' [(ngModel)]='credentials.password'></ion-input>>
+        </ion-item>
+      </ion-card>
+    </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col size="10" offset="1" size-lg="10" offset-lg="1" sime-md="10" offset-md="1" size-sm="10" offset-sm="1" size-xs="8" offset-xs="2">
+      <ion-button color='dark' expand='block' (click)="login()">Login</ion-button>
+    </ion-col>
 
-<ion-content>
-  <div class="login-logo">
-    <img src="https://chaitanyahr.com/wp-content/uploads/2015/02/logo_dummy.png" alt="">
-  </div>
-  <ion-card>
-    <ion-item lines='none'>
-      <ion-input placeholder='Enter email' [(ngModel)]='credentials.email'></ion-input>>
-    </ion-item>
+  </ion-row>
+  <ion-row  class="ion-justify-content-center">
+    <ion-col size="8" offset="1" >
+      <a href="">Don't have an account? signup here</a>
+    </ion-col>
 
-    <ion-item lines='none'>
-      <ion-input placeholder='Password' type='Password' [(ngModel)]='credentials.password'></ion-input>>
-    </ion-item>
-  
-  </ion-card>
-  <ion-button color='dark' expand='block' (click)="login()">Login</ion-button>
-  <ion-button fill='clear'> Don't have an account? signup here</ion-button>
-</ion-content>
+  </ion-row>
+</ion-grid>
