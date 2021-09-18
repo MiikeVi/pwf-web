@@ -16,7 +16,8 @@ export class UserService {
       url: 'https://pwf-api.herokuapp.com/api/user/',
 
       // eslint-disable-next-line max-len
-      headers: { authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6dHJ1ZSwiaWF0IjoxNjMxODUzNTIzLCJleHAiOjE2MzE4NTM1ODN9.cntH-WtbDv3lYc8omhypymshYIz53rMPMwQYpM2LsMU'}
+      headers: { authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6dHJ1ZSwiaWF0IjoxNjMxODUzNTIzLCJleHAiOjE2MzE4NTM1ODN9.cntH-WtbDv3lYc8omhypymshYIz53rMPMwQYpM2LsMU'},
+      params: { careTakerEnabled: true },
     });
   }
 }
