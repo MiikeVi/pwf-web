@@ -9,7 +9,7 @@ export interface User {
   careTakerData?: CareTakerData;
   email: string;
   phoneNumber: string;
-  phoneNumber2: string;
+  phoneNumber2?: string;
   isActive: boolean;
   name: string;
   pet?: Pet[];
