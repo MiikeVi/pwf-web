@@ -5,5 +5,35 @@
 </ion-header>
 
 <ion-content>
+  <ion-row>
+    <ion-col size="8" offset="2" size-lg="8" offset-lg="2" size-md="8" offset-md="2" size-sm="10" offset-sm="1" size-xs="12" offset-xs="0">
+      <ion-list inset="true">
+        <div *ngFor="let user of users">
+          <ion-list-header>
+              <ion-label>Cuidador / Paseador</ion-label>
+            <div *ngFor="let i of getUserStars(user)">
+              <ion-icon name="star"></ion-icon>
+            </div>
+        </ion-list-header>
+        <ion-item >
+          <ion-avatar slot="start">
+            <img src="https://www.meme-arsenal.com/memes/52fe529c4ae00dac20cdb47a9eee39e7.jpg">
+          </ion-avatar>
+          <p>{{user.name }}</p>
+          <ion-button color="medium" slot="start">
+            Ver perfil
+            <ion-icon slot="icon-only" name="navigate"></ion-icon>
+          </ion-button>
+        </ion-item>
+          </div>
+          
+        
+      </ion-list>
+    </ion-col>
+
+  </ion-row>
+
+    
+    
 
 </ion-content>
