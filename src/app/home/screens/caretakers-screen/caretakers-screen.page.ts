@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { User } from 'src/app/schemas/iuser';
+import { UserService } from 'src/app/services/user.service';
 @Component({
   selector: 'app-caretakers-screen',
   templateUrl: './caretakers-screen.page.html',
@@ -7,9 +9,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CaretakersScreenPage implements OnInit {
 
-  constructor() { }
+  users;
+
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
+    return this.userService.getCaretakerUsers().then((data) => {
+      this.users = data.data.values;
+    });
   }
+
+  getUserStars(user: User) {
+    return Array(user.stars);
+  }
+
+
+
+
 
 }
