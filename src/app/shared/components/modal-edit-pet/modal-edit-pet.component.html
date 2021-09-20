@@ -14,31 +14,107 @@
   <ion-card-content>
     <form #formulario="ngForm" (ngSubmit)="onSubmitTemplate()">
 
+      
       <ion-item>
         <ion-label position="floating">Nombre</ion-label>
-        <ion-input name="name" value="{{pet.name}}" [(ngModel)]="pet.name"></ion-input>
+        <ion-input name="name" value="{{pet.name}}" [(ngModel)]="pet.name" required></ion-input>
       </ion-item>
+      
 
       <ion-item>
-       <ion-label position="floating">Edad</ion-label>
-        <ion-input name="age" [(ngModel)]="pet.age"></ion-input>
+        <ion-label>Tipo</ion-label>
+        <ion-select name="type" required [(ngModel)]="pet.type" required>
+          <ion-select-option value="Perro">Perro</ion-select-option>
+          <ion-select-option value="Gato">Gato</ion-select-option>
+          <ion-select-option value="Hamster">Hamster</ion-select-option>
+          <ion-select-option value="Pájaro">Pájaro</ion-select-option>
+          <ion-select-option value="Pez">Pez</ion-select-option>
+        </ion-select>
       </ion-item>
 
-      <ion-radio-group name="type" [(ngModel)]="pet.type">
+      <ion-radio-group name="sex" required [(ngModel)]="pet.sex" required>
         <ion-card-header>
-          <ion-label>Tipo</ion-label>
+          <ion-label>Sexo</ion-label>
         </ion-card-header>
         <ion-item>
-          <ion-label>Perro</ion-label>
-          <ion-radio name="dog" slot="start" value="Perro"></ion-radio>
+          <ion-label>Macho</ion-label>
+          <ion-radio name="male" slot="start" value="male"></ion-radio>
         </ion-item>
         <ion-item>
-          <ion-label>Gato</ion-label>
-          <ion-radio name="cat" slot="start" value="Gato"></ion-radio>
+          <ion-label>Hembra</ion-label>
+          <ion-radio name="female" slot="start" value="female"></ion-radio>
         </ion-item>
       </ion-radio-group>
+      
+      <ion-radio-group name="breed" required [(ngModel)]="pet.breed" required>
+        <ion-card-header>
+          <ion-label>Raza</ion-label>
+        </ion-card-header>
+        <ion-item>
+          <ion-label>Raza 1</ion-label>
+          <ion-radio name="breed 1" slot="start" value="breed 1"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>Raza 2</ion-label>
+          <ion-radio name="breed 2" slot="start" value="breed 2"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+      
+      <br>
+
+      <ion-item>
+        <ion-label>Edad Aproximada</ion-label>
+        <ion-select name="ageSelector" placeholder="Edad" [(ngModel)]="pet.age" required>
+          <ion-select-option name="option 1" value="1 mes a 3 meses">1 mes a 3 meses</ion-select-option>
+          <ion-select-option name="option 2" value="4 meses a 8 meses">4 meses a 8 meses</ion-select-option>
+          <ion-select-option name="option 3" value="9 meses a 1 año">9 meses a 1 año</ion-select-option>
+          <ion-select-option name="option 4" value="1 año a 3 años">1 año a 3 años</ion-select-option>
+          <ion-select-option name="option 5" value="4 años a 8 años">4 años a 8 años</ion-select-option>
+          <ion-select-option name="option 6" value="8 años a 12 años">8 años a 12 años</ion-select-option>
+          <ion-select-option name="option 7" value="Más de 12 años">Más de 12 años</ion-select-option>
+        </ion-select>
+      </ion-item>
 
       <br>
+      
+      <ion-item>
+        <ion-label position="floating">Peso Aproximado</ion-label>
+        <ion-input placeholder="Peso en Kg" name="weight" value="{{pet.weight}}" [(ngModel)]="pet.weight" required></ion-input>
+      </ion-item>
+
+      
+      <ion-list>
+        <ion-list-header>
+          Mi mascota es/está:
+        </ion-list-header>
+        <ion-item *ngFor="let check of pet.features">
+          <ion-label>{{check.name}}</ion-label>
+          <ion-checkbox name="features" [(ngModel)]="check.isChecked"></ion-checkbox>
+        </ion-item>
+      </ion-list>
+    
+
+      <ion-radio-group name="medication" required [(ngModel)]="pet.medication">
+        <ion-card-header>
+          <ion-label>Medicación</ion-label>
+        </ion-card-header>
+        <ion-item>
+          <ion-label>Si</ion-label>
+          <ion-radio name="male" slot="start" value="male"></ion-radio>
+        </ion-item>
+        <ion-item>
+          <ion-label>No</ion-label>
+          <ion-radio name="Raza 2" slot="start" value="Raza 2"></ion-radio>
+        </ion-item>
+      </ion-radio-group>
+      
+
+      <ion-item>
+        <ion-textarea name="medicationDetails" [(ngModel)]="pet.medicationDetails" rows="6" cols="20" placeholder="Detalle los medicamentos y sus horarios aqui..."></ion-textarea>
+      </ion-item>
+
+      <br>
+
       <ion-button type="submit" expand="full" (click)="presentAlertConfirm(); dismiss()">
         Actualizar <ion-icon name="checkmark-outline" style="text-align: center"></ion-icon>
       </ion-button>

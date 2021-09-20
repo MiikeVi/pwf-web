@@ -10,24 +10,102 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./my-pets-screen.page.scss'],
 })
 export class MyPetsScreenPage implements OnInit {
-
+  
   pets = [{
     name: 'Pequita',
     age: '12 años',
     type: 'Gato',
     image: 'https://img.poki.com/cdn-cgi/image/quality=78,width=600,height=600,fit=cover,g=0.5x0.5,f=auto/b5bd34054bc849159d949d50021d8926.png',
+    sex: 'male',
+    weight: '123',
+    breed: 'quiltro',
+    medication: 'no',
+    medicationDetails: '',
+    features: [{
+      name: 'Esterelizado',
+      isChecked: true
+    },
+    {
+      name: 'Entrenado',
+      isChecked: true
+    },
+    {
+      name: 'Vacunado contra la rabia',
+      isChecked: false
+    },
+    {
+      name: 'Amistoso con perros',
+      isChecked: false
+    },
+    {
+      name: 'Amistoso con gatos',
+      isChecked: false
+    },
+  ]
     },
     {
       name: 'Luna',
       age: '12 meses',
       type: 'Gato',
       image: 'https://img.poki.com/cdn-cgi/image/quality=78,width=600,height=600,fit=cover,g=0.5x0.5,f=auto/b5bd34054bc849159d949d50021d8926.png',
+      sex: 'male',
+      weight: '123',
+      breed: 'quiltro',
+      medication: 'no',
+      medicationDetails: '',
+      features: [{
+        name: 'Esterelizado',
+        selected: false
+      },
+      {
+        name: 'Entrenado',
+        selected: false
+      },
+      {
+        name: 'Vacunado contra la rabia',
+        selected: false
+      },
+      {
+        name: 'Amistoso con perros',
+        selected: false
+      },
+      {
+        name: 'Amistoso con gatos',
+        selected: false
+      },
+    ]
     },
     {
       name: 'Ladridos',
       age: '2 años',
       type: 'Perro',
       image: 'https://images.emojiterra.com/openmoji/v12.2/512px/1f436.png',
+      sex: 'male',
+      weight: '123',
+      breed: 'quiltro',
+      medication: 'no',
+      medicationDetails: '',
+      features: [{
+        name: 'Esterelizado',
+        isChecked: false
+      },
+      {
+        name: 'Entrenado',
+        isChecked: false
+      },
+      {
+        name: 'Vacunado contra la rabia',
+        isChecked: false
+      },
+      {
+        name: 'Amistoso con perros',
+        isChecked: false
+      },
+      {
+        name: 'Amistoso con gatos',
+        isChecked: false
+      },
+    ]
     }
   ]
 
