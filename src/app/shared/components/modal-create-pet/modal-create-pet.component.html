@@ -13,25 +13,24 @@
     <ion-card>
         <ion-card-content>
             <form #formulario="ngForm" (ngSubmit)="onSubmitTemplate()">
+
               <ion-item>
                 <ion-label position="floating">Nombre</ion-label>
-                <ion-input name="name" value="{{newPet.name}}" [(ngModel)]="newPet.name" required></ion-input>
+                <ion-input name="name" [(ngModel)]="newPet.name" required></ion-input>
               </ion-item>
 
-              <ion-radio-group name="type" required [(ngModel)]="newPet.type">
-                <ion-card-header>
-                  <ion-label>Tipo</ion-label>
-                </ion-card-header>
-                <ion-item>
-                  <ion-label>Perro</ion-label>
-                  <ion-radio name="dog" slot="start" value="Perro"></ion-radio>
-                </ion-item>
-                <ion-item>
-                  <ion-label>Gato</ion-label>
-                  <ion-radio name="cat" slot="start" value="Gato"></ion-radio>
-                </ion-item>
-              </ion-radio-group>
+              <ion-item>
+                <ion-label>Tipo</ion-label>
+                <ion-select name="type" required [(ngModel)]="newPet.type">
+                  <ion-select-option value="dog">Perro</ion-select-option>
+                  <ion-select-option value="cat">Gato</ion-select-option>
+                  <ion-select-option value="hamster">Hamster</ion-select-option>
+                  <ion-select-option value="bird">Pájaro</ion-select-option>
+                  <ion-select-option value="fish">Pez</ion-select-option>
+                </ion-select>
+              </ion-item>
 
+              <ion-item>
               <ion-radio-group name="breed" required [(ngModel)]="newPet.breed">
                 <ion-card-header>
                   <ion-label>Raza</ion-label>
@@ -45,6 +44,7 @@
                   <ion-radio name="breed 2" slot="start" value="breed 2"></ion-radio>
                 </ion-item>
               </ion-radio-group>
+              </ion-item>
 
               <ion-radio-group name="sex" required [(ngModel)]="newPet.sex">
                 <ion-card-header>
@@ -64,7 +64,7 @@
 
               <ion-item>
                 <ion-label>Edad Aproximada</ion-label>
-                <ion-select name="ageSelector" placeholder="Edad" [(ngModel)]="newPet.age">
+                <ion-select name="ageSelector" placeholder="Edad" required [(ngModel)]="newPet.age">
                   <ion-select-option name="option 1" value="1 mes a 3 meses">1 mes a 3 meses</ion-select-option>
                   <ion-select-option name="option 2" value="4 meses a 8 meses">4 meses a 8 meses</ion-select-option>
                   <ion-select-option name="option 3" value="9 meses a 1 año">9 meses a 1 año</ion-select-option>
