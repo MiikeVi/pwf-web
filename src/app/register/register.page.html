@@ -2,8 +2,11 @@
   <ion-header>
     <ion-toolbar>
         <ion-buttons>
-          <ion-back-button defaultHref="home"></ion-back-button>
-          <ion-title>Registrate</ion-title>
+          <ion-button href="login">
+            <ion-icon name="arrow-back-outline"></ion-icon>
+          </ion-button>
+          <ion-title class="ion-text-center">Registrate</ion-title>
+          <img src="../../../../assets/logo.png" width="70" height="60" slot="end">
         </ion-buttons>
     </ion-toolbar>
   </ion-header>
@@ -28,7 +31,7 @@
         </ion-item>
         <ion-item>
           <ion-label position="floating">Email</ion-label>
-          <ion-input name="email" value="{{data.email}}" [(ngModel)]="data.email" required></ion-input>
+          <ion-input name="email" type="text" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" value="{{data.email}}" [(ngModel)]="data.email" required></ion-input>
         </ion-item>
         <ion-item>
           <ion-label position="floating">Fecha de Nacimiento</ion-label>
@@ -47,7 +50,7 @@
           <ion-input name="password" type="password" value="{{data.password}}" [(ngModel)]="data.password" required></ion-input>
         </ion-item>
         <br>
-        <ion-button type="submit" expand="full" (click)="presentAlertConfirm()" [disabled]="formulario.invalid">
+        <ion-button type="submit" expand="full" [disabled]="formulario.invalid">
           Crear Cuenta <ion-icon name="checkmark-outline" style="text-align: center"></ion-icon>
         </ion-button>
       </form>
