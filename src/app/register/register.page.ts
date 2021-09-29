@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { UserService } from '../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -10,21 +12,25 @@ export class RegisterPage implements OnInit {
 
   data = {
     name: '',
-    address: '',
     email:'',
-    address2: '',
-    city: '',
-    numberPhone:'',
-    numberPhone2:'',
     birthday: Date,
-    postalCode: '',
     password: '',
   }
 
-  constructor(public alertController: AlertController) {}
+  constructor(
+    public alertController: AlertController,
+    public userService: UserService,
+    private router: Router) {}
 
   onSubmitTemplate() {
-    console.log(this.data);
+    this.userService.createUser(this.data).then(result =>{
+      if (result){
+        this.presentAlertConfirm();
+      }
+      else {
+        this.presentAlertConfirmError();
+      }
+    })
   }
 
   async presentAlertConfirm() {
@@ -32,14 +38,20 @@ export class RegisterPage implements OnInit {
       cssClass: 'my-custom-class',
       header: '',
       message: 'Su perfil ha sido creado',
-      buttons: [
-        {
-          text: 'Aceptar',
-          handler: () => {
-            console.log('Confirm Okay');
-          }
-        }
-      ]
+    });
+    await alert.present();
+    setTimeout(() => {
+      setTimeout(() => {
+        this.router.navigateByUrl("/login");
+      });
+    }, 2000);
+  }
+
+  async presentAlertConfirmError() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: '',
+      message: 'Su perfil no ha podido ser creado, revise que los campos esten bien rellenados.',
     });
 
     await alert.present();
