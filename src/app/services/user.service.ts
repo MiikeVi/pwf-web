@@ -28,7 +28,6 @@ export class UserService {
     }
     try {
       const response = await axios.post('https://pwf-api.herokuapp.com/api/user/', data, {headers: headers})
-      console.log(response.data);
       return true;
     }
     catch (error){
