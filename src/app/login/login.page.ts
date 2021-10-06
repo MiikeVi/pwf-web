@@ -33,7 +33,7 @@ export class LoginPage implements OnInit {
           buttons: ['OK'],
         }).then(alert => alert.present());
       } else {
-        this.router.navigateByUrl('/home');
+        this.router.navigateByUrl('home/buscar-cuidadores');
       }
     });
   }

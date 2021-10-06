@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { SocialNetworkScreenPage } from './social-network-screen.page';
+import { TrackingScreenPage } from './tracking-screen.page';
 
-describe('SocialNetworkScreenPage', () => {
-  let component: SocialNetworkScreenPage;
-  let fixture: ComponentFixture<SocialNetworkScreenPage>;
+describe('TrackingScreenPage', () => {
+  let component: TrackingScreenPage;
+  let fixture: ComponentFixture<TrackingScreenPage>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ SocialNetworkScreenPage ],
+      declarations: [ TrackingScreenPage ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SocialNetworkScreenPage);
+    fixture = TestBed.createComponent(TrackingScreenPage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));
