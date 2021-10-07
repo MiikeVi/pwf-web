@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons>
+        <ion-back-button defaultHref="buscar-cuidadores"></ion-back-button>
+        <ion-title class="ion-text-center"></ion-title>
+        <img src="../../../../assets/logo.png" width="70" height="60" slot="end">
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
+        {{caretakerSelected.name}}
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-label><b>Dirección:</b> <br>{{caretakerSelected.address}}</ion-label>
+      <br>
+      <ion-label><b>Fecha de Nacimiento:</b> <br>{{caretakerSelected.birthdate}}</ion-label>
+      <br>
+      <ion-label><b>Correo Electrónico:</b> <br>{{caretakerSelected.email}}</ion-label>
+      <br>
+      <ion-label><b>Número de Contacto:</b> <br>{{caretakerSelected.phoneNumber}}</ion-label>
+      <br>
+      <ion-label><b>Valoración:</b></ion-label>
+      <div *ngFor="let i of getUserStars(caretakerSelected)">
+        <ion-icon name="star"></ion-icon>
+      </div>
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Horarios</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Rutas</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Reseñas</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+</ion-content>
