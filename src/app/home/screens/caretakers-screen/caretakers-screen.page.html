@@ -26,7 +26,7 @@
             <img src="https://www.meme-arsenal.com/memes/52fe529c4ae00dac20cdb47a9eee39e7.jpg">
           </ion-avatar>
           <p>{{user.name }}</p>
-          <ion-button color="medium" slot="start">
+          <ion-button color="medium" slot="start" (click)="goCaretakerInfo(user)">
             Ver perfil
             <ion-icon slot="icon-only" name="navigate"></ion-icon>
           </ion-button>

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
 import { User } from 'src/app/schemas/iuser';
 import { UserService } from 'src/app/services/user.service';
+
 @Component({
   selector: 'app-caretakers-screen',
   templateUrl: './caretakers-screen.page.html',
@@ -27,6 +29,9 @@ export class CaretakersScreenPage implements OnInit {
     this.router.navigateByUrl('home');
   }
 
-
+  goCaretakerInfo (user: any) {
+    this.userService.selectCaretaker(user);
+    this.router.navigateByUrl('home/buscar-cuidadores/cuidador');
+  }
 
 }

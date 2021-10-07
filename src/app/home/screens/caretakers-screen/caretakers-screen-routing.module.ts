@@ -9,6 +9,10 @@ const routes: Routes = [
   {
     path: '',
     component: CaretakersScreenPage
+  },
+  {
+    path: 'cuidador',
+    loadChildren: () => import('./caretaker-info/caretaker-info.module').then( m => m.CaretakerInfoPageModule)
   }
 ];
 
