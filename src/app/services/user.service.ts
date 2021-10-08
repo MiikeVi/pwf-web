@@ -8,6 +8,7 @@ import { User } from '../schemas/iuser';
 })
 export class UserService {
 
+  caretakerSelected: User;
 
   constructor() { }
 
@@ -33,5 +34,9 @@ export class UserService {
     catch (error){
       return false;
     }
+  }
+
+  selectCaretaker(selected: User) {
+    this.caretakerSelected = selected;
   }
 }
