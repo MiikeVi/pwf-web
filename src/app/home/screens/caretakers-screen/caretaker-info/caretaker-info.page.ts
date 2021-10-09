@@ -1,7 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ModalController } from '@ionic/angular';
 import { User } from 'src/app/schemas/iuser';
 import { UserService } from 'src/app/services/user.service';
+import { ModalCreateOrderComponent } from 'src/app/shared/components/modal-create-order/modal-create-order.component';
 
 @Component({
   selector: 'app-caretaker-info',
@@ -12,7 +14,7 @@ export class CaretakerInfoPage implements OnInit {
 
   caretakerSelected: User = null;
 
-  constructor(private userService: UserService, private router: Router) { }
+  constructor(private userService: UserService, private router: Router, private modalController: ModalController) { }
 
   ngOnInit() {
       this.caretakerSelected = this.userService.caretakerSelected;
@@ -20,5 +22,16 @@ export class CaretakerInfoPage implements OnInit {
 
   getUserStars(user: User) {
     return Array(user.stars);
+  }
+
+  async openModalCreateOrder() {
+    const modal = await this.modalController.create({
+      component: ModalCreateOrderComponent,
+      cssClass: 'my-custom-class',
+      componentProps: {
+        
+      }
+    });
+    return await modal.present();
   }
 }
