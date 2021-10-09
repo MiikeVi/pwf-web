@@ -5,11 +5,15 @@ import { IonicModule } from '@ionic/angular';
 import { TabsComponent } from './components/tabs/tabs.component';
 import { ModalCreatePetComponent } from './components/modal-create-pet/modal-create-pet.component';
 import { ModalEditPetComponent } from './components/modal-edit-pet/modal-edit-pet.component';
+import { ModalCreateOrderComponent } from './components/modal-create-order/modal-create-order.component';
+import { ModalSendRequestComponent } from './components/modal-send-request/modal-send-request.component';
 
 const components = [
   TabsComponent,
   ModalCreatePetComponent,
-  ModalEditPetComponent
+  ModalEditPetComponent,
+  ModalCreateOrderComponent,
+  ModalSendRequestComponent
 ];
 
 @NgModule({
