@@ -8,6 +8,7 @@ import { IonicModule } from '@ionic/angular';
 import { MyPetsScreenPageRoutingModule } from './my-pets-screen-routing.module';
 
 import { MyPetsScreenPage } from './my-pets-screen.page';
+import { SharedDataService } from 'src/app/services/shared-data.service';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { MyPetsScreenPage } from './my-pets-screen.page';
     SharedModule,
     MyPetsScreenPageRoutingModule
   ],
-  declarations: [MyPetsScreenPage]
+  declarations: [MyPetsScreenPage],
+  providers: [SharedDataService]
 })
 export class MyPetsScreenPageModule {}

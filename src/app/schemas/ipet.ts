@@ -7,23 +7,27 @@ export interface Pet {
   weight: number;
   type: PetType;
   medication: boolean;
-  behaviors: Behaviors;
+  behaviors: Behaviors[];
+  owner: string;
 }
 
-enum Breed {
+export enum Breed {
   example = 'example',
   example2 = 'example2',
 }
 
-enum PetType {
+export enum PetType {
   perro = 'perro',
   gato = 'gato',
   conejo  = 'conejo',
   tortuga = 'tortuga',
   hamster = 'hamster',
 }
-
-enum Behaviors {
+export interface Behavior {
+  behavior: Behaviors;
+  selected: boolean;
+}
+export enum Behaviors {
   amigable = 'amigable',
   jugueton = 'jugueton',
   agresivo = 'agresivo',

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { AlertController } from '@ionic/angular';
+import { AuthService } from '../../../services/auth.service';
 import { AlertController, ModalController } from '@ionic/angular';
 import { ModalSendRequestComponent } from 'src/app/shared/components/modal-send-request/modal-send-request.component';
+
 
 @Component({
   selector: 'app-my-profile-screen',
@@ -10,18 +13,22 @@ import { ModalSendRequestComponent } from 'src/app/shared/components/modal-send-
 export class MyProfileScreenPage implements OnInit {
 
   data = {
-    name: 'carlitos',
+    name: 'Test 9',
     address: '',
-    email:'holi@holi.com',
+    email:'test9@pwf.com',
     address2: '',
     city: '',
     numberPhone:'',
     numberPhone2:'',
     birthday: Date,
     postalCode: '',
-  }
+  };
 
-  constructor(public alertController: AlertController, private modalController: ModalController) { }
+  constructor(
+    public alertController: AlertController,
+    private modalController: ModalController,
+    private authService: AuthService,
+  ) { }
 
   ngOnInit() {
   }
@@ -46,6 +53,10 @@ export class MyProfileScreenPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  logout() {
+    this.authService.logout();
   }
 
   async openModalSendRequest() {
