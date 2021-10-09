@@ -22,12 +22,10 @@
 
               <ion-item>
                 <ion-label>Tipo</ion-label>
-                <ion-select name="type" required [(ngModel)]="newPet.type">
-                  <ion-select-option value="dog">Perro</ion-select-option>
-                  <ion-select-option value="cat">Gato</ion-select-option>
-                  <ion-select-option value="hamster">Hamster</ion-select-option>
-                  <ion-select-option value="bird">Pájaro</ion-select-option>
-                  <ion-select-option value="fish">Pez</ion-select-option>
+                <ion-select interface="popover" name="type" required [(ngModel)]="newPet.type">
+                  <div *ngFor="let type of types">
+                    <ion-select-option value={{type}}>{{type}}</ion-select-option>
+                  </div>
                 </ion-select>
               </ion-item>
 
@@ -36,14 +34,12 @@
                 <ion-card-header>
                   <ion-label>Raza</ion-label>
                 </ion-card-header>
-                <ion-item>
-                  <ion-label>Raza 1</ion-label>
-                  <ion-radio name="breed 1" slot="start" value="breed 1"></ion-radio>
-                </ion-item>
-                <ion-item>
-                  <ion-label>Raza 2</ion-label>
-                  <ion-radio name="breed 2" slot="start" value="breed 2"></ion-radio>
-                </ion-item>
+                <div *ngFor="let breed of breeds">
+                  <ion-item>
+                    <ion-label>{{breed}}</ion-label>
+                    <ion-radio name={{breed}} slot="start" value={{breed}}></ion-radio>
+                  </ion-item>
+                </div>
               </ion-radio-group>
               </ion-item>
 
@@ -66,19 +62,19 @@
               <ion-item>
                 <ion-label>Edad Aproximada</ion-label>
                 <ion-select name="ageSelector" placeholder="Edad" required [(ngModel)]="newPet.age">
-                  <ion-select-option name="option 1" value="1 mes a 3 meses">1 mes a 3 meses</ion-select-option>
-                  <ion-select-option name="option 2" value="4 meses a 8 meses">4 meses a 8 meses</ion-select-option>
-                  <ion-select-option name="option 3" value="9 meses a 1 año">9 meses a 1 año</ion-select-option>
-                  <ion-select-option name="option 4" value="1 año a 3 años">1 año a 3 años</ion-select-option>
-                  <ion-select-option name="option 5" value="4 años a 8 años">4 años a 8 años</ion-select-option>
-                  <ion-select-option name="option 6" value="8 años a 12 años">8 años a 12 años</ion-select-option>
-                  <ion-select-option name="option 7" value="Más de 12 años">Más de 12 años</ion-select-option>
+                  <ion-select-option name="option 1" value="1">1 mes a 3 meses</ion-select-option>
+                  <ion-select-option name="option 2" value="2">4 meses a 8 meses</ion-select-option>
+                  <ion-select-option name="option 3" value="3">9 meses a 1 año</ion-select-option>
+                  <ion-select-option name="option 4" value="4">1 año a 3 años</ion-select-option>
+                  <ion-select-option name="option 5" value="5">4 años a 8 años</ion-select-option>
+                  <ion-select-option name="option 6" value="6">8 años a 12 años</ion-select-option>
+                  <ion-select-option name="option 7" value="7">Más de 12 años</ion-select-option>
                 </ion-select>
               </ion-item>
 
               <ion-item>
                 <ion-label position="floating">Peso Aproximado</ion-label>
-                <ion-input placeholder="Peso en Kg" name="weight" value="{{newPet.weight}}" [(ngModel)]="newPet.weight" required></ion-input>
+                <ion-input placeholder="Peso en Kg" name="weight" value={{newPet.weight}} [(ngModel)]="newPet.weight" required></ion-input>
               </ion-item>
 
               <br>
@@ -87,29 +83,25 @@
                 <ion-list-header>
                   Mi mascota es/está:
                 </ion-list-header>
-                <ion-item *ngFor="let check of newPet.features">
-                  <ion-label>{{check.name}}</ion-label>
-                  <ion-checkbox name="feature" [(ngModel)]="check.selected"></ion-checkbox>
+                <ion-item *ngFor="let behavior of newPet.behaviors">
+                  <ion-label>{{behavior.behavior}}</ion-label>
+                  <ion-checkbox name="behavior" [(ngModel)]="behavior.selected"></ion-checkbox>
                 </ion-item>
               </ion-list>
 
               <ion-radio-group name="medication" required [(ngModel)]="newPet.medication">
                 <ion-card-header>
-                  <ion-label>Medicación</ion-label>
+                  <ion-label>Requiere medicación</ion-label>
                 </ion-card-header>
                 <ion-item>
                   <ion-label>Si</ion-label>
-                  <ion-radio name="male" slot="start" value="male"></ion-radio>
+                  <ion-radio name="yes" slot="start" value="true"></ion-radio>
                 </ion-item>
                 <ion-item>
                   <ion-label>No</ion-label>
-                  <ion-radio name="Raza 2" slot="start" value="Raza 2"></ion-radio>
+                  <ion-radio name="no" slot="start" value="false"></ion-radio>
                 </ion-item>
               </ion-radio-group>
-
-              <ion-item>
-                <ion-textarea name="medicationDetails" [(ngModel)]="newPet.medicationDetails" rows="6" cols="20" placeholder="Detalle los medicamentos y sus horarios aqui..."></ion-textarea>
-              </ion-item>
 
               <br>
               <ion-button type="submit" expand="full" (click)="presentAlertConfirm(); dismiss()" [disabled]="formulario.invalid">

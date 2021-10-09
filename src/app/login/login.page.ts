@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { AuthService } from '../services/auth.service';
+import { SharedDataService } from '../services/shared-data.service';
 import { Credentials } from './types';
 
 @Component({
@@ -17,6 +18,7 @@ export class LoginPage implements OnInit {
 
   constructor(
     private authService: AuthService,
+    private sharedDataService: SharedDataService,
     private alertController: AlertController,
     private router: Router) { }
 
@@ -33,6 +35,7 @@ export class LoginPage implements OnInit {
           buttons: ['OK'],
         }).then(alert => alert.present());
       } else {
+        this.sharedDataService.setUser(this.authService.getUser());
         this.router.navigateByUrl('home/buscar-cuidadores');
       }
     });

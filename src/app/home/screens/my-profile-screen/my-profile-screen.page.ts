@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-my-profile-screen',
@@ -9,18 +10,18 @@ import { AlertController } from '@ionic/angular';
 export class MyProfileScreenPage implements OnInit {
 
   data = {
-    name: 'carlitos',
+    name: 'Test 9',
     address: '',
-    email:'holi@holi.com',
+    email:'test9@pwf.com',
     address2: '',
     city: '',
     numberPhone:'',
     numberPhone2:'',
     birthday: Date,
     postalCode: '',
-  }
+  };
 
-  constructor(public alertController: AlertController) { }
+  constructor(public alertController: AlertController, private authService: AuthService) { }
 
   ngOnInit() {
   }
@@ -45,6 +46,10 @@ export class MyProfileScreenPage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  logout() {
+    this.authService.logout();
   }
 
 }

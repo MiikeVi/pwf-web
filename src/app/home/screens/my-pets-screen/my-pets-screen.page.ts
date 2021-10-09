@@ -1,7 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalCreatePetComponent } from 'src/app/shared/components/modal-create-pet/modal-create-pet.component';
 import { ModalEditPetComponent } from 'src/app/shared/components/modal-edit-pet/modal-edit-pet.component';
 import { ModalController } from '@ionic/angular';
+import { PetService } from 'src/app/services/pet.service';
+import { UserService } from 'src/app/services/user.service';
+import { SharedDataService } from 'src/app/services/shared-data.service';
+import { User } from 'src/app/schemas/iuser';
+import { Pet } from 'src/app/schemas/ipet';
 
 
 @Component({
@@ -10,108 +15,38 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./my-pets-screen.page.scss'],
 })
 export class MyPetsScreenPage implements OnInit {
-  
-  pets = [{
-    name: 'Pequita',
-    age: '12 años',
-    type: 'Gato',
-    image: 'https://img.poki.com/cdn-cgi/image/quality=78,width=600,height=600,fit=cover,g=0.5x0.5,f=auto/b5bd34054bc849159d949d50021d8926.png',
-    sex: 'male',
-    weight: '123',
-    breed: 'quiltro',
-    medication: 'no',
-    medicationDetails: '',
-    features: [{
-      name: 'Esterelizado',
-      isChecked: true
-    },
-    {
-      name: 'Entrenado',
-      isChecked: true
-    },
-    {
-      name: 'Vacunado contra la rabia',
-      isChecked: false
-    },
-    {
-      name: 'Amistoso con perros',
-      isChecked: false
-    },
-    {
-      name: 'Amistoso con gatos',
-      isChecked: false
-    },
-  ]
-    },
-    {
-      name: 'Luna',
-      age: '12 meses',
-      type: 'Gato',
-      image: 'https://img.poki.com/cdn-cgi/image/quality=78,width=600,height=600,fit=cover,g=0.5x0.5,f=auto/b5bd34054bc849159d949d50021d8926.png',
-      sex: 'male',
-      weight: '123',
-      breed: 'quiltro',
-      medication: 'no',
-      medicationDetails: '',
-      features: [{
-        name: 'Esterelizado',
-        selected: false
-      },
-      {
-        name: 'Entrenado',
-        selected: false
-      },
-      {
-        name: 'Vacunado contra la rabia',
-        selected: false
-      },
-      {
-        name: 'Amistoso con perros',
-        selected: false
-      },
-      {
-        name: 'Amistoso con gatos',
-        selected: false
-      },
-    ]
-    },
-    {
-      name: 'Ladridos',
-      age: '2 años',
-      type: 'Perro',
-      image: 'https://images.emojiterra.com/openmoji/v12.2/512px/1f436.png',
-      sex: 'male',
-      weight: '123',
-      breed: 'quiltro',
-      medication: 'no',
-      medicationDetails: '',
-      features: [{
-        name: 'Esterelizado',
-        isChecked: false
-      },
-      {
-        name: 'Entrenado',
-        isChecked: false
-      },
-      {
-        name: 'Vacunado contra la rabia',
-        isChecked: false
-      },
-      {
-        name: 'Amistoso con perros',
-        isChecked: false
-      },
-      {
-        name: 'Amistoso con gatos',
-        isChecked: false
-      },
-    ]
-    }
-  ]
+  user: User;
+  pets: Pet[];
 
-  constructor(public modalController: ModalController) { }
+  constructor(
+    public modalController: ModalController,
+    private petService: PetService,
+    private sharedDataService: SharedDataService,
+  ) { }
 
   ngOnInit() {
+    this.sharedDataService.getCurrentUser().subscribe(user => this.user = user);
+    // eslint-disable-next-line no-underscore-dangle
+    this.getPets((this.user as any)._id);
+  }
+
+  async getPets(userId: string) {
+    const pets = await this.petService.getOwnerPets(userId);
+    this.sharedDataService.setPets(pets.data.values);
+    this.sharedDataService.getCurrentPets().subscribe((petsArray) => this.pets = petsArray);
+  }
+
+  async deletePet(pet: Pet) {
+    // eslint-disable-next-line no-underscore-dangle
+    const deleted =  await this.petService.deletePet((pet as any)._id);
+    if (deleted) {
+      // eslint-disable-next-line no-underscore-dangle
+      this.getPets((this.user as any)._id);
+    }
+  }
+
+  async createPet(petData: Pet) {
+    return await this.petService.createPet(petData);
   }
 
   async openModalEdit( pet: any) {
@@ -119,7 +54,7 @@ export class MyPetsScreenPage implements OnInit {
       component: ModalEditPetComponent,
       cssClass: 'my-custom-class',
       componentProps: {
-        pet: pet,
+        pet,
       }
     });
     return await modal.present();
@@ -130,14 +65,9 @@ export class MyPetsScreenPage implements OnInit {
       component: ModalCreatePetComponent,
       cssClass: 'my-custom-class',
       componentProps: {
-        
+
       }
     });
     return await modal.present();
   }
-
-  deletePet() {
-    console.log('eliminado');
-  }
-
 }
