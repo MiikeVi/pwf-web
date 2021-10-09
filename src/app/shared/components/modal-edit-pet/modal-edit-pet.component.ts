@@ -21,7 +21,6 @@ export class ModalEditPetComponent implements OnInit {
   types = Object.values(PetType);
   breeds = Object.values(Breed);
   behaviors: Behavior[] = Object.values(Behaviors).map((behavior) =>  ({ behavior, selected: false }));
-  hola: string[] = ['hola'];
 
   constructor(
     private modalController: ModalController,
@@ -57,7 +56,7 @@ export class ModalEditPetComponent implements OnInit {
 
     // eslint-disable-next-line no-underscore-dangle
     const patchedPet = await this.petService.patchPet((this.pet as any)._id, patch as any);
-    console.log(patchedPet);
+
     if (patchedPet) {
       // eslint-disable-next-line no-underscore-dangle
       const fetchPets = await this.petService.getOwnerPets((this.owner as any)._id);
