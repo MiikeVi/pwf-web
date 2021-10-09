@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { AuthService } from '../../../services/auth.service';
+import { AlertController, ModalController } from '@ionic/angular';
+import { ModalSendRequestComponent } from 'src/app/shared/components/modal-send-request/modal-send-request.component';
+
 
 @Component({
   selector: 'app-my-profile-screen',
@@ -21,7 +24,11 @@ export class MyProfileScreenPage implements OnInit {
     postalCode: '',
   };
 
-  constructor(public alertController: AlertController, private authService: AuthService) { }
+  constructor(
+    public alertController: AlertController,
+    private modalController: ModalController,
+    private authService: AuthService,
+  ) { }
 
   ngOnInit() {
   }
@@ -50,6 +57,17 @@ export class MyProfileScreenPage implements OnInit {
 
   logout() {
     this.authService.logout();
+  }
+
+  async openModalSendRequest() {
+    const modal = await this.modalController.create({
+      component: ModalSendRequestComponent,
+      cssClass: 'my-custom-class',
+      componentProps: {
+        
+      }
+    });
+    return await modal.present();
   }
 
 }
