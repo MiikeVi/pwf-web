@@ -47,7 +47,11 @@ export class ModalCreatePetComponent implements OnInit {
     const petAge = parseInt(this.newPet.age, 10);
     const petMedication = this.newPet.medication === 'true';
     const petWeight = parseInt(this.newPet.weight, 10);
-    const petBehaviors = this.newPet.behaviors.map((behavior) => behavior.behavior);
+    const petBehaviors = this.newPet.behaviors.map((behavior) => {
+      if (behavior.selected) {
+        return behavior.behavior;
+      }
+    }).filter((behavior) => behavior);
 
     delete this.newPet.age;
     delete this.newPet.medication;

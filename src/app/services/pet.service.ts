@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import axios, { AxiosPromise } from 'axios';
 import { Pet } from '../schemas/ipet';
+import { JSONPatch } from '../types/json-patch.types';
 
 @Injectable({
   providedIn: 'root'
@@ -59,7 +60,7 @@ export class PetService {
     });
   }
 
-  patchPet(petId: string) {
+  patchPet(petId: string, patchPet: JSONPatch) {
     return axios({
       method: 'patch',
       url: `https://pwf-api.herokuapp.com/api/pets/${petId}`,
@@ -67,6 +68,7 @@ export class PetService {
         // eslint-disable-next-line max-len
         authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6dHJ1ZSwiaWF0IjoxNjMxODUzNTIzLCJleHAiOjE2MzE4NTM1ODN9.cntH-WtbDv3lYc8omhypymshYIz53rMPMwQYpM2LsMU',
       },
+      data: patchPet,
     });
   }
 }

@@ -83,7 +83,7 @@
                 <ion-list-header>
                   Mi mascota es/está:
                 </ion-list-header>
-                <ion-item *ngFor="let behavior of newPet.behaviors">
+                <ion-item *ngFor="let behavior of behaviors">
                   <ion-label>{{behavior.behavior}}</ion-label>
                   <ion-checkbox name="behavior" [(ngModel)]="behavior.selected"></ion-checkbox>
                 </ion-item>

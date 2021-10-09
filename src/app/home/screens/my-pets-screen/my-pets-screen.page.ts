@@ -7,6 +7,7 @@ import { UserService } from 'src/app/services/user.service';
 import { SharedDataService } from 'src/app/services/shared-data.service';
 import { User } from 'src/app/schemas/iuser';
 import { Pet } from 'src/app/schemas/ipet';
+import { JSONPatch } from 'src/app/types/json-patch.types';
 
 
 @Component({
@@ -49,12 +50,18 @@ export class MyPetsScreenPage implements OnInit {
     return await this.petService.createPet(petData);
   }
 
-  async openModalEdit( pet: any) {
+  async patchPet(petData: JSONPatch) {
+
+  }
+
+  async openModalEdit(pet: any) {
+    const petClone = JSON.parse(JSON.stringify(pet));
     const modal = await this.modalController.create({
       component: ModalEditPetComponent,
       cssClass: 'my-custom-class',
       componentProps: {
         pet,
+        petClone,
       }
     });
     return await modal.present();

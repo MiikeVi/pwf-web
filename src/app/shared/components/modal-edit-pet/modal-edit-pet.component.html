@@ -18,22 +18,19 @@
       
       <ion-item>
         <ion-label position="floating">Nombre</ion-label>
-        <ion-input name="name" value="{{pet.name}}" [(ngModel)]="pet.name" required></ion-input>
+        <ion-input name="name" value={{petClone.name}} [(ngModel)]="petClone.name" required></ion-input>
       </ion-item>
-      
 
       <ion-item>
         <ion-label>Tipo</ion-label>
-        <ion-select name="type" required [(ngModel)]="pet.type" required>
-          <ion-select-option value="Perro">Perro</ion-select-option>
-          <ion-select-option value="Gato">Gato</ion-select-option>
-          <ion-select-option value="Hamster">Hamster</ion-select-option>
-          <ion-select-option value="Pájaro">Pájaro</ion-select-option>
-          <ion-select-option value="Pez">Pez</ion-select-option>
+        <ion-select interface="popover" value={{petClone.type}} name="type" required [(ngModel)]="petClone.type">
+          <div *ngFor="let type of types">
+            <ion-select-option value={{type}}>{{type}}</ion-select-option>
+          </div>
         </ion-select>
       </ion-item>
 
-      <ion-radio-group name="sex" required [(ngModel)]="pet.sex" required>
+      <ion-radio-group name="sex" value={{petClone.sex}} required [(ngModel)]="petClone.sex">
         <ion-card-header>
           <ion-label>Sexo</ion-label>
         </ion-card-header>
@@ -47,32 +44,32 @@
         </ion-item>
       </ion-radio-group>
       
-      <ion-radio-group name="breed" required [(ngModel)]="pet.breed" required>
-        <ion-card-header>
-          <ion-label>Raza</ion-label>
-        </ion-card-header>
-        <ion-item>
-          <ion-label>Raza 1</ion-label>
-          <ion-radio name="breed 1" slot="start" value="breed 1"></ion-radio>
+      <ion-item>
+        <ion-radio-group name="breed" value={{petClone.breed}} required [(ngModel)]="petClone.breed">
+          <ion-card-header>
+            <ion-label>Raza</ion-label>
+          </ion-card-header>
+          <div *ngFor="let breed of breeds">
+            <ion-item>
+              <ion-label>{{breed}}</ion-label>
+              <ion-radio name={{breed}} slot="start" value={{breed}}></ion-radio>
+            </ion-item>
+          </div>
+        </ion-radio-group>
         </ion-item>
-        <ion-item>
-          <ion-label>Raza 2</ion-label>
-          <ion-radio name="breed 2" slot="start" value="breed 2"></ion-radio>
-        </ion-item>
-      </ion-radio-group>
       
       <br>
 
       <ion-item>
         <ion-label>Edad Aproximada</ion-label>
-        <ion-select name="ageSelector" placeholder="Edad" [(ngModel)]="pet.age" required>
-          <ion-select-option name="option 1" value="1 mes a 3 meses">1 mes a 3 meses</ion-select-option>
-          <ion-select-option name="option 2" value="4 meses a 8 meses">4 meses a 8 meses</ion-select-option>
-          <ion-select-option name="option 3" value="9 meses a 1 año">9 meses a 1 año</ion-select-option>
-          <ion-select-option name="option 4" value="1 año a 3 años">1 año a 3 años</ion-select-option>
-          <ion-select-option name="option 5" value="4 años a 8 años">4 años a 8 años</ion-select-option>
-          <ion-select-option name="option 6" value="8 años a 12 años">8 años a 12 años</ion-select-option>
-          <ion-select-option name="option 7" value="Más de 12 años">Más de 12 años</ion-select-option>
+        <ion-select name="ageSelector" value={{petClone.age}} placeholder="Edad" required [(ngModel)]="petClone.age">
+          <ion-select-option name="option 1" value="1">1 mes a 3 meses</ion-select-option>
+          <ion-select-option name="option 2" value="2">4 meses a 8 meses</ion-select-option>
+          <ion-select-option name="option 3" value="3">9 meses a 1 año</ion-select-option>
+          <ion-select-option name="option 4" value="4">1 año a 3 años</ion-select-option>
+          <ion-select-option name="option 5" value="5">4 años a 8 años</ion-select-option>
+          <ion-select-option name="option 6" value="6">8 años a 12 años</ion-select-option>
+          <ion-select-option name="option 7" value="7">Más de 12 años</ion-select-option>
         </ion-select>
       </ion-item>
 
@@ -80,39 +77,33 @@
       
       <ion-item>
         <ion-label position="floating">Peso Aproximado</ion-label>
-        <ion-input placeholder="Peso en Kg" name="weight" value="{{pet.weight}}" [(ngModel)]="pet.weight" required></ion-input>
+        <ion-input placeholder="Peso en Kg" name="weight" value={{petClone.weight}} [(ngModel)]="petClone.weight" required></ion-input>
       </ion-item>
-
       
       <ion-list>
         <ion-list-header>
           Mi mascota es/está:
         </ion-list-header>
-        <ion-item *ngFor="let check of pet.features">
-          <ion-label>{{check.name}}</ion-label>
-          <ion-checkbox name="features" [(ngModel)]="check.isChecked"></ion-checkbox>
+        <ion-item *ngFor="let behavior of behaviors">
+          <ion-label>{{behavior.behavior}}</ion-label>
+            <ion-checkbox name="behavior" [(ngModel)]="behavior.selected"></ion-checkbox>
         </ion-item>
       </ion-list>
     
 
-      <ion-radio-group name="medication" required [(ngModel)]="pet.medication">
+      <ion-radio-group name="medication" required [(ngModel)]="petClone.medication">
         <ion-card-header>
-          <ion-label>Medicación</ion-label>
+          <ion-label>Requiere medicación</ion-label>
         </ion-card-header>
         <ion-item>
           <ion-label>Si</ion-label>
-          <ion-radio name="male" slot="start" value="male"></ion-radio>
+          <ion-radio name="yes" slot="start" value="true"></ion-radio>
         </ion-item>
         <ion-item>
           <ion-label>No</ion-label>
-          <ion-radio name="Raza 2" slot="start" value="Raza 2"></ion-radio>
+          <ion-radio name="no" slot="start" value="false"></ion-radio>
         </ion-item>
       </ion-radio-group>
-      
-
-      <ion-item>
-        <ion-textarea name="medicationDetails" [(ngModel)]="pet.medicationDetails" rows="6" cols="20" placeholder="Detalle los medicamentos y sus horarios aqui..."></ion-textarea>
-      </ion-item>
 
       <br>
 
