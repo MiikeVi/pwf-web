@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController } from '@ionic/angular';
 import { AuthService } from '../../../services/auth.service';
 import { AlertController, ModalController } from '@ionic/angular';
 import { ModalSendRequestComponent } from 'src/app/shared/components/modal-send-request/modal-send-request.component';
