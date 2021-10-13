@@ -14,6 +14,9 @@ export class RegisterPage implements OnInit {
     name: '',
     email:'',
     birthday: Date,
+    address: '',
+    city: '',
+    phoneNumber: '',
     password: '',
   }
 
