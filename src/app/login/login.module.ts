@@ -7,7 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { LoginPageRoutingModule } from './login-routing.module';
 
 import { LoginPage } from './login.page';
-import { SharedDataService } from '../services/shared-data.service';
 
 @NgModule({
   imports: [
@@ -17,6 +16,6 @@ import { SharedDataService } from '../services/shared-data.service';
     LoginPageRoutingModule
   ],
   declarations: [LoginPage],
-  providers: [SharedDataService]
+  providers: []
 })
 export class LoginPageModule {}
