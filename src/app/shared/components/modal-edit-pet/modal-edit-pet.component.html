@@ -29,6 +29,17 @@
           </div>
         </ion-select>
       </ion-item>
+      
+      <div *ngIf="petClone.type === 'perro'">
+        <ion-item>
+            <ion-label>Raza</ion-label>
+            <ion-select interface="popover" value={{petClone.breed}} name="breed" required [(ngModel)]="petClone.breed">
+              <div *ngFor="let breed of breeds">
+                <ion-select-option value={{breed}}>{{breed}}</ion-select-option>
+              </div>
+            </ion-select>
+        </ion-item>
+      </div>
 
       <ion-radio-group name="sex" value={{petClone.sex}} required [(ngModel)]="petClone.sex">
         <ion-card-header>
@@ -43,20 +54,6 @@
           <ion-radio name="female" slot="start" value="female"></ion-radio>
         </ion-item>
       </ion-radio-group>
-      
-      <ion-item>
-        <ion-radio-group name="breed" value={{petClone.breed}} required [(ngModel)]="petClone.breed">
-          <ion-card-header>
-            <ion-label>Raza</ion-label>
-          </ion-card-header>
-          <div *ngFor="let breed of breeds">
-            <ion-item>
-              <ion-label>{{breed}}</ion-label>
-              <ion-radio name={{breed}} slot="start" value={{breed}}></ion-radio>
-            </ion-item>
-          </div>
-        </ion-radio-group>
-        </ion-item>
       
       <br>
 
@@ -89,21 +86,24 @@
             <ion-checkbox name="behavior" [(ngModel)]="behavior.selected"></ion-checkbox>
         </ion-item>
       </ion-list>
-    
 
-      <ion-radio-group name="medication" required [(ngModel)]="petClone.medication">
-        <ion-card-header>
-          <ion-label>Requiere medicación</ion-label>
-        </ion-card-header>
-        <ion-item>
-          <ion-label>Si</ion-label>
-          <ion-radio name="yes" slot="start" value="true"></ion-radio>
-        </ion-item>
-        <ion-item>
-          <ion-label>No</ion-label>
-          <ion-radio name="no" slot="start" value="false"></ion-radio>
-        </ion-item>
-      </ion-radio-group>
+      <ion-list>
+        <ion-radio-group name="medication" value={{petClone.medication}} required [(ngModel)]="petClone.medication">
+          <ion-list-header>
+            <ion-label>Requiere medicación</ion-label>
+          </ion-list-header>
+      
+          <ion-item>
+            <ion-label>Sí</ion-label>
+            <ion-radio name="yes" slot="start" value="true"></ion-radio>
+          </ion-item>
+      
+          <ion-item>
+            <ion-label>No</ion-label>
+            <ion-radio name="no" slot="start" value="false"></ion-radio>
+          </ion-item>
+        </ion-radio-group>
+      </ion-list>
 
       <br>
 

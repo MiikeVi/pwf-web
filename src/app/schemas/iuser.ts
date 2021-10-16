@@ -21,8 +21,26 @@ export interface User {
 export interface CareTakerData {
   reputation?: number;
   bio: string;
-  reviews: string[]; //array of ids
+  reviews?: string[]; //array of ids
+  price: number;
+  walkPaths: WalkPaths;
+  type: CareTakerType;
 }
+
+interface WalkPaths {
+  location: string;
+  schedule: Schedule;
+}
+
+export enum CareTakerType {
+  petCare = 'cuidador',
+  petWalker = 'paseador',
+};
+
+type Schedule = {
+  startTime: string;
+  endTime: string;
+};
 
 export interface Address {
   city: string;
