@@ -16,6 +16,7 @@ import { MyProfileScreenPage } from './my-profile-screen.page';
     SharedModule,
     MyProfileScreenPageRoutingModule
   ],
-  declarations: [MyProfileScreenPage]
+  declarations: [MyProfileScreenPage],
+  providers: [],
 })
 export class MyProfileScreenPageModule {}
