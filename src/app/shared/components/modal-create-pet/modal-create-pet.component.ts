@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
 import { Behavior, Behaviors, Breed, Pet, PetType } from 'src/app/schemas/ipet';
 import { User } from 'src/app/schemas/iuser';
@@ -11,6 +11,8 @@ import { SharedDataService } from 'src/app/services/shared-data.service';
   styleUrls: ['./modal-create-pet.component.scss'],
 })
 export class ModalCreatePetComponent implements OnInit {
+  type: string;
+
   owner: User;
   types = Object.values(PetType);
   breeds = Object.values(Breed);
@@ -41,6 +43,10 @@ export class ModalCreatePetComponent implements OnInit {
 
   dismiss() {
     this.modalController.dismiss();
+  }
+
+  onChange($event) {
+    this.type = $event.target.value;
   }
 
   async onSubmitTemplate() {

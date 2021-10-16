@@ -22,26 +22,23 @@
 
               <ion-item>
                 <ion-label>Tipo</ion-label>
-                <ion-select interface="popover" name="type" required [(ngModel)]="newPet.type">
+                <ion-select interface="popover" name="type" (ionChange)="onChange($event)" required [(ngModel)]="newPet.type">
                   <div *ngFor="let type of types">
                     <ion-select-option value={{type}}>{{type}}</ion-select-option>
                   </div>
                 </ion-select>
               </ion-item>
 
-              <ion-item>
-              <ion-radio-group name="breed" required [(ngModel)]="newPet.breed">
-                <ion-card-header>
+              <div *ngIf="type === 'perro'">
+                <ion-item >
                   <ion-label>Raza</ion-label>
-                </ion-card-header>
-                <div *ngFor="let breed of breeds">
-                  <ion-item>
-                    <ion-label>{{breed}}</ion-label>
-                    <ion-radio name={{breed}} slot="start" value={{breed}}></ion-radio>
-                  </ion-item>
-                </div>
-              </ion-radio-group>
-              </ion-item>
+                  <ion-select interface="popover" value={{newPet.breed}} name="breed" required [(ngModel)]="newPet.breed">
+                    <div *ngFor="let breed of breeds">
+                      <ion-select-option value={{breed}}>{{breed}}</ion-select-option>
+                    </div>
+                  </ion-select>
+                </ion-item>
+              </div>
 
               <ion-radio-group name="sex" required [(ngModel)]="newPet.sex">
                 <ion-card-header>
@@ -111,4 +108,3 @@
           </ion-card-content>
     </ion-card>
   </ion-content>
-
