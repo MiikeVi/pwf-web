@@ -1,10 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AlertController, ModalController } from '@ionic/angular';
-import { SharedDataService } from 'src/app/services/shared-data.service';
 import { createPatch } from 'rfc6902';
 import { Behavior, Behaviors, Breed, Pet, PetType } from 'src/app/schemas/ipet';
 import { PetService } from 'src/app/services/pet.service';
-import { User } from 'src/app/schemas/iuser';
+import { UserService } from 'src/app/services/user.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { SharedDataService } from 'src/app/services/shared-data.service';
 
 @Component({
   selector: 'app-modal-edit-pet',
@@ -16,7 +17,7 @@ export class ModalEditPetComponent implements OnInit {
   @Input() pet: any;
   @Input() petClone: any;
 
-  owner: User;
+  ownerId;
   alert;
   types = Object.values(PetType);
   breeds = Object.values(Breed);
@@ -25,12 +26,12 @@ export class ModalEditPetComponent implements OnInit {
   constructor(
     private modalController: ModalController,
     private alertController: AlertController,
-    private sharedDataService: SharedDataService,
     private petService: PetService,
+    private authService: AuthService,
+    private sharedDataService: SharedDataService,
   ) { }
 
   ngOnInit() {
-    this.sharedDataService.getCurrentUser().subscribe((user) => this.owner = user);
     this.behaviors.forEach((element, index) => {
       if (this.pet.behaviors.includes(element.behavior)) {
         this.behaviors[index].selected = true;
@@ -58,8 +59,9 @@ export class ModalEditPetComponent implements OnInit {
     const patchedPet = await this.petService.patchPet((this.pet as any)._id, patch as any);
 
     if (patchedPet) {
+      this.ownerId = this.authService.getUser().sub;
       // eslint-disable-next-line no-underscore-dangle
-      const fetchPets = await this.petService.getOwnerPets((this.owner as any)._id);
+      const fetchPets = await this.petService.getOwnerPets(this.ownerId);
       this.sharedDataService.setPets(fetchPets.data.values);
 
       this.alert = await this.alertController.create({

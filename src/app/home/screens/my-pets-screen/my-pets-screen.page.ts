@@ -1,13 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ModalCreatePetComponent } from 'src/app/shared/components/modal-create-pet/modal-create-pet.component';
 import { ModalEditPetComponent } from 'src/app/shared/components/modal-edit-pet/modal-edit-pet.component';
 import { ModalController } from '@ionic/angular';
 import { PetService } from 'src/app/services/pet.service';
-import { UserService } from 'src/app/services/user.service';
-import { SharedDataService } from 'src/app/services/shared-data.service';
-import { User } from 'src/app/schemas/iuser';
 import { Pet } from 'src/app/schemas/ipet';
-import { JSONPatch } from 'src/app/types/json-patch.types';
+import { AuthService } from 'src/app/services/auth.service';
+import { SharedDataService } from 'src/app/services/shared-data.service';
 
 
 @Component({
@@ -16,25 +14,27 @@ import { JSONPatch } from 'src/app/types/json-patch.types';
   styleUrls: ['./my-pets-screen.page.scss'],
 })
 export class MyPetsScreenPage implements OnInit {
-  user: User;
   pets: Pet[];
 
   constructor(
     public modalController: ModalController,
     private petService: PetService,
+    private authService: AuthService,
     private sharedDataService: SharedDataService,
   ) { }
 
   ngOnInit() {
-    this.sharedDataService.getCurrentUser().subscribe(user => this.user = user);
+    this.getPets();
+    this.sharedDataService.getCurrentPets().subscribe((pets) => {
+      this.pets = pets;
+    });
     // eslint-disable-next-line no-underscore-dangle
-    this.getPets((this.user as any)._id);
+
   }
 
-  async getPets(userId: string) {
-    const pets = await this.petService.getOwnerPets(userId);
-    this.sharedDataService.setPets(pets.data.values);
-    this.sharedDataService.getCurrentPets().subscribe((petsArray) => this.pets = petsArray);
+  async getPets() {
+    const pets = await this.petService.getOwnerPets(this.authService.getUser().sub);
+    this.pets  = pets.data.values;
   }
 
   async deletePet(pet: Pet) {
@@ -42,16 +42,15 @@ export class MyPetsScreenPage implements OnInit {
     const deleted =  await this.petService.deletePet((pet as any)._id);
     if (deleted) {
       // eslint-disable-next-line no-underscore-dangle
-      this.getPets((this.user as any)._id);
+      this.getPets();
     }
   }
 
   async createPet(petData: Pet) {
-    return await this.petService.createPet(petData);
-  }
-
-  async patchPet(petData: JSONPatch) {
-
+    const created = await this.petService.createPet(petData);
+    if (created) {
+      this.getPets();
+    }
   }
 
   async openModalEdit(pet: any) {
@@ -64,7 +63,8 @@ export class MyPetsScreenPage implements OnInit {
         petClone,
       }
     });
-    return await modal.present();
+
+    modal.present();
   }
 
   async openModalCreate() {
@@ -75,6 +75,7 @@ export class MyPetsScreenPage implements OnInit {
 
       }
     });
-    return await modal.present();
+
+    modal.present();
   }
 }

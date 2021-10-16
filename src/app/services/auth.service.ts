@@ -77,7 +77,7 @@ export class AuthService {
   }
 
   logout() {
-    this.storage.remove(TOKEN).then(() => {
+    return this.storage.remove(TOKEN).then(() => {
       this.router.navigateByUrl('/');
       this.userData.next(null);
     });
