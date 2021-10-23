@@ -3,8 +3,10 @@ import { AuthService } from '../../../services/auth.service';
 import { AlertController, ModalController } from '@ionic/angular';
 import { ModalSendRequestComponent } from 'src/app/shared/components/modal-send-request/modal-send-request.component';
 import { UserService } from 'src/app/services/user.service';
-import { User } from 'src/app/schemas/iuser';
+import { User, WalkPaths } from 'src/app/schemas/iuser';
 import { createPatch } from 'rfc6902';
+import { ModalCreateWalkpathComponent } from 'src/app/shared/components/modal-create-walkpath/modal-create-walkpath.component';
+
 
 
 @Component({
@@ -16,6 +18,25 @@ export class MyProfileScreenPage implements OnInit {
 
   data: any = {} as any;
   userClone: User;
+  
+  rutas: WalkPaths[] = [{
+    location: 'valpo',
+    schedule: {
+      startTime: '11',
+      endTime: '12',
+      day: 'Viernes'
+    }
+  },
+  {
+    location: 'viña',
+    schedule: {
+      startTime: '13',
+      endTime: '14',
+      day: 'Lunes'
+    }
+  },
+  ]
+
 
   constructor(
     public alertController: AlertController,
@@ -75,6 +96,20 @@ export class MyProfileScreenPage implements OnInit {
       cssClass: 'my-custom-class',
       componentProps: {}
     });
+    return await modal.present();
+  }
+
+  async openModalAddWalkpath() {
+    const modal = await this.modalController.create({
+      component: ModalCreateWalkpathComponent,
+      cssClass: 'my-custom-class',
+      componentProps: {}
+    });
+
+    modal.onDidDismiss().then(newWalkpath => {
+      this.rutas.push(newWalkpath.data)
+    })
+
     return await modal.present();
   }
 
