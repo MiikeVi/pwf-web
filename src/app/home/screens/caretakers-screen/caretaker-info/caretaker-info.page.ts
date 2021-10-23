@@ -24,12 +24,12 @@ export class CaretakerInfoPage implements OnInit {
     return Array(user.stars);
   }
 
-  async openModalCreateOrder() {
+  async openModalCreateOrder(caretaker: any) {
     const modal = await this.modalController.create({
       component: ModalCreateOrderComponent,
       cssClass: 'my-custom-class',
       componentProps: {
-        
+        caretaker
       }
     });
     return await modal.present();
