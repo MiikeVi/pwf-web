@@ -23,11 +23,11 @@ export interface CareTakerData {
   bio: string;
   reviews?: string[]; //array of ids
   price: number;
-  walkPaths: WalkPaths;
+  walkPaths: WalkPaths [];
   type: CareTakerType;
 }
 
-interface WalkPaths {
+export interface WalkPaths {
   location: string;
   schedule: Schedule;
 }
@@ -40,6 +40,7 @@ export enum CareTakerType {
 type Schedule = {
   startTime: string;
   endTime: string;
+  day: string;
 };
 
 export interface Address {
