@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { Day } from 'src/app/schemas/iuser';
 
 @Component({
   selector: 'app-modal-create-walkpath',
@@ -17,6 +18,8 @@ export class ModalCreateWalkpathComponent implements OnInit {
     }
   }
 
+  days = Object.values(Day);
+
   constructor( 
     private modalController: ModalController) 
   {}
@@ -25,6 +28,10 @@ export class ModalCreateWalkpathComponent implements OnInit {
 
   dismiss() {
     this.modalController.dismiss(this.newWalkpath);
+  }
+
+  close() {
+    this.modalController.dismiss();
   }
 
 }
