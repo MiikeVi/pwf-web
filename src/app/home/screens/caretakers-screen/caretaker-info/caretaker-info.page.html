@@ -28,7 +28,7 @@
       <div *ngFor="let i of getUserStars(caretakerSelected)">
         <ion-icon name="star"></ion-icon>
       </div>
-      <ion-button expand="full" (click)="openModalCreateOrder()">
+      <ion-button expand="full" (click)="openModalCreateOrder(caretakerSelected)">
         Contratar <ion-icon name="checkmark-outline" style="text-align: center"></ion-icon>
       </ion-button>
     </ion-card-content>

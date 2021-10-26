@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons>
+        <ion-button (click)="close()">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
+        <ion-title class="ion-text-center">Agregar Ruta nueva</ion-title>
+        <img src="../../../../assets/logo.png" width="70" height="60" slot="end">
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <form #formulario="ngForm">
+        <ion-item>
+          <ion-label>Día:</ion-label>
+          <ion-select interface="popover" name="day" [(ngModel)]="newWalkpath.schedule.day" required>
+            <div *ngFor="let day of days">
+              <ion-select-option value={{day}}>{{day}}</ion-select-option>
+            </div>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Localidad:</ion-label>
+          <ion-input name="location" type="text" [(ngModel)]="newWalkpath.location" required></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Hora de Inicio (Ej: 11:00):</ion-label>
+          <ion-input name="startTime" type="text" [(ngModel)]="newWalkpath.schedule.startTime" required></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Hora de Finalización (Ej: 12:00):</ion-label>
+          <ion-input name="endTime" type="text" [(ngModel)]="newWalkpath.schedule.endTime" required></ion-input>
+        </ion-item>
+        
+        <br>
+        <ion-button type="submit" expand="full" (click)="dismiss()" [disabled]="formulario.invalid">
+          Agregar Ruta <ion-icon name="checkmark-outline" style="text-align: center"></ion-icon>
+        </ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
