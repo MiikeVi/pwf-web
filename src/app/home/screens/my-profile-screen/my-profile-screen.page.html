@@ -112,6 +112,7 @@
             <ion-label>
               <h2>Dia: {{ruta.schedule.day}}</h2>
               <h2>Localidad: {{ruta.location}}</h2>
+              <h3>Precio: {{ruta.price}}</h3>
               <h3>Inicio: {{ruta.schedule.startTime}}</h3>
               <h3>Finalización: {{ruta.schedule.endTime}}</h3>
             </ion-label>
@@ -125,6 +126,78 @@
         <ion-button expand="full" (click)="openModalAddWalkpath()">
           Agregar Ruta <ion-icon name="checkmark-outline" style="text-align: center"></ion-icon>
         </ion-button>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title >
+          Perfil de Cuidador
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <form #formCaretaker="ngForm" (ngSubmit)="onSubmitTemplate()">
+          <ion-list>
+            <ion-card-header>
+              Selecciona tus dias disponibles
+            </ion-card-header>
+            <ion-item *ngFor="let day of days">
+              <ion-label>{{day}}</ion-label>
+              <ion-checkbox value={{day}} name="day"></ion-checkbox>
+            </ion-item>
+            <br>
+
+            <ion-card-header>
+              ¿Puedes cuidar a una mascota por dias continuos?
+            </ion-card-header>
+            <ion-radio-group>
+              <ion-item>
+                <ion-label>Si</ion-label>
+                <ion-radio name="availability" slot="start" value="no"></ion-radio>
+              </ion-item>
+              <ion-item>
+                <ion-label>No</ion-label>
+                <ion-radio name="availability" slot="start" value="yes"></ion-radio>
+              </ion-item>
+            </ion-radio-group>
+            
+            <ion-card-header>
+              ¿Que tipo de hogar tienes?
+            </ion-card-header>
+            <ion-radio-group>
+              <ion-item *ngFor="let homeType of homeTypes">
+                <ion-label>{{homeType}}</ion-label>
+                <ion-radio name={{homeType}} slot="start" value={{homeType}}></ion-radio>
+              </ion-item>
+            </ion-radio-group>
+
+            <ion-card-header>
+              ¿Qué tipos de perros puedes cuidar?
+            </ion-card-header>
+            <ion-item>
+              <ion-label>Perros pequeños (0-7kgs)</ion-label>
+              <ion-checkbox value="small" name="dogSize"></ion-checkbox>
+            </ion-item>
+            <ion-item>
+              <ion-label>Perros medianos (8kgs-20kgs)</ion-label>
+              <ion-checkbox value="medium" name="dogSize"></ion-checkbox>
+            </ion-item>
+            <ion-item>
+              <ion-label>Perros grandes (21kgs+)</ion-label>
+              <ion-checkbox value="large" name="dogSize"></ion-checkbox>
+            </ion-item>
+            <ion-item>
+              <ion-label>Puedo cuidar gatos</ion-label>
+              <ion-checkbox value="cats" name="dogSize"></ion-checkbox>
+            </ion-item>
+            <br>
+
+
+          </ion-list>
+          <ion-button expand="full" type="submit">
+            Guardar Cambios <ion-icon name="checkmark-outline" style="text-align: center"></ion-icon>
+          </ion-button>
+        </form>
       </ion-card-content>
     </ion-card>
   </ng-template>
