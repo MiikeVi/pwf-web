@@ -3,7 +3,7 @@ import { AuthService } from '../../../services/auth.service';
 import { AlertController, ModalController } from '@ionic/angular';
 import { ModalSendRequestComponent } from 'src/app/shared/components/modal-send-request/modal-send-request.component';
 import { UserService } from 'src/app/services/user.service';
-import { User, WalkPaths } from 'src/app/schemas/iuser';
+import { Day, HomeType, petCareData, User, WalkPaths } from 'src/app/schemas/iuser';
 import { createPatch } from 'rfc6902';
 import { ModalCreateWalkpathComponent } from 'src/app/shared/components/modal-create-walkpath/modal-create-walkpath.component';
 
@@ -18,25 +18,25 @@ export class MyProfileScreenPage implements OnInit {
 
   data: any = {} as any;
   userClone: User;
+  days = Object.values(Day);
+  homeTypes = Object.values(HomeType);
   
   rutas: WalkPaths[] = [{
     location: 'valpo',
+    price: 3000,
     schedule: {
-      startTime: '11',
-      endTime: '12',
-      day: 'Viernes'
+      startTime: '11:00',
+      endTime: '12:00',
     }
   },
   {
     location: 'viña',
+    price: 2000,
     schedule: {
-      startTime: '13',
-      endTime: '14',
-      day: 'Lunes'
+      startTime: '13:00',
+      endTime: '14:00',
     }
-  },
-  ]
-
+  }]
 
   constructor(
     public alertController: AlertController,
@@ -107,7 +107,10 @@ export class MyProfileScreenPage implements OnInit {
     });
 
     modal.onDidDismiss().then(newWalkpath => {
-      this.rutas.push(newWalkpath.data)
+      if(newWalkpath.data !== undefined)
+      {
+        this.rutas.push(newWalkpath.data)
+      }
     })
 
     return await modal.present();
