@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { OrderStatus, OrderType } from 'src/app/schemas/iorder';
 import { Pet } from 'src/app/schemas/ipet';
-import { User } from 'src/app/schemas/iuser';
+import { Day, User } from 'src/app/schemas/iuser';
 import { AuthService } from 'src/app/services/auth.service';
 import { PetService } from 'src/app/services/pet.service';
 import { SharedDataService } from 'src/app/services/shared-data.service';
@@ -19,6 +19,7 @@ export class ModalCreateOrderComponent implements OnInit {
   orderTypes = Object.values(OrderType);
   orderStatus = Object.values(OrderStatus);
   pets: Pet[];
+  days = Object.values(Day);
   @Input() caretaker: any;
 
   newOrder: any = {
@@ -28,6 +29,11 @@ export class ModalCreateOrderComponent implements OnInit {
     orderStatus: undefined,
     orderType: '',
     pet: undefined,
+  }
+
+  newRequest: any = {
+    day: '',
+    description: ''
   }
 
   constructor(
@@ -43,7 +49,6 @@ export class ModalCreateOrderComponent implements OnInit {
     this.sharedDataService.getCurrentPets().subscribe((pets) => {
       this.pets= pets;
     });
-    console.log(this.caretaker);
   }
 
   async getPets() {
@@ -56,7 +61,7 @@ export class ModalCreateOrderComponent implements OnInit {
   }
 
   checkValue(event){
-    console.log(event.detail.value);
+    
   }
 
 }

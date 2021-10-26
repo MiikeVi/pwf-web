@@ -4,7 +4,7 @@
         <ion-button (click)="dismiss()">
           <ion-icon name="arrow-back-outline"></ion-icon>
         </ion-button>
-        <ion-title class="ion-text-center">Contratar Paseador</ion-title>
+        <ion-title class="ion-text-center">Contratar Paseador / Cuidador</ion-title>
         <img src="../../../../assets/logo.png" width="70" height="60" slot="end">
       </ion-buttons>
   </ion-toolbar>
@@ -66,7 +66,21 @@
         </ion-item>
 
         <div *ngIf="newOrder.orderType == 'cuidado'">
-          cuidador
+          <form #formNewOrderCare="ngForm">
+            <ion-card-header>
+              Selecciona el dia del cuidado
+            </ion-card-header>
+            <ion-radio-group name="day" [(ngModel)]="newRequest.day">
+              <ion-item *ngFor="let day of days">
+                <ion-label>{{day}}</ion-label>
+                <ion-radio value={{day}} name={{day}}></ion-radio>
+              </ion-item>
+            </ion-radio-group>
+
+            <ion-item>
+              <ion-textarea name="description" [(ngModel)]="newRequest.description" rows="6" cols="20" placeholder="Escriba cualquier detalle que quiera agregar"></ion-textarea>
+            </ion-item>
+          </form>
         </div>
         
         <div *ngIf="newOrder.orderType == 'paseo'">
@@ -105,10 +119,7 @@
                 </ion-item>
             </ion-radio-group>
           </ion-item>
-
         </div>
-        
-
       </form>
     </ion-card-content>
   </ion-card>
