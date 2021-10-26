@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { CareTakerType } from 'src/app/schemas/iuser';
 
 @Component({
   selector: 'app-modal-send-request',
@@ -11,6 +12,8 @@ export class ModalSendRequestComponent implements OnInit {
   request = {
     description: '',
   }
+
+  caretakerTypes = Object.values(CareTakerType)
 
   constructor(private modalController: ModalController) { }
 

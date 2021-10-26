@@ -17,6 +17,15 @@
         <h1>Solicitud</h1>
       </ion-item>
       <form #formulario="ngForm" (ngSubmit)="createRequest()">
+        <ion-card-header>
+          Tipo de Petición
+        </ion-card-header>
+        <ion-radio-group>
+          <ion-item *ngFor="let caretakerType of caretakerTypes">
+            <ion-label>{{caretakerType}}</ion-label>
+            <ion-radio name={{caretakerType}} slot="start" value={{caretakerType}}></ion-radio>
+          </ion-item>
+        </ion-radio-group>
         <ion-item>
           <ion-textarea name="description" [(ngModel)]="request.description" rows="6" cols="20" placeholder="Redacte un párrafo resumido del por qué quiere ser un paseador o cuidador de perros, puede agregar su experiencia en el rubro, experiencia con animales o experiencia veterinaria si es que la posee."></ion-textarea>
         </ion-item>
