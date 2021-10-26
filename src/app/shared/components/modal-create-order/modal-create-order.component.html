@@ -70,7 +70,7 @@
             <ion-card-header>
               Selecciona el dia del cuidado
             </ion-card-header>
-            <ion-radio-group name="day" [(ngModel)]="newRequest.day">
+            <ion-radio-group name="day" [(ngModel)]="newOrderCare.day">
               <ion-item *ngFor="let day of days">
                 <ion-label>{{day}}</ion-label>
                 <ion-radio value={{day}} name={{day}}></ion-radio>
@@ -78,7 +78,7 @@
             </ion-radio-group>
 
             <ion-item>
-              <ion-textarea name="description" [(ngModel)]="newRequest.description" rows="6" cols="20" placeholder="Escriba cualquier detalle que quiera agregar"></ion-textarea>
+              <ion-textarea name="description" [(ngModel)]="newOrderCare.description" rows="6" cols="20" placeholder="Escriba cualquier detalle que quiera agregar"></ion-textarea>
             </ion-item>
           </form>
         </div>

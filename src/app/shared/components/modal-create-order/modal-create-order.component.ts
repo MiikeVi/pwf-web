@@ -31,7 +31,7 @@ export class ModalCreateOrderComponent implements OnInit {
     pet: undefined,
   }
 
-  newRequest: any = {
+  newOrderCare: any = {
     day: '',
     description: ''
   }
