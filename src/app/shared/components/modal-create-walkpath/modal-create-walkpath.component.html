@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
       <ion-buttons>
-        <ion-button (click)="dismiss()">
+        <ion-button (click)="close()">
           <ion-icon name="arrow-back-outline"></ion-icon>
         </ion-button>
         <ion-title class="ion-text-center">Agregar Ruta nueva</ion-title>
@@ -17,13 +17,9 @@
         <ion-item>
           <ion-label>Día:</ion-label>
           <ion-select interface="popover" name="day" [(ngModel)]="newWalkpath.schedule.day" required>
-            <ion-select-option value="Lunes">Lunes</ion-select-option>
-            <ion-select-option value="Martes">Martes</ion-select-option>
-            <ion-select-option value="Miércoles">Miércoles</ion-select-option>
-            <ion-select-option value="Jueves">Jueves</ion-select-option>
-            <ion-select-option value="Viernes">Viernes</ion-select-option>
-            <ion-select-option value="Sábado">Sábado</ion-select-option>
-            <ion-select-option value="Domingo">Domingo</ion-select-option>
+            <div *ngFor="let day of days">
+              <ion-select-option value={{day}}>{{day}}</ion-select-option>
+            </div>
           </ion-select>
         </ion-item>
 
