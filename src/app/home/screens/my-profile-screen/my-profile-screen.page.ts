@@ -6,8 +6,7 @@ import { UserService } from 'src/app/services/user.service';
 import { Day, HomeType, petCareData, User, WalkPaths } from 'src/app/schemas/iuser';
 import { createPatch } from 'rfc6902';
 import { ModalCreateWalkpathComponent } from 'src/app/shared/components/modal-create-walkpath/modal-create-walkpath.component';
-
-
+import { ImageService } from 'src/app/services/image-store.service';
 
 @Component({
   selector: 'app-my-profile-screen',
@@ -20,7 +19,8 @@ export class MyProfileScreenPage implements OnInit {
   userClone: User;
   days = Object.values(Day);
   homeTypes = Object.values(HomeType);
-  
+  avatarUrl = '';
+
   rutas: WalkPaths[] = [{
     location: 'valpo',
     price: 3000,
@@ -36,19 +36,21 @@ export class MyProfileScreenPage implements OnInit {
       startTime: '13:00',
       endTime: '14:00',
     }
-  }]
+  }];
 
   constructor(
     public alertController: AlertController,
     private modalController: ModalController,
     private authService: AuthService,
     private userService: UserService,
+    private imageStoreService:  ImageService,
   ) {}
 
   ngOnInit() {
 
     // eslint-disable-next-line no-underscore-dangle
     this.getUser();
+    this.avatarUrl = `https://pwf-api.herokuapp.com/${this.data.avatar}`;
     this.userClone = JSON.parse(JSON.stringify(this.data));
   }
 
@@ -61,6 +63,29 @@ export class MyProfileScreenPage implements OnInit {
     if(patchedUser) {
       this.presentAlertConfirm();
     }
+  }
+
+  async onClickImage() {
+    const modal = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: '',
+      buttons: [
+        {
+          text: 'Seleccionar foto',
+          handler: () => {
+            this.selectImage();
+          }
+        },
+        {
+          text:  'Abrir cámara',
+          handler: () => {
+            this.imageStoreService.openCamera();
+          }
+        }
+      ]
+    });
+
+    await modal.present();
   }
 
   async getUser() {
@@ -90,6 +115,13 @@ export class MyProfileScreenPage implements OnInit {
     this.authService.logout();
   }
 
+  async selectImage() {
+    await this.imageStoreService.selectImage();
+    return this.getUser().then((user) => {
+      this.data = user;
+    });
+  }
+
   async openModalSendRequest() {
     const modal = await this.modalController.create({
       component: ModalSendRequestComponent,
@@ -109,9 +141,9 @@ export class MyProfileScreenPage implements OnInit {
     modal.onDidDismiss().then(newWalkpath => {
       if(newWalkpath.data !== undefined)
       {
-        this.rutas.push(newWalkpath.data)
+        this.rutas.push(newWalkpath.data);
       }
-    })
+    });
 
     return await modal.present();
   }
