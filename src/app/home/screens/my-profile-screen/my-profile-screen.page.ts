@@ -6,7 +6,6 @@ import { UserService } from 'src/app/services/user.service';
 import { Day, HomeType, petCareData, User, WalkPaths } from 'src/app/schemas/iuser';
 import { createPatch } from 'rfc6902';
 import { ModalCreateWalkpathComponent } from 'src/app/shared/components/modal-create-walkpath/modal-create-walkpath.component';
-import * as moment from 'moment';
 
 
 
