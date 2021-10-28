@@ -110,8 +110,8 @@ export class MyProfileScreenPage implements OnInit {
     modal.onDidDismiss().then(newWalkpath => {
       if(newWalkpath.data !== undefined)
       {
-        let endTime = new Date(newWalkpath.data.schedule.startTime);
-        let finalEndTime = this.addHoursToDate(endTime);
+        const endTime = new Date(newWalkpath.data.schedule.startTime);
+        const finalEndTime = this.addHoursToDate(endTime);
         newWalkpath.data.schedule.endTime = finalEndTime;
         this.rutas.push(newWalkpath.data);
       }
