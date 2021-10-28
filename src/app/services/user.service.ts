@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import axios, { AxiosPromise, AxiosResponse } from 'axios';
-import { Observable } from 'rxjs';
+import axios, { AxiosPromise } from 'axios';
 import { User } from '../schemas/iuser';
 import { JSONPatch } from '../types/json-patch.types';
 import { Storage } from '@ionic/storage';
+import { HttpClient } from '@angular/common/http';
+
 
 const TOKEN = 'jwt-token';
 
@@ -16,7 +17,7 @@ export class UserService {
 
   caretakerSelected: User;
 
-  constructor(private storage: Storage) {
+  constructor(private storage: Storage, private http: HttpClient) {
     this.setAuthHeader();
   }
 
@@ -65,6 +66,16 @@ export class UserService {
         headers: this.headers,
         data: patchUser,
       }));
+  }
+
+  async uploadImage(photo){
+    return this.setAuthHeader().then(() => axios({
+      method: 'post',
+      url: 'https://pwf-api.herokuapp.com/api/user/upload',
+      // eslint-disable-next-line no-underscore-dangle
+      headers: this.headers,
+      data: {base64: photo.base64String},
+    }));
   }
 
   selectCaretaker(selected: User) {
