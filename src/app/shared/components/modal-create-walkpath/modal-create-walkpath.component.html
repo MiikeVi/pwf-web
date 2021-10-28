@@ -28,14 +28,29 @@
           <ion-input name="location" type="text" [(ngModel)]="newWalkpath.location" required></ion-input>
         </ion-item>
 
+
+        <ion-radio-group name="shared" [(ngModel)]="newWalkpath.shared" required>
+          <ion-card-header>
+            Servicio Compartido
+          </ion-card-header>
+          <ion-item>
+            <ion-label>Si</ion-label>
+            <ion-radio value="true" slot="start"></ion-radio>
+          </ion-item>
+          <ion-item>
+            <ion-label>No</ion-label>
+            <ion-radio value="false" slot="start"></ion-radio>
+          </ion-item>
+        </ion-radio-group>
+
         <ion-item>
-          <ion-label position="floating">Hora de Inicio (Ej: 11:00):</ion-label>
-          <ion-input name="startTime" type="text" [(ngModel)]="newWalkpath.schedule.startTime" required></ion-input>
+          <ion-label position="floating">Precio:</ion-label>
+          <ion-input name="price" type="number" [(ngModel)]="newWalkpath.price" required></ion-input>
         </ion-item>
 
         <ion-item>
-          <ion-label position="floating">Hora de Finalización (Ej: 12:00):</ion-label>
-          <ion-input name="endTime" type="text" [(ngModel)]="newWalkpath.schedule.endTime" required></ion-input>
+          <ion-label>Hora de inicio</ion-label>
+          <ion-datetime display-format="h A" picker-format="h A" name="startTime" [(ngModel)]="newWalkpath.schedule.startTime"></ion-datetime>
         </ion-item>
         
         <br>
