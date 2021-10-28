@@ -121,10 +121,9 @@ export class MyProfileScreenPage implements OnInit {
   }
 
   addHoursToDate(objDate) {
-    var numberOfMlSeconds = objDate.getTime();
-    console.log(numberOfMlSeconds);
-    var addMlSeconds = 60 * 60000;
-    var newDateObj = new Date(numberOfMlSeconds + addMlSeconds);
+    const numberOfMlSeconds = objDate.getTime();
+    const addMlSeconds = 60 * 60000;
+    const newDateObj = new Date(numberOfMlSeconds + addMlSeconds);
     return newDateObj;
 }
 
