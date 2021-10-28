@@ -6,6 +6,8 @@ import { UserService } from 'src/app/services/user.service';
 import { Day, HomeType, petCareData, User, WalkPaths } from 'src/app/schemas/iuser';
 import { createPatch } from 'rfc6902';
 import { ModalCreateWalkpathComponent } from 'src/app/shared/components/modal-create-walkpath/modal-create-walkpath.component';
+import * as moment from 'moment';
+
 
 
 
@@ -24,17 +26,17 @@ export class MyProfileScreenPage implements OnInit {
   rutas: WalkPaths[] = [{
     location: 'valpo',
     price: 3000,
+    shared: true,
     schedule: {
-      startTime: '11:00',
-      endTime: '12:00',
+
     }
   },
   {
     location: 'viña',
     price: 2000,
+    shared: false,
     schedule: {
-      startTime: '13:00',
-      endTime: '14:00',
+
     }
   }]
 
@@ -109,11 +111,22 @@ export class MyProfileScreenPage implements OnInit {
     modal.onDidDismiss().then(newWalkpath => {
       if(newWalkpath.data !== undefined)
       {
-        this.rutas.push(newWalkpath.data)
+        let endTime = new Date(newWalkpath.data.schedule.startTime);
+        let finalEndTime = this.addHoursToDate(endTime);
+        newWalkpath.data.schedule.endTime = finalEndTime;
+        this.rutas.push(newWalkpath.data);
       }
     })
 
     return await modal.present();
   }
+
+  addHoursToDate(objDate) {
+    var numberOfMlSeconds = objDate.getTime();
+    console.log(numberOfMlSeconds);
+    var addMlSeconds = 60 * 60000;
+    var newDateObj = new Date(numberOfMlSeconds + addMlSeconds);
+    return newDateObj;
+}
 
 }
