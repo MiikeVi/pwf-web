@@ -31,6 +31,7 @@ export interface WalkPaths {
   location: string;
   schedule: Schedule;
   price: number;
+  shared: boolean;
 }
 
 export enum CareTakerType {
@@ -53,8 +54,8 @@ export enum HomeType {
 };
 
 type Schedule = {
-  startTime: string;
-  endTime: string;
+  startTime?: Date;
+  endTime?: Date;
   day?: Day;
 };
 
