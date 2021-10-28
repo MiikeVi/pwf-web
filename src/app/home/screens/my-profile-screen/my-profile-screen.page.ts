@@ -8,6 +8,7 @@ import { createPatch } from 'rfc6902';
 import { ModalCreateWalkpathComponent } from 'src/app/shared/components/modal-create-walkpath/modal-create-walkpath.component';
 import { ImageService } from 'src/app/services/image-store.service';
 
+
 @Component({
   selector: 'app-my-profile-screen',
   templateUrl: './my-profile-screen.page.html',
@@ -24,17 +25,17 @@ export class MyProfileScreenPage implements OnInit {
   rutas: WalkPaths[] = [{
     location: 'valpo',
     price: 3000,
+    shared: true,
     schedule: {
-      startTime: '11:00',
-      endTime: '12:00',
+
     }
   },
   {
     location: 'viña',
     price: 2000,
+    shared: false,
     schedule: {
-      startTime: '13:00',
-      endTime: '14:00',
+
     }
   }];
 
@@ -141,11 +142,21 @@ export class MyProfileScreenPage implements OnInit {
     modal.onDidDismiss().then(newWalkpath => {
       if(newWalkpath.data !== undefined)
       {
+        const endTime = new Date(newWalkpath.data.schedule.startTime);
+        const finalEndTime = this.addHoursToDate(endTime);
+        newWalkpath.data.schedule.endTime = finalEndTime;
         this.rutas.push(newWalkpath.data);
       }
     });
 
     return await modal.present();
   }
+
+  addHoursToDate(objDate) {
+    const numberOfMlSeconds = objDate.getTime();
+    const addMlSeconds = 60 * 60000;
+    const newDateObj = new Date(numberOfMlSeconds + addMlSeconds);
+    return newDateObj;
+}
 
 }

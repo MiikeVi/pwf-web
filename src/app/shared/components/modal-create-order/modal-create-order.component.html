@@ -94,17 +94,6 @@
           </ion-item>
 
           <ion-item>
-            <ion-label>Dia/Hora de servicio</ion-label>
-            <ion-datetime name="dayService" display-format="DD-MM" picker-format="DD-MM" [(ngModel)]="newOrder.dayService" (ionChange)="checkValue($event)"></ion-datetime>
-          </ion-item>
-
-          <ion-item>
-            <ion-label>Hora de inicio de paseo</ion-label>
-            <ion-datetime name="startDateService" display-format="HH" picker-format="HH" [(ngModel)]="newOrder.startDateService" (ionChange)="checkValue($event)"></ion-datetime>
-          </ion-item>
-
-
-          <ion-item>
             <ion-radio-group name="shared" required [(ngModel)]="newOrder.shared" (ionChange)="checkValue($event)">
               <ion-card-header>
                 <ion-label>Servicio compartido</ion-label>
@@ -119,6 +108,17 @@
                 </ion-item>
             </ion-radio-group>
           </ion-item>
+
+          <ion-item>
+            <ion-label>Dia/Hora de servicio</ion-label>
+            <ion-datetime name="dayService" display-format="DD-MM" picker-format="DD-MM" [(ngModel)]="newOrder.dayService" (ionChange)="checkValue($event)"></ion-datetime>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Hora de inicio de paseo</ion-label>
+            <ion-datetime name="startDateService" display-format="HH" picker-format="HH" [(ngModel)]="newOrder.startDateService" (ionChange)="checkValue($event)"></ion-datetime>
+          </ion-item>
+
         </div>
       </form>
     </ion-card-content>
