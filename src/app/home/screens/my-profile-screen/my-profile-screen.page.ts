@@ -3,7 +3,7 @@ import { AuthService } from '../../../services/auth.service';
 import { AlertController, ModalController } from '@ionic/angular';
 import { ModalSendRequestComponent } from 'src/app/shared/components/modal-send-request/modal-send-request.component';
 import { UserService } from 'src/app/services/user.service';
-import { Day, HomeType, petCareData, User, WalkPaths } from 'src/app/schemas/iuser';
+import { CareTakerType, Day, HomeType, User, WalkPaths } from 'src/app/schemas/iuser';
 import { createPatch } from 'rfc6902';
 import { ModalCreateWalkpathComponent } from 'src/app/shared/components/modal-create-walkpath/modal-create-walkpath.component';
 import { ImageService } from 'src/app/services/image-store.service';
@@ -20,7 +20,9 @@ export class MyProfileScreenPage implements OnInit {
   userClone: User;
   days = Object.values(Day);
   homeTypes = Object.values(HomeType);
+  caretakerTypes = Object.values(CareTakerType);
   avatarUrl = '';
+  loadingImage;
 
   rutas: WalkPaths[] = [{
     location: 'valpo',
@@ -39,6 +41,13 @@ export class MyProfileScreenPage implements OnInit {
     }
   }];
 
+  userCareData: {
+    home: '';
+    availability: '';
+    dogType: undefined;
+    days: undefined;
+  };
+
   constructor(
     public alertController: AlertController,
     private modalController: ModalController,
@@ -48,7 +57,6 @@ export class MyProfileScreenPage implements OnInit {
   ) {}
 
   ngOnInit() {
-
     // eslint-disable-next-line no-underscore-dangle
     this.getUser();
     this.avatarUrl = `https://pwf-api.herokuapp.com/${this.data.avatar}`;
@@ -118,6 +126,7 @@ export class MyProfileScreenPage implements OnInit {
 
   async selectImage() {
     await this.imageStoreService.selectImage();
+    this.ngOnInit();
     return this.getUser().then((user) => {
       this.data = user;
     });

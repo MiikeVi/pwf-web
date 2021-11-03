@@ -6,6 +6,7 @@ import { PetService } from 'src/app/services/pet.service';
 import { Pet } from 'src/app/schemas/ipet';
 import { AuthService } from 'src/app/services/auth.service';
 import { SharedDataService } from 'src/app/services/shared-data.service';
+import { TrackingModalComponent } from 'src/app/shared/components/tracking-modal/tracking-modal.component';
 
 
 @Component({
@@ -61,6 +62,18 @@ export class MyPetsScreenPage implements OnInit {
       componentProps: {
         pet,
         petClone,
+      }
+    });
+
+    modal.present();
+  }
+
+  async openModalTracking(pet: any) {
+    const modal = await this.modalController.create({
+      component: TrackingModalComponent,
+      cssClass: 'my-custom-class',
+      componentProps: {
+        pet
       }
     });
 
