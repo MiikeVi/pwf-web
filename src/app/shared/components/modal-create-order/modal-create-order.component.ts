@@ -15,12 +15,13 @@ import { UserService } from 'src/app/services/user.service';
   providers: [SharedDataService]
 })
 export class ModalCreateOrderComponent implements OnInit {
+  @Input() caretaker: any;
   user: User;
   orderTypes = Object.values(OrderType);
   orderStatus = Object.values(OrderStatus);
   pets: Pet[];
   days = Object.values(Day);
-  @Input() caretaker: any;
+  userId = '';
 
   newOrder: any = {
     charge: '0',
@@ -29,12 +30,12 @@ export class ModalCreateOrderComponent implements OnInit {
     orderStatus: undefined,
     orderType: '',
     pet: undefined,
-  }
-
-  newOrderCare: any = {
+    walkpath: undefined,
+    dayService: undefined,
+    shared: undefined,
     day: '',
     description: ''
-  }
+  };
 
   constructor(
     private modalController: ModalController,
@@ -46,6 +47,8 @@ export class ModalCreateOrderComponent implements OnInit {
 
   ngOnInit() {
     this.getPets();
+    this.userId = this.authService.getUser().sub;
+    console.log(this.userId);
     this.sharedDataService.getCurrentPets().subscribe((pets) => {
       this.pets= pets;
     });
@@ -60,8 +63,7 @@ export class ModalCreateOrderComponent implements OnInit {
     this.modalController.dismiss();
   }
 
-  checkValue(event){
-    
+  createOrder() {
+    console.log(this.newOrder);
   }
-
 }
