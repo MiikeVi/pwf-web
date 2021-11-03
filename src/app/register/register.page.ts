@@ -18,7 +18,7 @@ export class RegisterPage implements OnInit {
     city: '',
     phoneNumber: '',
     password: '',
-  }
+  };
 
   constructor(
     public alertController: AlertController,
@@ -33,7 +33,7 @@ export class RegisterPage implements OnInit {
       else {
         this.presentAlertConfirmError();
       }
-    })
+    });
   }
 
   async presentAlertConfirm() {
@@ -45,7 +45,7 @@ export class RegisterPage implements OnInit {
     await alert.present();
     setTimeout(() => {
       setTimeout(() => {
-        this.router.navigateByUrl("/login");
+        this.router.navigateByUrl('/login');
       });
     }, 2000);
   }
