@@ -20,6 +20,9 @@
         <p>Tipo: {{pet.type}}</p>
       </ion-label>
       <ion-buttons slot="end">
+        <ion-button fill="clear" color="primary" (click)="openModalTracking(this.pet)">
+          <ion-icon name="map-outline"></ion-icon>
+        </ion-button>
         <ion-button fill="clear" color="warning" (click)="openModalEdit(this.pet)">
           <ion-icon name="create-outline"></ion-icon>
         </ion-button>

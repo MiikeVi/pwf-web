@@ -20,9 +20,10 @@ const routes: Routes = [
     loadChildren: () => import('./screens/my-profile-screen/my-profile-screen.module').then( m => m.MyProfileScreenPageModule)
   },
   {
-    path: 'tracking',
-    loadChildren: () => import('./screens/tracking-screen/tracking-screen.module').then( m => m.TrackingScreenPageModule)
-  }
+    path: 'ordenes',
+    loadChildren: () => import('./screens/my-orders-screen/my-orders-screen.module').then( m => m.MyOrdersScreenPageModule)
+  },
+
 ];
 
 @NgModule({

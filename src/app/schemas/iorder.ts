@@ -1,4 +1,5 @@
-import { Pet } from "./ipet";
+import { Pet } from './ipet';
+import { WalkPaths } from './iuser';
 
 export interface Order {
     charge: number;
@@ -10,17 +11,20 @@ export interface Order {
     orderStatus: OrderStatus;
     pet: Pet;
     orderType: OrderType;
-    shared: Boolean;
+    shared?: boolean;
+    walkPath?: WalkPaths;
+    description?: string;
 }
 
 export enum OrderType {
-    Care = 'cuidado',
-    Walk = 'paseo',
+    care = 'Cuidado',
+    walk = 'Paseo',
 }
 
 export enum OrderStatus {
-    Pending = 'pendiente',
-    Finished = 'terminada',
-    Accepted = 'aceptada',
+    pending = 'pendiente',
+    finished = 'terminada',
+    accepted = 'aceptada',
+    cancelled = 'cancelada'
 }
 

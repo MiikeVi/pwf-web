@@ -13,28 +13,28 @@
 <ion-content>
   <ion-card>
     <ion-card-content>
-      <form #formulario="ngForm" (ngSubmit)="onSubmitTemplate()">
+      <form #formulario="ngForm" (ngSubmit)="createOrder()">
 
         <ion-item>
-          <ion-radio-group name="orderType" required [(ngModel)]="newOrder.orderType" (ionChange)="checkValue($event)">
+          <ion-radio-group name="orderType" required [(ngModel)]="newOrder.orderType">
             <ion-card-header>
               <ion-label>Tipo de servicio</ion-label>
             </ion-card-header>
             <!-- 
-            <div *ngIf="this.caretakerSelected.CareTakerData.type == 'cuidador'; else bothBlock">
+            <div *ngIf="this.caretakerSelected.petCareData.type == 'Cuidador'; else bothBlock">
               <div *ngFor="let orderType of orderTypes"> 
                 <ion-item>
                   <ion-label>{{orderType}}</ion-label>
-                  <ion-radio disabled name={{orderType}} value={{cuidador}} slot="start"></ion-radio>
+                  <ion-radio disabled name={{orderType}} value={{Cuidador}} slot="start"></ion-radio>
                 </ion-item>
               </div>
             </div>
 
-            <div *ngIf="this.caretakerSelected.CareTakerData.type == 'paseador'; else bothBlock">
+            <div *ngIf="this.caretakerSelected.petCareData.type == 'Paseador'; else bothBlock">
               <div *ngFor="let orderType of orderTypes">
                 <ion-item>
                   <ion-label>{{orderType}}</ion-label>
-                  <ion-radio disabled name={{orderType}} value={{paseador}} slot="start"></ion-radio>
+                  <ion-radio disabled name={{orderType}} value={{Paseador}} slot="start"></ion-radio>
                 </ion-item>
               </div>
             </div>
@@ -52,7 +52,7 @@
         </ion-item>
 
         <ion-item>
-          <ion-radio-group name="petSelection" required [(ngModel)]="newOrder.pet" (ionChange)="checkValue($event)">
+          <ion-radio-group name="petSelection" required [(ngModel)]="newOrder.pet">
             <ion-card-header>
               <ion-label>Seleccione la mascota a pasear</ion-label>
             </ion-card-header>
@@ -65,12 +65,12 @@
           </ion-radio-group>
         </ion-item>
 
-        <div *ngIf="newOrder.orderType == 'cuidado'">
-          <form #formNewOrderCare="ngForm">
+        <div *ngIf="newOrder.orderType === 'Cuidado'">
+          <form #formNewOrderCare="ngForm" (ngSubmit)="createOrder()">
             <ion-card-header>
               Selecciona el dia del cuidado
             </ion-card-header>
-            <ion-radio-group name="day" [(ngModel)]="newOrderCare.day">
+            <ion-radio-group name="day" [(ngModel)]="newOrder.day">
               <ion-item *ngFor="let day of days">
                 <ion-label>{{day}}</ion-label>
                 <ion-radio value={{day}} name={{day}}></ion-radio>
@@ -78,12 +78,17 @@
             </ion-radio-group>
 
             <ion-item>
-              <ion-textarea name="description" [(ngModel)]="newOrderCare.description" rows="6" cols="20" placeholder="Escriba cualquier detalle que quiera agregar"></ion-textarea>
+              <ion-textarea name="description" [(ngModel)]="newOrder.description" rows="6" cols="20" placeholder="Escriba cualquier detalle que quiera agregar"></ion-textarea>
             </ion-item>
+
+            <br>
+            <ion-button type="submit" expand="full" [disabled]="formulario.invalid">
+              Enviar orden <ion-icon name="checkmark-outline" style="text-align: center"></ion-icon>
+            </ion-button>
           </form>
         </div>
         
-        <div *ngIf="newOrder.orderType == 'paseo'">
+        <div *ngIf="newOrder.orderType === 'Paseo'">
           <ion-item>
             <ion-label>Seleccione una ruta</ion-label>
             <ion-select interface="popover" name="type" required [(ngModel)]="newOrder">
@@ -94,7 +99,7 @@
           </ion-item>
 
           <ion-item>
-            <ion-radio-group name="shared" required [(ngModel)]="newOrder.shared" (ionChange)="checkValue($event)">
+            <ion-radio-group name="shared" required [(ngModel)]="newOrder.shared">
               <ion-card-header>
                 <ion-label>Servicio compartido</ion-label>
               </ion-card-header>
@@ -111,13 +116,18 @@
 
           <ion-item>
             <ion-label>Dia/Hora de servicio</ion-label>
-            <ion-datetime name="dayService" display-format="DD-MM" picker-format="DD-MM" [(ngModel)]="newOrder.dayService" (ionChange)="checkValue($event)"></ion-datetime>
+            <ion-datetime name="dayService" display-format="DD-MM" picker-format="DD-MM" [(ngModel)]="newOrder.dayService"></ion-datetime>
           </ion-item>
 
           <ion-item>
             <ion-label>Hora de inicio de paseo</ion-label>
-            <ion-datetime name="startDateService" display-format="HH" picker-format="HH" [(ngModel)]="newOrder.startDateService" (ionChange)="checkValue($event)"></ion-datetime>
+            <ion-datetime name="startDateService" display-format="HH" picker-format="HH" [(ngModel)]="newOrder.startDateService"></ion-datetime>
           </ion-item>
+
+          <br>
+          <ion-button type="submit" expand="full" [disabled]="formulario.invalid">
+            Enviar orden <ion-icon name="checkmark-outline" style="text-align: center"></ion-icon>
+          </ion-button>
 
         </div>
       </form>

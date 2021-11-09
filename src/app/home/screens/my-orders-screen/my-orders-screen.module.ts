@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { TrackingScreenPageRoutingModule } from './tracking-screen-routing.module';
+import { MyOrdersScreenPageRoutingModule } from './my-orders-screen-routing.module';
 
-import { TrackingScreenPage } from './tracking-screen.page';
+import { MyOrdersScreenPage } from './my-orders-screen.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    TrackingScreenPageRoutingModule
+    MyOrdersScreenPageRoutingModule
   ],
-  declarations: [TrackingScreenPage]
+  declarations: [MyOrdersScreenPage]
 })
-export class TrackingScreenPageModule {}
+export class MyOrdersScreenPageModule {}

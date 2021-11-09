@@ -6,7 +6,7 @@ export interface User {
   avatar?: string;
   birthdate: Date;
   careTakerEnabled: boolean;
-  careTakerData?: CareTakerData;
+  petCareData?: PetCareData;
   email: string;
   phoneNumber: string;
   phoneNumber2?: string;
@@ -18,13 +18,24 @@ export interface User {
   stars: number;
 }
 
-export interface CareTakerData {
-  reputation?: number;
+export interface PetCareData {
   bio: string;
+  type: CareTakerType;
+  walkerData?: WalkerData;
+  careTakerData?: CareTakerData;
+  reputation: number [];
+}
+
+export interface CareTakerData {
+  home: HomeType;
+  availability: string;
+  days: Day[];
+  dogsType: string[];
+};
+
+export interface WalkerData {
   reviews?: string[]; //array of ids
   walkPaths: WalkPaths [];
-  type: CareTakerType;
-  petCareData: petCareData;
 }
 
 export interface WalkPaths {
@@ -40,14 +51,6 @@ export enum CareTakerType {
   both = 'Ambos'
 };
 
-export interface petCareData {
-  home: HomeType,
-  availability: string,
-  days: Day[],
-  dogsType: string[]
-};
-
-
 export enum HomeType {
   house = 'Casa',
   apartment = 'Departamento'
@@ -62,11 +65,18 @@ type Schedule = {
 export enum Day{
   monday = 'Lunes',
   tuesday = 'Martes',
-  wednesday = "Miercoles",
-  thursday = "Jueves",
+  wednesday = 'Miercoles',
+  thursday = 'Jueves',
   friday = 'Viernes',
   saturday = 'Sábado',
   sunday = 'Domingo'
+}
+
+export enum DogSize {
+  small = 'Perros pequeños (0-7kgs)',
+  medium = 'Perros medianos (8kgs-20kgs)',
+  large = 'Perros grandes (21kgs+)',
+  cats = 'Puedo cuidar gatos'
 }
 
 export interface Address {

@@ -8,6 +8,7 @@ import { ModalEditPetComponent } from './components/modal-edit-pet/modal-edit-pe
 import { ModalCreateOrderComponent } from './components/modal-create-order/modal-create-order.component';
 import { ModalSendRequestComponent } from './components/modal-send-request/modal-send-request.component';
 import { ModalCreateWalkpathComponent } from './components/modal-create-walkpath/modal-create-walkpath.component';
+import { TrackingModalComponent } from './components/tracking-modal/tracking-modal.component';
 
 const components = [
   TabsComponent,
@@ -16,6 +17,7 @@ const components = [
   ModalCreateOrderComponent,
   ModalSendRequestComponent,
   ModalCreateWalkpathComponent,
+  TrackingModalComponent
 ];
 
 @NgModule({
