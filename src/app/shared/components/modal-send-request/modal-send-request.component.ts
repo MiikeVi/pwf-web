@@ -52,7 +52,7 @@ export class ModalSendRequestComponent implements OnInit {
       };
       const petCareData = {
         bio : this.request.bio,
-        type : CareTakerType.both,
+        type : CareTakerType.petCare,
         careTakerData,
       };
 
@@ -66,6 +66,7 @@ export class ModalSendRequestComponent implements OnInit {
 
       const petCareData = {
         walkerData,
+        type: CareTakerType.petWalker
       };
 
       this.data.petCareData = petCareData;
