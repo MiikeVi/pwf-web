@@ -1,3 +1,4 @@
+import { LatLng } from 'leaflet';
 import { Pet } from './ipet';
 
 export interface User {
@@ -24,6 +25,12 @@ export interface PetCareData {
   walkerData?: WalkerData;
   careTakerData?: CareTakerData;
   reputation: number [];
+  position?: Geolocation;
+}
+
+export interface Geolocation {
+  lat: number;
+  lon: number;
 }
 
 export interface CareTakerData {
