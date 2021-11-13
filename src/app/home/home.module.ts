@@ -7,6 +7,8 @@ import { SharedModule } from '../shared/shared.module';
 
 import { HomePageRoutingModule } from './home-routing.module';
 
+import {MatExpansionModule} from '@angular/material/expansion';
+
 
 @NgModule({
   imports: [
@@ -15,6 +17,7 @@ import { HomePageRoutingModule } from './home-routing.module';
     IonicModule,
     HomePageRoutingModule,
     SharedModule,
+    MatExpansionModule,
   ],
   declarations: [HomePage]
 })

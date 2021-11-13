@@ -8,6 +8,9 @@ import { CaretakersScreenPageRoutingModule } from './caretakers-screen-routing.m
 
 import { CaretakersScreenPage } from './caretakers-screen.page';
 
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSelectModule } from '@angular/material/select';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -15,6 +18,8 @@ import { CaretakersScreenPage } from './caretakers-screen.page';
     IonicModule,
     SharedModule,
     CaretakersScreenPageRoutingModule,
+    MatExpansionModule,
+    MatSelectModule,
   ],
   declarations: [CaretakersScreenPage]
 })

@@ -22,21 +22,23 @@ export class UserService {
   }
 
   async setAuthHeader() {
-    this.token = await this.storage.get(TOKEN);
-    this.headers = {
-      // eslint-disable-next-line max-len
-      authorization: `Bearer ${this.token}`,
-    };
+    if (this.storage) {
+      this.token = await this.storage.get(TOKEN);
+      this.headers = {
+        // eslint-disable-next-line max-len
+        authorization: `Bearer ${this.token}`,
+      };
+    }
   }
 
-  getCaretakerUsers(): AxiosPromise<User[]> {
+  getCaretakerUsers(city: string = ''): AxiosPromise<User[]> {
     return this.setAuthHeader().then(() => axios({
         method: 'get',
         url: 'https://pwf-api.herokuapp.com/api/user/',
 
         // eslint-disable-next-line max-len
         headers: this.headers,
-        params: { careTakerEnabled: true },
+        params: { careTakerEnabled: true, city },
       }));
 
   }
@@ -51,12 +53,11 @@ export class UserService {
   }
 
   async createUser(data: any){
-    return this.setAuthHeader().then(() => axios({
+    return axios({
         method: 'post',
         url: 'https://pwf-api.herokuapp.com/api/user/',
         data,
-        headers: this.headers,
-      }));
+      });
   }
 
   patchUser(userId: string, patchUser: JSONPatch) {

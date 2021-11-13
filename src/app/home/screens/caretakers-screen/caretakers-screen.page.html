@@ -5,10 +5,43 @@
           <ion-icon name="arrow-back-outline"></ion-icon>
         </ion-button>
         <ion-title class="ion-text-center">Paseadores</ion-title>
-        <img src="../../../../assets/logo.png" width="70" height="60" slot="end">
+        <ion-icon (click)="expandPanel()"style="padding-right: 30px;" name="filter-outline"></ion-icon>
       </ion-buttons>
   </ion-toolbar>
 </ion-header>
+
+<mat-expansion-panel [expanded]="expanded" hideToggle>
+  <ion-list>
+    <div *ngFor="let filter of filters">
+      <div *ngIf="filter.val === 'Location'">
+        <ion-item>
+          <ion-label>Ubicación</ion-label>
+          <ion-checkbox slot="end" (ionChange)="resetFilter(filter.isChecked)" [(ngModel)]="filter.isChecked"></ion-checkbox>
+        </ion-item>
+ 
+        <div *ngIf="filter.isChecked">
+          <ion-item>
+            <ion-label>Región</ion-label>
+            <ion-select (ionChange)="setCityValues(selectedDistrict)" [(ngModel)]="selectedDistrict">
+              <div *ngFor="let district of districts">
+                <ion-select-option [value]="district" >{{district}}</ion-select-option> 
+              </div> 
+            </ion-select>
+          </ion-item>
+          <ion-item *ngIf="selectedDistrict">
+            <ion-label>Ciudad</ion-label>
+            <ion-select  [(ngModel)]="selectedCity" >
+              <div *ngFor="let city of cityOptions">
+                <ion-select-option [value]="city" >{{city}}</ion-select-option>
+              </div>
+            </ion-select>
+          </ion-item>
+        </div>   
+      </div>
+    </div>
+  </ion-list>
+  <ion-button style="padding-left: 220px" (click)="applyFilters()">Apply</ion-button>
+</mat-expansion-panel>
 
 <ion-content>
   <ion-row>
