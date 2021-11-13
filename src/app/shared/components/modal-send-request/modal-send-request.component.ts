@@ -29,6 +29,7 @@ export class ModalSendRequestComponent implements OnInit {
 
   ngOnInit() {
     this.getUser();
+    this.userClone = JSON.parse(JSON.stringify(this.data));
   }
 
   async getUser() {
