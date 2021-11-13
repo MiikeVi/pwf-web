@@ -3,7 +3,7 @@ import { AuthService } from '../../../services/auth.service';
 import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { ModalSendRequestComponent } from 'src/app/shared/components/modal-send-request/modal-send-request.component';
 import { UserService } from 'src/app/services/user.service';
-import { CareTakerType, Day, HomeType, User, WalkPaths } from 'src/app/schemas/iuser';
+import { CareTakerType, Days, Day, DogSize, DogSizes, HomeType, User, WalkPaths } from 'src/app/schemas/iuser';
 import { createPatch } from 'rfc6902';
 import { ModalCreateWalkpathComponent } from 'src/app/shared/components/modal-create-walkpath/modal-create-walkpath.component';
 import { ImageService } from 'src/app/services/image-store.service';
@@ -18,9 +18,10 @@ export class MyProfileScreenPage implements OnInit {
 
   data: any = {} as any;
   userClone: User;
-  days = Object.values(Day);
   homeTypes = Object.values(HomeType);
   caretakerTypes = Object.values(CareTakerType);
+  dogSizes: DogSize[] = Object.values(DogSizes).map((dogSize) => ({dogSize, selected: false}));
+  days: Day[] = Object.values(Days).map((day) => ({day, selected: false}));
   avatarUrl = '';
   loadingImage;
 
@@ -41,13 +42,6 @@ export class MyProfileScreenPage implements OnInit {
     }
   }];
 
-  userCareData: {
-    home: '';
-    availability: '';
-    dogType: undefined;
-    days: undefined;
-  };
-
   constructor(
     public alertController: AlertController,
     private modalController: ModalController,
@@ -62,6 +56,11 @@ export class MyProfileScreenPage implements OnInit {
     this.getUser();
     this.avatarUrl = `https://pwf-api.herokuapp.com/${this.data.avatar}`;
     this.userClone = JSON.parse(JSON.stringify(this.data));
+    this.dogSizes.forEach((element, index) => {
+      if (this.data.petCareData?.careTakerData?.dogsType.includes(element.dogSize)) {
+        this.dogSizes[index].selected = true;
+      }
+    });
   }
 
   async onSubmitTemplate() {

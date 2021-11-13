@@ -42,8 +42,8 @@ export class ModalSendRequestComponent implements OnInit {
   }
 
   async createRequest() {
-
-    if ((this.data.petCareData?.type && this.data.petCareData.type === 'Paseador') || this.request.type === 'Cuidador')
+    //Si no es nada y quiere ser Cuidador
+    if (!this.data?.petCareData?.type && this.request.type === 'Cuidador')
     {
       const careTakerData = {
         home: '',
@@ -59,8 +59,8 @@ export class ModalSendRequestComponent implements OnInit {
 
       this.data.petCareData = petCareData;
     }
-    //Si quiere ser paseador
-    else if (this.request.type === 'Paseador'){
+    //Si no es nada y quiere ser Paseador
+    else if (!this.data?.petCareData?.type && this.request.type === 'Paseador'){
       const walkerData = {
         walkPaths : [],
       };
@@ -72,7 +72,8 @@ export class ModalSendRequestComponent implements OnInit {
 
       this.data.petCareData = petCareData;
     }
-    else {
+    //Si es Paseador y quiere ser Cuidador
+    else if (this.data?.petCareData?.type === 'Paseador'){
       const careTakerData = {
         home: '',
         availability: '',
@@ -80,18 +81,21 @@ export class ModalSendRequestComponent implements OnInit {
         dogsType: []
       };
 
+      this.data.petCareData.bio = this.request.bio;
+      this.data.petCareData.type = CareTakerType.both;
+      this.data.petCareData.careTakerData = careTakerData;
+
+    }
+    //Si es Cuidador y quiere ser Paseador
+    else {
+
       const walkerData = {
         walkPaths : [],
       };
 
-      const petCareData = {
-        bio : this.request.bio,
-        type : CareTakerType.both,
-        careTakerData,
-        walkerData,
-      };
-
-      this.data.petCareData = petCareData;
+      this.data.petCareData.bio = this.request.bio;
+      this.data.petCareData.type = CareTakerType.both;
+      this.data.petCareData.walkerData = walkerData;
     }
 
     console.log (this.data);
