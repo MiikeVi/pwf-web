@@ -36,7 +36,7 @@ export interface Geolocation {
 export interface CareTakerData {
   home: HomeType;
   availability: string;
-  days: Day[];
+  days: Days[];
   dogsType: string[];
 };
 
@@ -66,10 +66,10 @@ export enum HomeType {
 type Schedule = {
   startTime?: Date;
   endTime?: Date;
-  day?: Day;
+  day?: Days;
 };
 
-export enum Day{
+export enum Days{
   monday = 'Lunes',
   tuesday = 'Martes',
   wednesday = 'Miercoles',
@@ -79,11 +79,21 @@ export enum Day{
   sunday = 'Domingo'
 }
 
-export enum DogSize {
+export interface Day {
+  day: Days;
+  selected: boolean;
+}
+
+export enum DogSizes {
   small = 'Perros pequeños (0-7kgs)',
   medium = 'Perros medianos (8kgs-20kgs)',
   large = 'Perros grandes (21kgs+)',
   cats = 'Puedo cuidar gatos'
+}
+
+export interface DogSize {
+  dogSize: DogSizes;
+  selected: boolean;
 }
 
 export interface Address {
