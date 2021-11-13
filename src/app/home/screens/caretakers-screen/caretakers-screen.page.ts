@@ -84,18 +84,6 @@ export class CaretakersScreenPage implements OnInit {
 
   }
 
-  generateCountryArray() {
-    const optionsArray = [];
-
-    this.cities.forEach((region) => {
-      optionsArray.push(region.name);
-      region.communes.forEach((city) => {
-        optionsArray.push(city);
-      });
-    });
-    return optionsArray;
-  }
-
   setCityValues(regionSelected) {
     this.cities.forEach((region) => {
       if (regionSelected === region.name) {
@@ -105,7 +93,6 @@ export class CaretakersScreenPage implements OnInit {
   }
 
   resetFilter(isChecked) {
-    console.log('hola reset filter' + isChecked);
       if (!isChecked) {
         this.selectedCity = undefined;
         this.selectedDistrict = undefined;
