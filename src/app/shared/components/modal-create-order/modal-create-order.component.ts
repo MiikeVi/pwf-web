@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { OrderStatus, OrderType } from 'src/app/schemas/iorder';
 import { Pet } from 'src/app/schemas/ipet';
-import { Day, User } from 'src/app/schemas/iuser';
+import { Day, Days, User } from 'src/app/schemas/iuser';
 import { AuthService } from 'src/app/services/auth.service';
 import { PetService } from 'src/app/services/pet.service';
 import { SharedDataService } from 'src/app/services/shared-data.service';
@@ -20,7 +20,7 @@ export class ModalCreateOrderComponent implements OnInit {
   orderTypes = Object.values(OrderType);
   orderStatus = Object.values(OrderStatus);
   pets: Pet[];
-  days = Object.values(Day);
+  days = Object.values(Days);
   userId = '';
 
   newOrder: any = {
