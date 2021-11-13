@@ -80,7 +80,7 @@
     </ion-card-content>
   </ion-card>
 
-  <div>
+  <div *ngIf="data.petCareData === undefined || data.petCareData?.type === 'Paseador' || data.petCareData?.type === 'Cuidador'">
     <ion-card>
       <ion-card-header>
         <ion-card-title >
@@ -100,7 +100,7 @@
 
 
   <div>
-    <div *ngIf="data?.petCareData?.careTakerData">
+    <div *ngIf="data.petCareData?.walkerData">
       <ion-card>
         <ion-card-header>
           <ion-card-title >
@@ -132,7 +132,8 @@
         </ion-card-content>
       </ion-card>
     </div>
-    <div *ngIf="data?.petCareData?.walkerData">
+
+    <div *ngIf="data.petCareData?.careTakerData">
       <ion-card>
         <ion-card-header>
           <ion-card-title >
@@ -154,34 +155,36 @@
               <ion-card-header>
                 ¿Puedes cuidar a una mascota por dias continuos?
               </ion-card-header>
-              <ion-radio-group name="availability" [(ngModel)]="data.petCareData.careTakerData.availability">
+              <ion-radio-group name="availability" value={{data.petCareData.careTakerData.availability}} [(ngModel)]="data.petCareData.careTakerData.availability">
                 <ion-item>
                   <ion-label>Si</ion-label>
-                  <ion-radio slot="start" value="no"></ion-radio>
+                  <ion-radio slot="start" value="Yes"></ion-radio>
                 </ion-item>
                 <ion-item>
                   <ion-label>No</ion-label>
-                  <ion-radio slot="start" value="yes"></ion-radio>
+                  <ion-radio slot="start" value="No"></ion-radio>
                 </ion-item>
               </ion-radio-group>
               
               <ion-card-header>
                 ¿Que tipo de hogar tienes?
               </ion-card-header>
-              <ion-radio-group name="home" [(ngModel)]="userCareData.home">
+              <ion-radio-group name="home" [(ngModel)]="data.petCareData.careTakerData.home">
                 <ion-item *ngFor="let homeType of homeTypes">
                   <ion-label>{{homeType}}</ion-label>
                   <ion-radio name={{homeType}} slot="start" value={{homeType}}></ion-radio>
                 </ion-item>
               </ion-radio-group>
 
-              <ion-card-header>
-                ¿Qué tipos de perros puedes cuidar?
-              </ion-card-header>
-              <ion-item *ngFor="let dogSize of dogSizes">
-                <ion-label>{{dogSize.dogSize}}</ion-label>
-                <ion-checkbox name= "dogSize" [(ngModel)]="dogSize.selected"></ion-checkbox>
-              </ion-item>
+              <ion-list>
+                <ion-card-header>
+                  ¿Qué tipos de perros puedes cuidar?
+                </ion-card-header>
+                <ion-item *ngFor="let dogSize of dogSizes">
+                  <ion-label>{{dogSize.dogSize}}</ion-label>
+                  <ion-checkbox name="dogSize" [(ngModel)]="dogSize.selected"></ion-checkbox>
+                </ion-item>
+              </ion-list>
               <br>
 
 
