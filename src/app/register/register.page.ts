@@ -16,8 +16,10 @@ export class RegisterPage implements OnInit {
     birthday: Date,
     address: '',
     city: '',
+    region: '',
     phoneNumber: '',
     password: '',
+    isActive: true,
   };
 
   constructor(
