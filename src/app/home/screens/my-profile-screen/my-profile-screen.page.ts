@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { ModalSendRequestComponent } from 'src/app/shared/components/modal-send-request/modal-send-request.component';
 import { UserService } from 'src/app/services/user.service';
 import { CareTakerType, Day, HomeType, User, WalkPaths } from 'src/app/schemas/iuser';
@@ -54,6 +54,7 @@ export class MyProfileScreenPage implements OnInit {
     private authService: AuthService,
     private userService: UserService,
     private imageStoreService:  ImageService,
+    private navController: NavController,
   ) {}
 
   ngOnInit() {
@@ -121,6 +122,7 @@ export class MyProfileScreenPage implements OnInit {
   }
 
   logout() {
+    this.navController.navigateRoot('/login');
     this.authService.logout();
   }
 
