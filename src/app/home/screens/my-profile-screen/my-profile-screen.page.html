@@ -111,16 +111,15 @@
           <ion-list>
             <ion-item *ngFor="let ruta of rutas">
               <ion-label>
-                <h2>Dia: {{ruta.schedule.day}}</h2>
-                <h2>Localidad: {{ruta.location}}</h2>
-                <h3>Precio: {{ruta.price}}</h3>
-                <h3 *ngIf="ruta.shared; else NoTemplate">Servicio compartido: Si</h3>
-                <ng-template #NoTemplate><h3>Servicio compartido: No</h3></ng-template>
-                <h3>Inicio: {{ruta.schedule.startTime | date : 'h a'}}</h3>
-                <h3>Finalización: {{ruta.schedule.endTime | date : 'h a'}}</h3>
+                <h2>Dia: {{ruta.data.schedule.day}}</h2>
+                <h2>Localidad: {{ruta.data.location}}</h2>
+                <h3>Precio: {{ruta.data.price}}</h3>
+                <h3>Servicio compartido: {{ruta.data.shared | boolToString}}</h3>
+                <h3>Inicio: {{ruta.data.schedule.startTime | date : 'h a'}}</h3>
+                <h3>Finalización: {{ruta.data.schedule.endTime | date : 'h a'}}</h3>
               </ion-label>
               <ion-buttons slot="end">
-                <ion-button fill="clear" color="danger" (click)="deleteWalkpath()">
+                <ion-button fill="clear" color="danger" (click)="deleteWalkpath(ruta)">
                   <ion-icon name="trash-outline"></ion-icon>
                 </ion-button>
               </ion-buttons>
