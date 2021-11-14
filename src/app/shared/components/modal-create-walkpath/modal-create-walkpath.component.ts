@@ -26,7 +26,7 @@ export class ModalCreateWalkpathComponent implements OnInit {
 
   ngOnInit() {}
 
-  dismiss() {
+  createWalkpath() {
     this.modalController.dismiss(this.newWalkpath);
   }
 
