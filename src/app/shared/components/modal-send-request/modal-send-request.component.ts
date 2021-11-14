@@ -106,6 +106,7 @@ export class ModalSendRequestComponent implements OnInit {
 
     if(patchedUser) {
       this.presentAlertConfirm();
+      this.dismiss();
     }
   }
 
