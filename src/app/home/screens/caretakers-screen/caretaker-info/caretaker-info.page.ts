@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { User } from 'src/app/schemas/iuser';
 import { UserService } from 'src/app/services/user.service';
@@ -13,11 +12,18 @@ import { ModalCreateOrderComponent } from 'src/app/shared/components/modal-creat
 export class CaretakerInfoPage implements OnInit {
 
   caretakerSelected: User = null;
+  rutas;
+  days;
+  dogsTypes;
 
-  constructor(private userService: UserService, private router: Router, private modalController: ModalController) { }
+  constructor(private userService: UserService, private modalController: ModalController) { }
 
   ngOnInit() {
       this.caretakerSelected = this.userService.caretakerSelected;
+      this.rutas = this.caretakerSelected.petCareData?.walkerData?.walkPaths;
+      this.days = this.caretakerSelected.petCareData?.careTakerData?.days;
+      this.dogsTypes = this.caretakerSelected.petCareData?.careTakerData?.dogsType;
+      console.log(this.dogsTypes);
   }
 
   getUserStars(user: User) {

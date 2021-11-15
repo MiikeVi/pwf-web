@@ -1,4 +1,3 @@
-import { LatLng } from 'leaflet';
 import { Pet } from './ipet';
 
 export interface User {
@@ -84,15 +83,15 @@ export interface Day {
   selected: boolean;
 }
 
-export enum DogSizes {
+export enum DogsTypes {
   small = 'Perros pequeños (0-7kgs)',
   medium = 'Perros medianos (8kgs-20kgs)',
   large = 'Perros grandes (21kgs+)',
   cats = 'Puedo cuidar gatos'
 }
 
-export interface DogSize {
-  dogSize: DogSizes;
+export interface DogsType {
+  dogsType: DogsTypes;
   selected: boolean;
 }
 
