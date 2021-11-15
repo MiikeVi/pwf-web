@@ -140,7 +140,7 @@
           </ion-card-title>
         </ion-card-header>
         <ion-card-content>
-          <form #formCaretaker="ngForm" (ngSubmit)="patchCaretaker()">
+          <form #formCaretaker="ngForm" (ngSubmit)="patchCareTaker()">
             <ion-list>
               <ion-card-header>
                 Selecciona tus dias disponibles
@@ -157,7 +157,7 @@
               <ion-radio-group name="availability" value={{data.petCareData.careTakerData.availability}} [(ngModel)]="data.petCareData.careTakerData.availability">
                 <ion-item>
                   <ion-label>Si</ion-label>
-                  <ion-radio slot="start" value="Yes"></ion-radio>
+                  <ion-radio slot="start" value="Si"></ion-radio>
                 </ion-item>
                 <ion-item>
                   <ion-label>No</ion-label>
@@ -179,9 +179,9 @@
                 <ion-card-header>
                   ¿Qué tipos de perros puedes cuidar?
                 </ion-card-header>
-                <ion-item *ngFor="let dogSize of dogSizes">
-                  <ion-label>{{dogSize.dogSize}}</ion-label>
-                  <ion-checkbox name="dogSize" [(ngModel)]="dogSize.selected"></ion-checkbox>
+                <ion-item *ngFor="let dogsType of dogsTypes">
+                  <ion-label>{{dogsType.dogsType}}</ion-label>
+                  <ion-checkbox name="dogsType" [(ngModel)]="dogsType.selected"></ion-checkbox>
                 </ion-item>
               </ion-list>
               <br>

@@ -3,7 +3,7 @@ import { AuthService } from '../../../services/auth.service';
 import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { ModalSendRequestComponent } from 'src/app/shared/components/modal-send-request/modal-send-request.component';
 import { UserService } from 'src/app/services/user.service';
-import { CareTakerType, Days, Day, DogSize, DogSizes, HomeType, User, WalkPaths } from 'src/app/schemas/iuser';
+import { CareTakerType, Days, Day, DogsType, DogsTypes, HomeType, User, WalkPaths } from 'src/app/schemas/iuser';
 import { createPatch } from 'rfc6902';
 import { ModalCreateWalkpathComponent } from 'src/app/shared/components/modal-create-walkpath/modal-create-walkpath.component';
 import { ImageService } from 'src/app/services/image-store.service';
@@ -20,7 +20,7 @@ export class MyProfileScreenPage implements OnInit {
   userClone: User;
   homeTypes = Object.values(HomeType);
   caretakerTypes = Object.values(CareTakerType);
-  dogSizes: DogSize[] = Object.values(DogSizes).map((dogSize) => ({dogSize, selected: false}));
+  dogsTypes: DogsType[] = Object.values(DogsTypes).map((dogsType) => ({dogsType, selected: false}));
   days: Day[] = Object.values(Days).map((day) => ({day, selected: false}));
   avatarUrl = '';
   loadingImage;
@@ -40,9 +40,14 @@ export class MyProfileScreenPage implements OnInit {
     this.getUser();
     this.avatarUrl = `https://pwf-api.herokuapp.com/${this.data.avatar}`;
     this.userClone = JSON.parse(JSON.stringify(this.data));
-    this.dogSizes.forEach((element, index) => {
-      if (this.data.petCareData?.careTakerData?.dogsType.includes(element.dogSize)) {
-        this.dogSizes[index].selected = true;
+    this.dogsTypes.forEach((element, index) => {
+      if (this.data.petCareData?.careTakerData?.dogsType.includes(element.dogsType)) {
+        this.dogsTypes[index].selected = true;
+      }
+    });
+    this.days.forEach((element, index) => {
+      if (this.data.petCareData?.careTakerData?.days.includes (element.day)) {
+        this.days[index].selected = true;
       }
     });
   }
@@ -176,6 +181,29 @@ export class MyProfileScreenPage implements OnInit {
 
     if(patchedUser) {
       this.getUser();
+    }
+  }
+
+  async patchCareTaker() {
+    this.data.petCareData.careTakerData.days = this.days.map ((day) => {
+      if (day.selected) {
+        return day.day;
+      }
+    }).filter((day) => day);
+
+    this.data.petCareData.careTakerData.dogsType = this.dogsTypes.map ((dogsType) => {
+      if (dogsType.selected) {
+        return dogsType.dogsType;
+      }
+    }).filter((dogsType) => dogsType);
+
+    const patch = createPatch(this.userClone, this.data);
+    // eslint-disable-next-line no-underscore-dangle
+    const patchedUser = await this.userService.patchUser((this.data as any)._id, patch as any);
+
+    if (patchedUser) {
+      this.getUser();
+      console.log(patchedUser);
     }
   }
 
