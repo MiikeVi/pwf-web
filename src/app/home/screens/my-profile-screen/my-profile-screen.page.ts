@@ -24,23 +24,7 @@ export class MyProfileScreenPage implements OnInit {
   days: Day[] = Object.values(Days).map((day) => ({day, selected: false}));
   avatarUrl = '';
   loadingImage;
-
-  rutas: WalkPaths[] = [{
-    location: 'valpo',
-    price: 3000,
-    shared: true,
-    schedule: {
-
-    }
-  },
-  {
-    location: 'viña',
-    price: 2000,
-    shared: false,
-    schedule: {
-
-    }
-  }];
+  rutas: WalkPaths[];
 
   constructor(
     public alertController: AlertController,
@@ -100,6 +84,7 @@ export class MyProfileScreenPage implements OnInit {
   async getUser() {
     // eslint-disable-next-line no-underscore-dangle
     this.data = (await this.userService.getUser(this.authService.getUser().sub)).data;
+    this.rutas = this.data.petCareData.walkerData.walkPaths;
   }
 
   async presentAlertConfirm() {
@@ -139,6 +124,9 @@ export class MyProfileScreenPage implements OnInit {
       cssClass: 'my-custom-class',
       componentProps: {}
     });
+    modal.onDidDismiss().then (() => {
+      this.ngOnInit();
+    });
     return await modal.present();
   }
 
@@ -149,13 +137,21 @@ export class MyProfileScreenPage implements OnInit {
       componentProps: {}
     });
 
-    modal.onDidDismiss().then(newWalkpath => {
+    modal.onDidDismiss().then(async newWalkpath => {
       if(newWalkpath.data !== undefined)
       {
         const endTime = new Date(newWalkpath.data.schedule.startTime);
         const finalEndTime = this.addHoursToDate(endTime);
         newWalkpath.data.schedule.endTime = finalEndTime;
-        this.rutas.push(newWalkpath.data);
+        this.data.petCareData.walkerData.walkPaths.push(newWalkpath);
+
+        const patch = createPatch(this.userClone, this.data);
+        // eslint-disable-next-line no-underscore-dangle
+        const patchedUser = await this.userService.patchUser((this.data as any)._id, patch as any);
+
+        if(patchedUser) {
+          this.presentAlertConfirm();
+        }
       }
     });
 
@@ -168,5 +164,19 @@ export class MyProfileScreenPage implements OnInit {
     const newDateObj = new Date(numberOfMlSeconds + addMlSeconds);
     return newDateObj;
 }
+
+  async deleteWalkpath(walkPath: WalkPaths) {
+    const newWalkpaths = this.rutas.filter((ruta) => ruta !== walkPath);
+
+    this.data.petCareData.walkerData.walkPaths = newWalkpaths;
+
+    const patch = createPatch(this.userClone, this.data);
+    // eslint-disable-next-line no-underscore-dangle
+    const patchedUser = await this.userService.patchUser((this.data as any)._id, patch as any);
+
+    if(patchedUser) {
+      this.getUser();
+    }
+  }
 
 }
