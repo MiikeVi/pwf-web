@@ -2,6 +2,7 @@ import { Pet } from './ipet';
 import { WalkPaths } from './iuser';
 
 export interface Order {
+    createdAt: Date;
     charge: number;
     startDateService: Date;
     dayService: Date;

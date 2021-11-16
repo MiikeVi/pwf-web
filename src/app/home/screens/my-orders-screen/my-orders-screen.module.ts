@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { MatTabsModule } from '@angular/material/tabs';
 import { IonicModule } from '@ionic/angular';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { MyOrdersScreenPageRoutingModule } from './my-orders-screen-routing.module';
 
@@ -13,7 +14,9 @@ import { MyOrdersScreenPage } from './my-orders-screen.page';
     CommonModule,
     FormsModule,
     IonicModule,
-    MyOrdersScreenPageRoutingModule
+    MyOrdersScreenPageRoutingModule,
+    MatTabsModule,
+    MatDialogModule,
   ],
   declarations: [MyOrdersScreenPage]
 })
