@@ -22,19 +22,17 @@ export class OrderService {
   }
 
   async setAuthHeader() {
-    if (this.storage) {
       this.token = await this.storage.get(TOKEN);
       this.headers = {
         // eslint-disable-next-line max-len
         authorization: `Bearer ${this.token}`,
       };
-    }
   }
 
-  getUserOrders(userId: string): AxiosPromise<Order[]> {
+  getUserOrders(userId: string) {
     return this.setAuthHeader().then(() => axios({
         method: 'get',
-        url: 'https://pwf-api.herokuapp.com/api/order/',
+        url: 'https://pwf-api.herokuapp.com/api/orders/',
 
         // eslint-disable-next-line max-len
         headers: this.headers,
@@ -46,24 +44,25 @@ export class OrderService {
   getOrder(orderId: string): AxiosPromise<Order> {
     return this.setAuthHeader().then(() => axios({
         method: 'get',
-        url: `https://pwf-api.herokuapp.com/api/order/${orderId}`,
+        url: `https://pwf-api.herokuapp.com/api/orders/${orderId}`,
         // eslint-disable-next-line max-len
         headers: this.headers,
       }));
   }
 
   createOrder(data: Order){
-    return axios({
+    return this.setAuthHeader().then(() => axios({
         method: 'post',
-        url: 'https://pwf-api.herokuapp.com/api/order/',
+        url: 'https://pwf-api.herokuapp.com/api/orders/',
+        headers: this.headers,
         data,
-      });
+      }));
   }
 
   patchOrder(orderId: string, patchOrder: JSONPatch) {
     return this.setAuthHeader().then(() => axios({
         method: 'patch',
-        url: `https://pwf-api.herokuapp.com/api/order/${orderId}`,
+        url: `https://pwf-api.herokuapp.com/api/orders/${orderId}`,
         headers: this.headers,
         data: patchOrder,
       }));
