@@ -16,39 +16,44 @@
       </ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <ion-label><b>Dirección:</b> <br>{{caretakerSelected.address}}</ion-label>
-      <br>
-      <ion-label><b>Fecha de Nacimiento:</b> <br>{{caretakerSelected.birthdate | date: 'shortDate'}}</ion-label>
-      <br>
-      <ion-label><b>Correo Electrónico:</b> <br>{{caretakerSelected.email}}</ion-label>
-      <br>
-      <ion-label><b>Número de Contacto:</b> <br>{{caretakerSelected.phoneNumber}}</ion-label>
-      <br>
-      <ion-label><b>Valoración:</b></ion-label>
-      <div *ngFor="let i of getUserStars(caretakerSelected)">
-        <ion-icon name="star"></ion-icon>
-      </div>
+      <ion-item>
+        <ion-label>
+          <h3><b>Dirección:</b> <br>{{caretakerSelected.address}}</h3>
+          <br>
+          <h3><b>Fecha de Nacimiento:</b> <br>{{caretakerSelected.birthdate | date: 'd/M/yy'}}</h3>
+          <br>
+          <h3><b>Correo Electrónico:</b> <br>{{caretakerSelected.email}}</h3>
+          <br>
+          <h3><b>Número de Contacto:</b> <br>{{caretakerSelected.phoneNumber}}</h3>
+          <br>
+          <h3><b>Valoración:</b></h3>
+          <div *ngFor="let i of getUserStars(caretakerSelected)">
+            <ion-icon name="star"></ion-icon>
+          </div>
+        </ion-label>
+      </ion-item>
       <ion-button expand="full" (click)="openModalCreateOrder(caretakerSelected)">
         Contratar <ion-icon name="checkmark-outline" style="text-align: center"></ion-icon>
       </ion-button>
     </ion-card-content>
   </ion-card>
+
   <div *ngIf="this.caretakerSelected.petCareData?.walkerData">
     <ion-card>
       <ion-card-header>
         <ion-card-title>Rutas de paseador</ion-card-title>
-        <ion-card-content>
-            <ion-item *ngFor="let ruta of rutas">
-              <ion-label>
-                <h3><b>Lugar:</b> {{ruta?.data?.location}}</h3>
-                <h3><b>Precio:</b> {{ruta?.data?.price}}</h3>
-                <h3><b>Dia:</b> {{ruta?.data?.schedule?.day}}</h3>
-                <h3><b>Hora de inicio:</b> {{ruta?.data?.schedule?.startTime | date : 'h a'}}</h3>
-                <h3><b>Hora de finalización:</b> {{ruta?.data?.schedule?.endTime | date : 'h a'}}</h3>
-              </ion-label>
-            </ion-item>
-        </ion-card-content>
       </ion-card-header>
+      <ion-card-content>
+          <ion-item *ngFor="let ruta of rutas">
+            <ion-label>
+              <h3><b>Lugar:</b> {{ruta?.data?.location}}</h3>
+              <h3><b>Precio:</b> {{ruta?.data?.price}}</h3>
+              <h3><b>Dia:</b> {{ruta?.data?.schedule?.day}}</h3>
+              <h3><b>Hora de inicio:</b> {{ruta?.data?.schedule?.startTime | date : 'h a'}}</h3>
+              <h3><b>Hora de finalización:</b> {{ruta?.data?.schedule?.endTime | date : 'h a'}}</h3>
+            </ion-label>
+          </ion-item>
+        </ion-card-content>
     </ion-card>
   </div>
 
