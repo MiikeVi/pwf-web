@@ -24,21 +24,7 @@ export class MyOrdersScreenPage implements OnInit {
 
   selectedOrders: Order[];
 
-  orders: Order[] = [
-    {
-      createdAt: new Date(),
-      charge: 5650,
-      startDateService: new Date(),
-      endDateService: new Date(),
-      userId: '1234',
-      caretakerId: '12345',
-      orderStatus: OrderStatus.accepted,
-      pet: undefined,
-      orderType: OrderType.walk,
-      shared: false,
-      dayService: new Date(),
-    }
-  ];
+  orders;
 
   caretakerOrders: Order[] = [
     {
@@ -47,12 +33,12 @@ export class MyOrdersScreenPage implements OnInit {
       startDateService: new Date(),
       endDateService: new Date(),
       userId: '12344',
-      caretakerId: '123445',
+      careTakerId: '123445',
       orderStatus: OrderStatus.finished,
       pet: undefined,
       orderType: OrderType.walk,
       shared: true,
-      dayService: new Date(),
+      dayService: undefined,
     }
   ];
 
@@ -64,10 +50,12 @@ export class MyOrdersScreenPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.selectedOrders = this.orders;
     this.getUser();
-    this.getUserOrders(this.authService.getUser().sub);
+    this.ordersService.getUserOrders(this.authService.getUser().sub).then((orders) => {
+      this.orders = orders.data.values;
+      this.selectedOrders = orders.data.values;
 
+    });
   }
 
   tabChanged(tab) {
@@ -75,7 +63,7 @@ export class MyOrdersScreenPage implements OnInit {
     if (!(this.selectedTab === 'ordenes')) {
       this.selectedOrders = this.caretakerOrders;
     } else {
-      this.selectedOrders = this.orders;
+      this.selectedOrders = JSON.parse(JSON.stringify(this.orders));
     }
   }
 
@@ -117,7 +105,7 @@ export class MyOrdersScreenPage implements OnInit {
 
   async getUserOrders(userId: string) {
     return await this.ordersService.getUserOrders(userId).then((orders) => {
-      this.orders = orders.data;
+      this.orders = orders.data.values;
     });
   }
 
