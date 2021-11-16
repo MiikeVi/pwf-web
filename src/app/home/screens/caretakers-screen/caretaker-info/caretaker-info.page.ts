@@ -23,7 +23,6 @@ export class CaretakerInfoPage implements OnInit {
       this.rutas = this.caretakerSelected.petCareData?.walkerData?.walkPaths;
       this.days = this.caretakerSelected.petCareData?.careTakerData?.days;
       this.dogsTypes = this.caretakerSelected.petCareData?.careTakerData?.dogsType;
-      console.log(this.dogsTypes);
   }
 
   getUserStars(user: User) {
