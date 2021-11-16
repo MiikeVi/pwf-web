@@ -9,6 +9,7 @@ import { ModalCreateOrderComponent } from './components/modal-create-order/modal
 import { ModalSendRequestComponent } from './components/modal-send-request/modal-send-request.component';
 import { ModalCreateWalkpathComponent } from './components/modal-create-walkpath/modal-create-walkpath.component';
 import { TrackingModalComponent } from './components/tracking-modal/tracking-modal.component';
+import { ModalViewOrderComponent } from './components/modal-view-order/modal-view-order.component';
 
 const components = [
   TabsComponent,
@@ -17,7 +18,8 @@ const components = [
   ModalCreateOrderComponent,
   ModalSendRequestComponent,
   ModalCreateWalkpathComponent,
-  TrackingModalComponent
+  TrackingModalComponent,
+  ModalViewOrderComponent,
 ];
 
 @NgModule({

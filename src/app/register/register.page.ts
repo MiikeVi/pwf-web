@@ -20,6 +20,8 @@ export class RegisterPage implements OnInit {
     phoneNumber: '',
     password: '',
     isActive: true,
+    // eslint-disable-next-line max-len
+    avatar: 'https://media.istockphoto.com/vectors/dog-paw-icon-logo-vector-id1005374612?k=20&m=1005374612&s=170667a&w=0&h=xKzVpMC2epvlTYflUHIXdEv5FfdWJ2LihJe4hoO3Pi4=',
   };
 
   constructor(

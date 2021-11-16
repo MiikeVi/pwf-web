@@ -1,0 +1,62 @@
+<ion-content>
+  <ion-card>
+    <ion-item>
+      <ion-icon (click)="dismiss()" style="margin-left: 260px;"name="close"></ion-icon>
+    </ion-item>
+    <ion-item>
+      <ion-icon name="clipboard-outline" slot="start"></ion-icon>
+      <ion-label>{{ order.createdAt.toISOString().split('T')[0] }}</ion-label>
+      <div [ngSwitch]="order.orderStatus">
+        <div *ngSwitchCase="statusAccepted" >
+          <ion-button 
+            size="small"
+            fill="outline"
+            slot="end"
+            color="success"
+            >{{order.orderStatus}}
+          </ion-button>
+        </div>
+        <div *ngSwitchCase="statusPending">
+          <ion-button 
+            size="small"
+            fill="outline"
+            slot="end"
+            color="warning"
+            >{{order.orderStatus}}
+          </ion-button>
+        </div>
+        <div *ngSwitchCase="statusCancelled">
+          <ion-button 
+            size="small"
+            fill="outline"
+            slot="end"
+            color="danger"
+            >{{order.orderStatus}}
+          </ion-button>
+        </div>
+        <div *ngSwitchCase="statusFinished">
+          <ion-button 
+            size="small"
+            fill="outline"
+            slot="end"
+            color="medium"
+            >{{order.orderStatus}}
+          </ion-button>
+        </div>
+      </div>
+
+    </ion-item>
+  
+    <ion-card-content>
+      <p>Servicio: {{ order.orderType }}</p>
+      <p>Fecha de inicio: {{ order.startDateService.toISOString().split('T')[0] }} </p>
+      <p>Fecha de termino: {{ order.endDateService.toISOString().split('T')[0] }} </p>
+      <p>Hora inicio: {{ order.startDateService.toISOString().split('T')[1].split('.')[0] }} </p>
+      <p>Hora de termino: {{ order.endDateService.toISOString().split('T')[1].split('.')[0] }}</p>
+      <p>Ruta: {{ order.walkPath || 'No aplica' }}</p>
+      <p (click)="goToUser()">Cuidador/Paseador: {{ order.caretakerId }}</p>
+      <p>Mascota: {{ order.pet?.name }}</p>
+      <p>Precio total: {{ order.charge }}</p>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
