@@ -48,7 +48,6 @@
                 </ion-item>
               </div>
             </ng-template>
-
           </ion-radio-group>
         </ion-item>
 
@@ -60,14 +59,13 @@
             <div *ngFor="let pet of pets">
               <ion-item>
                 <ion-label>{{pet.name}}</ion-label>
-                <ion-radio slot="start" value={{pet.name}}></ion-radio>
+                <ion-radio slot="start" value={{pet}}></ion-radio>
               </ion-item>
             </div>
           </ion-radio-group>
         </ion-item>
 
         <div *ngIf="newOrder.orderType === 'Cuidado'">
-          <form #formNewOrderCare="ngForm" (ngSubmit)="createOrderCaretaker()">
             <ion-card-header>
               Selecciona el dia del cuidado
             </ion-card-header>
@@ -82,20 +80,14 @@
             <ion-item>
               <ion-textarea name="description" [(ngModel)]="newOrder.description" rows="6" cols="20" placeholder="Escriba cualquier detalle que quiera agregar"></ion-textarea>
             </ion-item>
-
-            <br>
-            <ion-button type="submit" expand="full" [disabled]="formulario.invalid">
-              Enviar orden <ion-icon name="checkmark-outline" style="text-align: center"></ion-icon>
-            </ion-button>
-          </form>
         </div>
         
         <div *ngIf="newOrder.orderType === 'Paseo'">
           <ion-item>
             <ion-label>Seleccione una ruta</ion-label>
-            <ion-select interface="popover" name="type" required [(ngModel)]="newOrder">
-              <div *ngFor="let rute of rutes">
-                <ion-select-option value={{rute}}>{{rute}}</ion-select-option>
+            <ion-select (ionChange)="onChangeRoute(selectedRoute)" interface="popover" name="walkPath" required [(ngModel)]="selectedRoute">
+              <div *ngFor="let route of routes">
+                <ion-select-option [value]="route.data">{{route.data.location}}</ion-select-option>
               </div>
             </ion-select>
           </ion-item>
@@ -118,15 +110,14 @@
 
           <ion-item>
             <ion-label>Dia de servicio</ion-label>
-            <ion-datetime name="dayService" display-format="DD-MM" picker-format="DD-MM" [(ngModel)]="newOrder.dayService"></ion-datetime>
+            <ion-datetime name="dayService" display-format="DD-MM" picker-format="DD-MM" [required]="true" [(ngModel)]="newOrder.dayService"></ion-datetime>
           </ion-item>
 
           <br>
-          <ion-button type="submit" expand="full" [disabled]="formulario.invalid">
-            Enviar orden <ion-icon name="checkmark-outline" style="text-align: center"></ion-icon>
-          </ion-button>
-
         </div>
+        <ion-button type="submit" expand="full" [disabled]="formulario.invalid">
+          Enviar orden <ion-icon name="checkmark-outline" style="text-align: center"></ion-icon>
+        </ion-button>
       </form>
     </ion-card-content>
   </ion-card>

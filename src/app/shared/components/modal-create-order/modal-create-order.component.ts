@@ -1,9 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { OrderStatus, OrderType } from 'src/app/schemas/iorder';
+import { Order, OrderStatus, OrderType } from 'src/app/schemas/iorder';
 import { Pet } from 'src/app/schemas/ipet';
-import { Day, Days, User } from 'src/app/schemas/iuser';
+import { Day, Days, User, WalkPaths } from 'src/app/schemas/iuser';
 import { AuthService } from 'src/app/services/auth.service';
+import { OrderService } from 'src/app/services/order.service';
 import { PetService } from 'src/app/services/pet.service';
 import { SharedDataService } from 'src/app/services/shared-data.service';
 import { UserService } from 'src/app/services/user.service';
@@ -15,13 +16,15 @@ import { UserService } from 'src/app/services/user.service';
   providers: [SharedDataService]
 })
 export class ModalCreateOrderComponent implements OnInit {
-  @Input() caretaker: any;
+  @Input() caretaker: User;
   user: User;
   orderTypes = Object.values(OrderType);
   orderStatus = Object.values(OrderStatus);
   pets: Pet[];
   days = Object.values(Days);
   userId = '';
+  routes: any;
+  selectedRoute: WalkPaths;
 
   newOrder: any = {
     charge: '0',
@@ -30,7 +33,6 @@ export class ModalCreateOrderComponent implements OnInit {
     orderStatus: undefined,
     orderType: '',
     pet: undefined,
-    walkpath: undefined,
     dayService: undefined,
     shared: undefined,
     day: '',
@@ -42,7 +44,8 @@ export class ModalCreateOrderComponent implements OnInit {
     private sharedDataService: SharedDataService,
     private petService: PetService,
     private authService: AuthService,
-    private userService: UserService
+    private userService: UserService,
+    private orderService: OrderService,
   ) { }
 
   ngOnInit() {
@@ -59,6 +62,11 @@ export class ModalCreateOrderComponent implements OnInit {
     {
       this.newOrder.orderType = 'Paseo';
     }
+    this.routes = this.caretaker.petCareData.walkerData.walkPaths;
+  }
+
+  onChangeRoute(selectedRoute) {
+    this.selectedRoute = selectedRoute;
   }
 
   async getPets() {
@@ -70,7 +78,39 @@ export class ModalCreateOrderComponent implements OnInit {
     this.modalController.dismiss();
   }
 
-  createOrder() {
-    console.log(this.newOrder);
+  async createOrder() {
+    let order: Order;
+
+    if (this.newOrder.orderType === OrderType.care) {
+      order = {
+        charge: this.newOrder.charge,
+        createdAt: new Date(),
+        startDateService: this.newOrder.startDateService,
+        endDateService: this.newOrder.endDateService,
+        dayService: this.newOrder.dayService,
+        userId: this.userId,
+        // eslint-disable-next-line no-underscore-dangle
+        careTakerId: (this.caretaker as any)._id,
+        orderStatus: OrderStatus.pending,
+        pet: this.newOrder.pet,
+        orderType: this.newOrder.orderType,
+      };
+    } else {
+      order = {
+        charge: this.newOrder.charge,
+        createdAt: new Date(),
+        userId: this.userId,
+        // eslint-disable-next-line no-underscore-dangle
+        careTakerId: (this.caretaker as any)._id,
+        orderStatus: OrderStatus.pending,
+        pet: this.newOrder.pet,
+        orderType: this.newOrder.orderType,
+        shared: this.newOrder.shared,
+        walkPath: this.selectedRoute,
+        description: this.newOrder.description || '',
+      };
+    }
+    await this.orderService.createOrder(order);
+
   }
 }
