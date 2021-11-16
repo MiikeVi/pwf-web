@@ -11,9 +11,6 @@
 <ion-content>
   <ion-list>
     <ion-item *ngFor="let pet of pets ">
-      <ion-avatar slot="start">
-        <img [src]="pet.photo">
-      </ion-avatar>
       <ion-label>
         <h2>Nombre: {{pet.name}}</h2>
         <h3>Edad: {{pet.age}}</h3>

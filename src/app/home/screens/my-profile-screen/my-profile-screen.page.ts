@@ -203,7 +203,7 @@ export class MyProfileScreenPage implements OnInit {
 
     if (patchedUser) {
       this.getUser();
-      console.log(patchedUser);
+      this.presentAlertConfirm();
     }
   }
 

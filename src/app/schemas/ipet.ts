@@ -24,24 +24,24 @@ export enum Breed {
 }
 
 export enum PetType {
-  perro = 'perro',
-  gato = 'gato',
-  conejo  = 'conejo',
-  tortuga = 'tortuga',
-  hamster = 'hamster',
+  perro = 'Perro',
+  gato = 'Gato',
+  conejo  = 'Conejo',
+  tortuga = 'Tortuga',
+  hamster = 'Hamster',
 }
 export interface Behavior {
   behavior: Behaviors;
   selected: boolean;
 }
 export enum Behaviors {
-  amigable = 'amigable',
-  jugueton = 'jugueton',
-  agresivo = 'agresivo',
-  tranquilo = 'tranquilo',
-  conflictivo = 'conflictivo',
-  inquieto = 'inquieto',
-  energetico = 'energico',
+  amigable = 'Amigable',
+  jugueton = 'Jugueton',
+  agresivo = 'Agresivo',
+  tranquilo = 'Tranquilo',
+  conflictivo = 'Conflictivo',
+  inquieto = 'Inquieto',
+  energetico = 'Energico',
 }
 
 export enum PetAge {

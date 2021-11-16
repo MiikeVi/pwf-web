@@ -13,7 +13,7 @@ export class RegisterPage implements OnInit {
   data = {
     name: '',
     email:'',
-    birthday: Date,
+    birthdate: Date,
     address: '',
     city: '',
     region: '',
@@ -31,6 +31,7 @@ export class RegisterPage implements OnInit {
     this.userService.createUser(this.data).then(result =>{
       if (result){
         this.presentAlertConfirm();
+        console.log(this.data);
       }
       else {
         this.presentAlertConfirmError();
