@@ -98,8 +98,7 @@ export class ModalSendRequestComponent implements OnInit {
       this.data.petCareData.walkerData = walkerData;
     }
 
-    console.log (this.data);
-
+    this.data.careTakerEnabled = true;
     const patch = createPatch(this.userClone, this.data);
     // eslint-disable-next-line no-underscore-dangle
     const patchedUser = await this.userService.patchUser((this.data as any)._id, patch as any);
