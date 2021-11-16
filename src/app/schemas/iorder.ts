@@ -1,14 +1,14 @@
 import { Pet } from './ipet';
-import { WalkPaths } from './iuser';
+import { Days, WalkPaths } from './iuser';
 
 export interface Order {
     createdAt: Date;
     charge: number;
-    startDateService: Date;
-    dayService: Date;
-    endDateService: Date;
+    startDateService?: Date;
+    dayService?: Days;
+    endDateService?: Date;
     userId: string;
-    caretakerId: string;
+    careTakerId: string;
     orderStatus: OrderStatus;
     pet: Pet;
     orderType: OrderType;

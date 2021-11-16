@@ -5,7 +5,7 @@
     </ion-item>
     <ion-item>
       <ion-icon name="clipboard-outline" slot="start"></ion-icon>
-      <ion-label>{{ order.createdAt.toISOString().split('T')[0] }}</ion-label>
+      <ion-label>{{ order.createdAt | date: 'shortDate' }}</ion-label>
       <div [ngSwitch]="order.orderStatus">
         <div *ngSwitchCase="statusAccepted" >
           <ion-button 
@@ -49,12 +49,12 @@
   
     <ion-card-content>
       <p>Servicio: {{ order.orderType }}</p>
-      <p>Fecha de inicio: {{ order.startDateService.toISOString().split('T')[0] }} </p>
-      <p>Fecha de termino: {{ order.endDateService.toISOString().split('T')[0] }} </p>
-      <p>Hora inicio: {{ order.startDateService.toISOString().split('T')[1].split('.')[0] }} </p>
-      <p>Hora de termino: {{ order.endDateService.toISOString().split('T')[1].split('.')[0] }}</p>
-      <p>Ruta: {{ order.walkPath || 'No aplica' }}</p>
-      <p (click)="goToUser()">Cuidador/Paseador: {{ order.caretakerId }}</p>
+      <p>Fecha de inicio: {{ order.startDateService | date: 'shortDate' }} </p>
+      <p>Fecha de termino: {{ order.endDateService | date: 'shortDate' }} </p>
+      <p>Hora inicio: {{ order.startDateService | date: 'shortTime' }} </p>
+      <p>Hora de termino: {{ order.endDateService | date: 'shortTime' }}</p>
+      <p>Ruta: {{ order.walkPath?.location || 'No aplica' }}</p>
+      <p (click)="goToUser()">Cuidador/Paseador: {{ order.careTakerId  }}</p>
       <p>Mascota: {{ order.pet?.name }}</p>
       <p>Precio total: {{ order.charge }}</p>
     </ion-card-content>

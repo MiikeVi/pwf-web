@@ -25,7 +25,7 @@
   <ion-card (click)="onClickOrder(order)">
     <ion-item>
       <ion-icon name="clipboard-outline" slot="start"></ion-icon>
-      <ion-label>{{ order.createdAt.toISOString().split('T')[0] }}</ion-label>
+      <ion-label>{{ order.createdAt }}</ion-label>
       <div [ngSwitch]="order.orderStatus">
         <div *ngSwitchCase="statusAccepted">
           <ion-button 
@@ -70,8 +70,8 @@
     </ion-item>
   
     <ion-card-content>
-      <p>Tipo de orden: Paseo</p>
-     <p>Precio total: $1000</p>
+      <p>Tipo de orden: {{ order.orderType }}</p>
+     <p>Precio total: {{ order.charge }}</p>
      <div *ngIf="selectedTab === 'ordenes_caretaker'">
         <div *ngIf="order.orderStatus === statusPending">
           <ion-button
