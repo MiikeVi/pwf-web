@@ -48,10 +48,17 @@ export class ModalCreateOrderComponent implements OnInit {
   ngOnInit() {
     this.getPets();
     this.userId = this.authService.getUser().sub;
-    console.log(this.userId);
     this.sharedDataService.getCurrentPets().subscribe((pets) => {
       this.pets= pets;
     });
+    if (this.caretaker.petCareData.type === 'Cuidador')
+    {
+      this.newOrder.orderType = 'Cuidado';
+    }
+    if (this.caretaker.petCareData.type === 'Paseador')
+    {
+      this.newOrder.orderType = 'Paseo';
+    }
   }
 
   async getPets() {
