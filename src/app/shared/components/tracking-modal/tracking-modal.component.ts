@@ -1,7 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { Component, Input, OnInit } from '@angular/core';
+import { AlertController, ModalController } from '@ionic/angular';
 import * as L from 'leaflet';
-import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { OrderService } from 'src/app/services/order.service';
+import { User } from 'src/app/schemas/iuser';
+import { UserService } from 'src/app/services/user.service';
+import { AuthService } from 'src/app/services/auth.service';
+
 
 @Component({
   selector: 'app-tracking-modal',
@@ -10,6 +14,13 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 })
 export class TrackingModalComponent implements OnInit {
 
+  @Input() pet: any;
+  alert;
+  data: any;
+  user: User;
+  orders;
+  actualLat;
+  actualLong;
   map: L.Map;
   theMarker = {};
   markerIcon = {
@@ -23,43 +34,68 @@ export class TrackingModalComponent implements OnInit {
     })
   };
 
-  actualLat;
-  actualLong;
-
   constructor(
     private modalController: ModalController,
-    private geolocation: Geolocation)
+    private ordersService: OrderService,
+    private userService: UserService,
+    private authService: AuthService,
+    private alertController: AlertController)
     { }
 
   async ngOnInit() {
-
-    this.geolocation.getCurrentPosition().then ((resp) => {
-
-      this.actualLat = resp.coords.latitude;
-      this.actualLong = resp.coords.longitude;
-
-      const latLng = L.latLng(this.actualLat, this.actualLong);
-
-      this.map = L.map('map', {
-        center: [latLng.lat, latLng.lng],
-        zoom: 15,
-        renderer: L.canvas()
-      });
-
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        // maxZoom: 12,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      }).addTo(this.map);
-
-      this.theMarker = L.marker([latLng.lat, latLng.lng], this.markerIcon).addTo(this.map);
-
-      setTimeout(() => {
-        this.map.invalidateSize();
-      }, 250);
-
-    }).catch((error) => {
-      console.log ('Error getting location', error);
+    await this.ordersService.getUserOrders(this.authService.getUser().sub).then((orders) => {
+      this.orders = orders.data.values;
     });
+
+    // eslint-disable-next-line no-underscore-dangle
+    const orderFiltred = this.orders.filter((order) => (order.pet = this.pet && order.orderStatus === 'en progreso'));
+    if (orderFiltred[0]?.careTakerId)
+    {
+        this.getUser(orderFiltred[0].careTakerId).then((data) => {
+
+        this.actualLat = data.petCareData.position.lat;
+        this.actualLong = data.petCareData.position.lon;
+        const latLng = L.latLng(this.actualLat, this.actualLong);
+
+        this.map = L.map('map', {
+          center: [latLng.lat, latLng.lng],
+          zoom: 15,
+          renderer: L.canvas()
+        });
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+          // maxZoom: 12,
+          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+        }).addTo(this.map);
+
+        this.theMarker = L.marker([latLng.lat, latLng.lng], this.markerIcon).addTo(this.map);
+
+        setTimeout(() => {
+          this.map.invalidateSize();
+        }, 500);
+      });
+    }
+    else {
+      this.alert = await this.alertController.create({
+        cssClass: 'my-custom-class',
+        header: '',
+        message: 'Tracking no disponible para esta mascota',
+        buttons: [
+          {
+            text: 'Aceptar',
+            handler: () => {
+              this.dismiss();
+            }
+          }
+        ]
+      });
+    }
+    await this.alert.present();
+  }
+
+
+  async getUser(id: any){
+    return (await this.userService.getUser(id)).data;
   }
 
   dismiss() {

@@ -26,6 +26,7 @@ export class ModalCreateOrderComponent implements OnInit {
   userId = '';
   routes: any;
   selectedRoute: WalkPaths;
+  selectedPet: Pet;
 
   newOrder: any = {
     charge: '0',
@@ -33,7 +34,6 @@ export class ModalCreateOrderComponent implements OnInit {
     endDateService: Date,
     orderStatus: undefined,
     orderType: '',
-    pet: undefined,
     dayService: undefined,
     shared: undefined,
     day: '',
@@ -71,6 +71,10 @@ export class ModalCreateOrderComponent implements OnInit {
     this.selectedRoute = selectedRoute;
   }
 
+  onChangePet(selectedPet) {
+    this.selectedPet = selectedPet;
+  }
+
   async getPets() {
     const pets = await this.petService.getOwnerPets(this.authService.getUser().sub);
     this.pets  = pets.data.values;
@@ -94,7 +98,7 @@ export class ModalCreateOrderComponent implements OnInit {
         // eslint-disable-next-line no-underscore-dangle
         careTakerId: (this.caretaker as any)._id,
         orderStatus: OrderStatus.pending,
-        pet: this.newOrder.pet,
+        pet: this.selectedPet,
         orderType: this.newOrder.orderType,
       };
     } else {
@@ -105,13 +109,14 @@ export class ModalCreateOrderComponent implements OnInit {
         // eslint-disable-next-line no-underscore-dangle
         careTakerId: (this.caretaker as any)._id,
         orderStatus: OrderStatus.pending,
-        pet: this.newOrder.pet,
+        pet: this.selectedPet,
         orderType: this.newOrder.orderType,
         shared: this.newOrder.shared,
         walkPath: this.selectedRoute,
         description: this.newOrder.description || '',
       };
     }
+    console.log(order);
     await this.orderService.createOrder(order);
     this.router.navigateByUrl('home/');
     this.router.navigateByUrl('home/ordenes');

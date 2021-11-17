@@ -103,6 +103,7 @@ export class MyOrdersScreenPage implements OnInit {
       // eslint-disable-next-line no-underscore-dangle
       this.selectedOrders =  (await this.ordersService.getCareTakerOrders((this.user as any)._id)).data.values;
     });
+    this.ordersService.desactivateGeolocation();
     // TO-DO notify to userId
   }
 
@@ -137,8 +138,8 @@ export class MyOrdersScreenPage implements OnInit {
       this.selectedOrders =  (await this.ordersService.getCareTakerOrders((this.user as any)._id)).data.values;
     });
 
+    this.ordersService.activateGeolocation();
     //TO-DO notify to userId of the order
-    //TO-DO start tracking service
   }
 
   async getUserOrders(userId: string) {
