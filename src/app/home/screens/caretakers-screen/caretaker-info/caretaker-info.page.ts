@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { User } from 'src/app/schemas/iuser';
 import { UserService } from 'src/app/services/user.service';
@@ -16,7 +17,7 @@ export class CaretakerInfoPage implements OnInit {
   days;
   dogsTypes;
 
-  constructor(private userService: UserService, private modalController: ModalController) { }
+  constructor(private userService: UserService, private modalController: ModalController, private router: Router) { }
 
   ngOnInit() {
       this.caretakerSelected = this.userService.caretakerSelected;
@@ -37,6 +38,7 @@ export class CaretakerInfoPage implements OnInit {
         caretaker
       }
     });
+    this.router.navigateByUrl('home/buscar-cuidadores');
     return await modal.present();
   }
 }

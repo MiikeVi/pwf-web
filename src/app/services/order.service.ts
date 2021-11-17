@@ -38,6 +38,17 @@ export class OrderService {
         headers: this.headers,
         params: { userId },
       }));
+  }
+
+  getCareTakerOrders(careTakerId: string) {
+    return this.setAuthHeader().then(() => axios({
+        method: 'get',
+        url: 'https://pwf-api.herokuapp.com/api/orders/',
+
+        // eslint-disable-next-line max-len
+        headers: this.headers,
+        params: { careTakerId },
+      }));
 
   }
 

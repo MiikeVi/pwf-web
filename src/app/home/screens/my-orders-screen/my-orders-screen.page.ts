@@ -5,6 +5,7 @@ import { User } from 'src/app/schemas/iuser';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 import { ModalViewOrderComponent } from 'src/app/shared/components/modal-view-order/modal-view-order.component';
+import { JSONPatch } from 'src/app/types/json-patch.types';
 import { OrderService } from '../../../services/order.service';
 
 @Component({
@@ -20,27 +21,14 @@ export class MyOrdersScreenPage implements OnInit {
   statusPending = OrderStatus.pending;
   statusCancelled = OrderStatus.cancelled;
   statusFinished = OrderStatus.finished;
+  statusInProgress = OrderStatus.inProgress;
   selectedOrder: Order;
 
   selectedOrders: Order[];
 
   orders;
 
-  caretakerOrders: Order[] = [
-    {
-      createdAt: new Date(),
-      charge: 5650,
-      startDateService: new Date(),
-      endDateService: new Date(),
-      userId: '12344',
-      careTakerId: '123445',
-      orderStatus: OrderStatus.finished,
-      pet: undefined,
-      orderType: OrderType.walk,
-      shared: true,
-      dayService: undefined,
-    }
-  ];
+  careTakerOrders;
 
   constructor(
     public modalController: ModalController,
@@ -49,19 +37,24 @@ export class MyOrdersScreenPage implements OnInit {
     private userService: UserService,
   ) {}
 
-  ngOnInit() {
-    this.getUser();
+  async ngOnInit() {
+    await this.getUser();
     this.ordersService.getUserOrders(this.authService.getUser().sub).then((orders) => {
       this.orders = orders.data.values;
       this.selectedOrders = orders.data.values;
 
     });
+    if (this.user?.careTakerEnabled) {
+      this.ordersService.getCareTakerOrders(this.authService.getUser().sub).then((careTakerOrders) => {
+        this.careTakerOrders = careTakerOrders.data.values;
+      });
+    }
   }
 
   tabChanged(tab) {
     this.selectedTab = tab.detail.value;
     if (!(this.selectedTab === 'ordenes')) {
-      this.selectedOrders = this.caretakerOrders;
+      this.selectedOrders = this.careTakerOrders;
     } else {
       this.selectedOrders = JSON.parse(JSON.stringify(this.orders));
     }
@@ -81,26 +74,71 @@ export class MyOrdersScreenPage implements OnInit {
     this.openModalViewOrder(order);
   }
 
-  onAcceptOrder() {
-    //TO-DO patch orderStatus
+  onAcceptOrder(order) {
+    const patch: JSONPatch = [
+      {
+        op: 'replace',
+        path: '/orderStatus',
+        value: OrderStatus.accepted,
+      }
+    ];
+    // eslint-disable-next-line no-underscore-dangle
+    this.ordersService.patchOrder((order as any)._id, patch).then(async () => {
+      // eslint-disable-next-line no-underscore-dangle
+      this.selectedOrders =  (await this.ordersService.getCareTakerOrders((this.user as any)._id)).data.values;
+    });
     //TO-DO notify to userId of the order
   }
 
-  onFinishOrder() {
-    //TO-DO patch orderStatus
+  onFinishOrder(order) {
+    const patch: JSONPatch = [
+      {
+        op: 'replace',
+        path: '/orderStatus',
+        value: OrderStatus.finished,
+      }
+    ];
+    // eslint-disable-next-line no-underscore-dangle
+    this.ordersService.patchOrder((order as any)._id, patch).then(async () => {
+      // eslint-disable-next-line no-underscore-dangle
+      this.selectedOrders =  (await this.ordersService.getCareTakerOrders((this.user as any)._id)).data.values;
+    });
     // TO-DO notify to userId
   }
 
-  onCancelOrder() {
-    //TO-DO patch orderStatus
+  onCancelOrder(order) {
+    const patch: JSONPatch = [
+      {
+        op: 'replace',
+        path: '/orderStatus',
+        value: OrderStatus.cancelled,
+      }
+    ];
+
+    // eslint-disable-next-line no-underscore-dangle
+    this.ordersService.patchOrder((order as any)._id, patch).then(async () => {
+      // eslint-disable-next-line no-underscore-dangle
+      this.selectedOrders =  (await this.ordersService.getCareTakerOrders((this.user as any)._id)).data.values;
+    });
     // TO-DO notify to userId
   }
 
-  onStartOrderService() {
+  async onStartOrderService(order) {
+    const patch: JSONPatch = [
+      {
+        op: 'replace',
+        path: '/orderStatus',
+        value: OrderStatus.inProgress,
+      }
+    ];
+    // eslint-disable-next-line no-underscore-dangle
+    this.ordersService.patchOrder((order as any)._id, patch).then(async () => {
+      // eslint-disable-next-line no-underscore-dangle
+      this.selectedOrders =  (await this.ordersService.getCareTakerOrders((this.user as any)._id)).data.values;
+    });
+
     //TO-DO notify to userId of the order
-    // QUIZAS AÑADIR STATUS IN PROGRESS
     //TO-DO start tracking service
-
   }
 
   async getUserOrders(userId: string) {
@@ -111,7 +149,7 @@ export class MyOrdersScreenPage implements OnInit {
 
   async getOwnCareTakerOrders(careTakerId: string) {
     return await this.ordersService.getUserOrders(careTakerId).then((careTakerOrders) => {
-      this.caretakerOrders = careTakerOrders.data;
+      this.careTakerOrders = careTakerOrders.data;
     }) ;
   }
 
