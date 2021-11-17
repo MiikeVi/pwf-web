@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { Order, OrderStatus, OrderType } from 'src/app/schemas/iorder';
 import { Pet } from 'src/app/schemas/ipet';
@@ -46,6 +47,7 @@ export class ModalCreateOrderComponent implements OnInit {
     private authService: AuthService,
     private userService: UserService,
     private orderService: OrderService,
+    private router: Router,
   ) { }
 
   ngOnInit() {
@@ -111,6 +113,9 @@ export class ModalCreateOrderComponent implements OnInit {
       };
     }
     await this.orderService.createOrder(order);
+    this.router.navigateByUrl('home/');
+    this.router.navigateByUrl('home/ordenes');
+    this.dismiss();
 
   }
 }
