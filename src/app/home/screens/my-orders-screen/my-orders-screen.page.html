@@ -22,7 +22,7 @@
 
 </ion-item>
 <div *ngFor="let order of selectedOrders">
-  <ion-card (click)="onClickOrder(order)">
+  <ion-card>
     <ion-item>
       <ion-icon name="clipboard-outline" slot="start"></ion-icon>
       <ion-label>{{ order.createdAt }}</ion-label>
@@ -63,6 +63,14 @@
             >{{order.orderStatus}}
           </ion-button>
         </div>
+        <div *ngSwitchCase="statusInProgress">
+          <ion-button 
+            size="small"
+            fill="outline"
+            slot="end"
+            >{{order.orderStatus}}
+          </ion-button>
+        </div>
         
 
       </div>
@@ -72,19 +80,36 @@
     <ion-card-content>
       <p>Tipo de orden: {{ order.orderType }}</p>
      <p>Precio total: {{ order.charge }}</p>
+     <ion-button
+          (click)="onClickOrder(order)"
+          size="small">
+          Ver detalles
+      </ion-button>
      <div *ngIf="selectedTab === 'ordenes_caretaker'">
         <div *ngIf="order.orderStatus === statusPending">
           <ion-button
-            (click)="onAcceptOrder()"
-            size="expand">
-            Aceptar orden
+            (click)="onAcceptOrder(order)"
+            size="small">
+            Aceptar
+          </ion-button>
+          <ion-button
+            (click)="onCancelOrder(order)"
+            size="small">
+            Rechazar
           </ion-button>
         </div>
         <div *ngIf="order.orderStatus === statusAccepted">
           <ion-button
-            (click)="onStartOrderService()"
-            size="expand">
+            (click)="onStartOrderService(order)"
+            size="small">
             Iniciar cuidado/paseo
+          </ion-button>
+        </div>
+        <div *ngIf="order.orderStatus === statusInProgress">
+          <ion-button
+            (click)="onFinishOrder(order)"
+            size="small">
+            Finalizar
           </ion-button>
         </div>
      </div>

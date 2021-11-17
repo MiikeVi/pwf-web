@@ -26,6 +26,7 @@ export enum OrderStatus {
     pending = 'pendiente',
     finished = 'terminada',
     accepted = 'aceptada',
-    cancelled = 'cancelada'
+    cancelled = 'cancelada',
+    inProgress = 'en progreso',
 }
 

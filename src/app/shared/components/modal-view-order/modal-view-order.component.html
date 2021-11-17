@@ -54,7 +54,7 @@
       <p>Hora inicio: {{ order.startDateService | date: 'shortTime' }} </p>
       <p>Hora de termino: {{ order.endDateService | date: 'shortTime' }}</p>
       <p>Ruta: {{ order.walkPath?.location || 'No aplica' }}</p>
-      <p (click)="goToUser()">Cuidador/Paseador: {{ order.careTakerId  }}</p>
+      <p >Cuidador/Paseador: <a (click)="goToUser()">{{ order.careTakerId  }}</a></p>
       <p>Mascota: {{ order.pet?.name }}</p>
       <p>Precio total: {{ order.charge }}</p>
     </ion-card-content>
