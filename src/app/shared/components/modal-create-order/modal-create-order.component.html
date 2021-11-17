@@ -52,17 +52,14 @@
         </ion-item>
 
         <ion-item>
-          <ion-radio-group name="petSelection" required [(ngModel)]="newOrder.pet">
-            <ion-card-header>
-              <ion-label>Seleccione la mascota a pasear</ion-label>
-            </ion-card-header>
-            <div *ngFor="let pet of pets">
               <ion-item>
-                <ion-label>{{pet.name}}</ion-label>
-                <ion-radio slot="start" value={{pet}}></ion-radio>
+                <ion-label>Seleccione su mascota</ion-label>
+                <ion-select (ionChange)="onChangePet(selectedPet)" interface="popover" name="pet" required [(ngModel)]="selectedPet">
+                  <div *ngFor="let pet of pets">
+                    <ion-select-option [value]="pet">{{pet.name}}</ion-select-option>
+                  </div>
+                </ion-select>
               </ion-item>
-            </div>
-          </ion-radio-group>
         </ion-item>
 
         <div *ngIf="newOrder.orderType === 'Cuidado'">

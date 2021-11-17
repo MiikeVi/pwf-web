@@ -14,11 +14,20 @@ const TOKEN = 'jwt-token';
 export class OrderService {
   token = '';
   headers = {};
-
+  geolocation: boolean;
   orderSelected: Order;
+
 
   constructor(private storage: Storage) {
     this.setAuthHeader();
+  }
+
+  activateGeolocation() {
+    this.geolocation = true;
+  }
+
+  desactivateGeolocation() {
+    this.geolocation = false;
   }
 
   async setAuthHeader() {
