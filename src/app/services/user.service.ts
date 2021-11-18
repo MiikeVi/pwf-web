@@ -31,7 +31,7 @@ export class UserService {
     }
   }
 
-  getCaretakerUsers(city: string = ''): AxiosPromise<User[]> {
+  getCaretakerUsers(city: string = ''): AxiosPromise<{values: User[]; count: number | undefined | null}> {
     return this.setAuthHeader().then(() => axios({
         method: 'get',
         url: 'https://pwf-api.herokuapp.com/api/user/',

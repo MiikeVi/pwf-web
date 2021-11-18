@@ -24,7 +24,7 @@ export class MyProfileScreenPage implements OnInit {
   days: Day[] = Object.values(Days).map((day) => ({day, selected: false}));
   avatarUrl = '';
   loadingImage;
-  rutas: WalkPaths[];
+  rutas: any;
 
   constructor(
     public alertController: AlertController,
@@ -41,12 +41,12 @@ export class MyProfileScreenPage implements OnInit {
     this.avatarUrl = `https://pwf-api.herokuapp.com/${this.data.avatar}`;
     this.userClone = JSON.parse(JSON.stringify(this.data));
     this.dogsTypes.forEach((element, index) => {
-      if (this.data.petCareData?.careTakerData?.dogsType.includes(element.dogsType)) {
+      if (this.data?.petCareData?.careTakerData?.dogsType.includes(element.dogsType)) {
         this.dogsTypes[index].selected = true;
       }
     });
     this.days.forEach((element, index) => {
-      if (this.data.petCareData?.careTakerData?.days.includes (element.day)) {
+      if (this.data?.petCareData?.careTakerData?.days.includes (element.day)) {
         this.days[index].selected = true;
       }
     });
@@ -89,7 +89,7 @@ export class MyProfileScreenPage implements OnInit {
   async getUser() {
     // eslint-disable-next-line no-underscore-dangle
     this.data = (await this.userService.getUser(this.authService.getUser().sub)).data;
-    this.rutas = this.data.petCareData.walkerData.walkPaths;
+    this.rutas = this.data?.petCareData?.walkerData?.walkPaths;
   }
 
   async presentAlertConfirm() {
@@ -118,9 +118,7 @@ export class MyProfileScreenPage implements OnInit {
   async selectImage() {
     await this.imageStoreService.selectImage();
     this.ngOnInit();
-    return this.getUser().then((user) => {
-      this.data = user;
-    });
+    this.data = (await this.userService.getUser(this.authService.getUser().sub)).data;
   }
 
   async openModalSendRequest() {
@@ -148,7 +146,9 @@ export class MyProfileScreenPage implements OnInit {
         const endTime = new Date(newWalkpath.data.schedule.startTime);
         const finalEndTime = this.addHoursToDate(endTime);
         newWalkpath.data.schedule.endTime = finalEndTime;
-        this.data.petCareData.walkerData.walkPaths.push(newWalkpath);
+        newWalkpath.data.available = true;
+        newWalkpath.data.pets = [];
+        this.data?.petCareData?.walkerData?.walkPaths.push(newWalkpath.data);
 
         const patch = createPatch(this.userClone, this.data);
         // eslint-disable-next-line no-underscore-dangle
