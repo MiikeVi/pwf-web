@@ -15,7 +15,10 @@ export class ModalCreateWalkpathComponent implements OnInit {
       startTime: '',
       endTime: '',
       day: ''
-    }
+    },
+    shared: false,
+    price: 0,
+    maxPets: 0,
   };
 
   days = Object.values(Days);

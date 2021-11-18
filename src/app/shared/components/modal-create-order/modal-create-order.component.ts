@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
+import { createPatch } from 'rfc6902';
 import { Order, OrderStatus, OrderType } from 'src/app/schemas/iorder';
 import { Pet } from 'src/app/schemas/ipet';
 import { Day, Days, User, WalkPaths } from 'src/app/schemas/iuser';
@@ -9,6 +10,7 @@ import { OrderService } from 'src/app/services/order.service';
 import { PetService } from 'src/app/services/pet.service';
 import { SharedDataService } from 'src/app/services/shared-data.service';
 import { UserService } from 'src/app/services/user.service';
+import { JSONPatch } from 'src/app/types/json-patch.types';
 
 @Component({
   selector: 'app-modal-create-order',
@@ -56,15 +58,16 @@ export class ModalCreateOrderComponent implements OnInit {
     this.sharedDataService.getCurrentPets().subscribe((pets) => {
       this.pets= pets;
     });
-    if (this.caretaker.petCareData.type === 'Cuidador')
+    if (this.caretaker?.petCareData?.type === 'Cuidador')
     {
       this.newOrder.orderType = 'Cuidado';
     }
-    if (this.caretaker.petCareData.type === 'Paseador')
+    if (this.caretaker?.petCareData?.type === 'Paseador')
     {
       this.newOrder.orderType = 'Paseo';
     }
-    this.routes = this.caretaker.petCareData.walkerData.walkPaths;
+    this.routes = this.caretaker?.petCareData?.walkerData?.walkPaths;
+    console.log(this.routes);
   }
 
   onChangeRoute(selectedRoute) {
@@ -115,12 +118,44 @@ export class ModalCreateOrderComponent implements OnInit {
         walkPath: this.selectedRoute,
         description: this.newOrder.description || '',
       };
+      // eslint-disable-next-line max-len
+      const actualWalkPaths = this.caretaker.petCareData.walkerData.walkPaths.filter((walkPath) => walkPath !== this.selectedRoute);
+
+      if(this.selectedRoute.pets.length <= this.selectedRoute.maxPets) {
+        // eslint-disable-next-line no-underscore-dangle
+        this.selectedRoute.pets.push((this.selectedPet as any)._id);
+        const patchPet: JSONPatch = [
+          {
+            op: 'replace',
+            path: '/isActive',
+            value: false,
+          }
+        ];
+
+        // eslint-disable-next-line no-underscore-dangle
+        this.petService.patchPet((this.selectedPet as any)._id, patchPet);
+      }
+
+      if(this.selectedRoute.pets.length === this.selectedRoute.maxPets || this.newOrder.shared === false) {
+        this.selectedRoute.available = false;
+      }
+      const careTakerCopy = JSON.parse(JSON.stringify(this.caretaker));
+      careTakerCopy.petCareData.walkerData.walkPaths = [...actualWalkPaths, this.selectedRoute ];
+      const patchRoute: JSONPatch = [
+        {
+          op: 'replace',
+          path: '/petCareData',
+          value: careTakerCopy.petCareData,
+        }
+      ];
+
+      // eslint-disable-next-line no-underscore-dangle
+      await this.userService.patchUser((this.caretaker as any)._id, patchRoute);
+
     }
-    console.log(order);
     await this.orderService.createOrder(order);
     this.router.navigateByUrl('home/');
     this.router.navigateByUrl('home/ordenes');
     this.dismiss();
-
   }
 }

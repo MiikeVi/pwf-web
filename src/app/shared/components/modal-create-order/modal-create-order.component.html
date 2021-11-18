@@ -56,7 +56,9 @@
                 <ion-label>Seleccione su mascota</ion-label>
                 <ion-select (ionChange)="onChangePet(selectedPet)" interface="popover" name="pet" required [(ngModel)]="selectedPet">
                   <div *ngFor="let pet of pets">
-                    <ion-select-option [value]="pet">{{pet.name}}</ion-select-option>
+                    <div *ngIf="pet.isActive">
+                      <ion-select-option [value]="pet">{{pet.name}}</ion-select-option>
+                    </div>
                   </div>
                 </ion-select>
               </ion-item>
@@ -84,7 +86,9 @@
             <ion-label>Seleccione una ruta</ion-label>
             <ion-select (ionChange)="onChangeRoute(selectedRoute)" interface="popover" name="walkPath" required [(ngModel)]="selectedRoute">
               <div *ngFor="let route of routes">
-                <ion-select-option [value]="route.data">{{route.data.location}}</ion-select-option>
+                <div *ngIf="route.available">
+                  <ion-select-option [value]="route">{{route.location}}</ion-select-option>
+                </div>
               </div>
             </ion-select>
           </ion-item>
@@ -98,10 +102,13 @@
                   <ion-label>Si</ion-label>
                   <ion-radio name="yes" value={{true}} slot="start"></ion-radio>
                 </ion-item>
-                <ion-item>
-                  <ion-label>No</ion-label>
-                  <ion-radio name="no" value={{false}} slot="start"></ion-radio>
-                </ion-item>
+                <div *ngIf="!(selectedRoute?.shared && selectedRoute?.pets?.length)">
+                  <ion-item>
+                    <ion-label>No</ion-label>
+                    <ion-radio name="no" value={{false}} slot="start"></ion-radio>
+                  </ion-item>
+                </div>
+                
             </ion-radio-group>
           </ion-item>
 

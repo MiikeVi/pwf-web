@@ -35,11 +35,11 @@
           </ion-card-header>
           <ion-item>
             <ion-label>Si</ion-label>
-            <ion-radio value="true" slot="start"></ion-radio>
+            <ion-radio value={{true}} slot="start"></ion-radio>
           </ion-item>
           <ion-item>
             <ion-label>No</ion-label>
-            <ion-radio value="false" slot="start"></ion-radio>
+            <ion-radio value={{false}} slot="start"></ion-radio>
           </ion-item>
         </ion-radio-group>
 
@@ -51,6 +51,15 @@
         <ion-item>
           <ion-label>Hora de inicio</ion-label>
           <ion-datetime display-format="h A" picker-format="h A" name="startTime" [(ngModel)]="newWalkpath.schedule.startTime"></ion-datetime>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Cantidad max mascotas:</ion-label>
+          <ion-select interface="popover" name="walkPath" required [(ngModel)]="newWalkpath.maxPets">
+            <ion-select-option [value]="1">1</ion-select-option>
+            <ion-select-option [value]="2">2</ion-select-option>
+            <ion-select-option [value]="3">3</ion-select-option>
+          </ion-select>
         </ion-item>
         
         <br>

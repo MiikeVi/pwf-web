@@ -41,7 +41,13 @@ export class CaretakersScreenPage implements OnInit {
   ngOnInit() {
     this.districts = cities.map((region) =>  region.name);
     return this.userService.getCaretakerUsers().then((data) => {
-      this.users = data.data.values;
+
+      this.users = data.data.values.filter((user) => {
+        const activeWalkPaths = user.petCareData?.walkerData?.walkPaths?.filter((walkPath) => walkPath.available);
+        if (activeWalkPaths?.length) {
+          return user;
+        }
+      });
     });
   }
 
@@ -74,11 +80,21 @@ export class CaretakersScreenPage implements OnInit {
 
     if(this.selectedCity) {
       this.userService.getCaretakerUsers(this.selectedCity).then((data) => {
-        this.users = data.data.values;
+        this.users = data.data.values.filter((user) => {
+        const activeWalkPaths = user.petCareData.walkerData.walkPaths.filter((walkPath) => walkPath.available);
+        if (activeWalkPaths.length) {
+          return user;
+        }
+      });
       });
     } else {
       this.userService.getCaretakerUsers().then((data) => {
-        this.users = data.data.values;
+        this.users = data.data.values.filter((user) => {
+        const activeWalkPaths = user.petCareData.walkerData.walkPaths.filter((walkPath) => walkPath.available);
+        if (activeWalkPaths.length) {
+          return user;
+        }
+      });
       });
     }
 

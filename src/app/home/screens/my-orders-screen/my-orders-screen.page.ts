@@ -3,6 +3,7 @@ import { ModalController } from '@ionic/angular';
 import { Order, OrderStatus, OrderType } from 'src/app/schemas/iorder';
 import { User } from 'src/app/schemas/iuser';
 import { AuthService } from 'src/app/services/auth.service';
+import { PetService } from 'src/app/services/pet.service';
 import { UserService } from 'src/app/services/user.service';
 import { ModalViewOrderComponent } from 'src/app/shared/components/modal-view-order/modal-view-order.component';
 import { JSONPatch } from 'src/app/types/json-patch.types';
@@ -35,6 +36,7 @@ export class MyOrdersScreenPage implements OnInit {
     private ordersService: OrderService,
     private authService: AuthService,
     private userService: UserService,
+    private petService: PetService,
   ) {}
 
   async ngOnInit() {
@@ -120,6 +122,51 @@ export class MyOrdersScreenPage implements OnInit {
     this.ordersService.patchOrder((order as any)._id, patch).then(async () => {
       // eslint-disable-next-line no-underscore-dangle
       this.selectedOrders =  (await this.ordersService.getCareTakerOrders((this.user as any)._id)).data.values;
+
+      // update walkPath
+      const actualWalkPaths = this.user.petCareData.walkerData.walkPaths.filter((walkPath) => {
+        // eslint-disable-next-line no-underscore-dangle
+        if (!walkPath.pets.includes((order.pet as any)._id)) {
+          return true;
+        }
+        return false;
+      });
+
+      const orderWalkPath = JSON.parse(JSON.stringify(order.walkPath));
+      const newPets = orderWalkPath.pets.filter((pet) => pet !== order.pet);
+      orderWalkPath.pets = newPets;
+
+      const userCopy = JSON.parse(JSON.stringify(this.user));
+
+      if(orderWalkPath.pets.length <= orderWalkPath.maxPets) {
+        orderWalkPath.available = true;
+      }
+
+      const updatedWalkPaths = [...actualWalkPaths, orderWalkPath];
+
+      userCopy.petCareData.walkerData.walkPaths = updatedWalkPaths;
+
+      const patchRoute: JSONPatch = [
+        {
+          op: 'replace',
+          path: '/petCareData',
+          value: userCopy.petCareData,
+        }
+      ];
+      // eslint-disable-next-line no-underscore-dangle
+      await this.userService.patchUser(userCopy._id, patchRoute);
+
+      const patchPet: JSONPatch = [
+        {
+          op: 'replace',
+          path: '/isActive',
+          value: true,
+        }
+      ];
+
+      // eslint-disable-next-line no-underscore-dangle
+      this.petService.patchPet((order as any)._id, patchPet);
+
     });
     // TO-DO notify to userId
   }

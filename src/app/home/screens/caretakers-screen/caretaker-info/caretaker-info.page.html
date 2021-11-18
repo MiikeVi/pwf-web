@@ -45,13 +45,15 @@
       </ion-card-header>
       <ion-card-content>
           <ion-item *ngFor="let ruta of rutas">
-            <ion-label>
-              <h3><b>Lugar:</b> {{ruta?.data?.location}}</h3>
-              <h3><b>Precio:</b> {{ruta?.data?.price}}</h3>
-              <h3><b>Dia:</b> {{ruta?.data?.schedule?.day}}</h3>
-              <h3><b>Hora de inicio:</b> {{ruta?.data?.schedule?.startTime | date : 'h a'}}</h3>
-              <h3><b>Hora de finalización:</b> {{ruta?.data?.schedule?.endTime | date : 'h a'}}</h3>
-            </ion-label>
+            <div *ngIf="ruta.available">
+              <ion-label>
+                <h3><b>Lugar:</b> {{ruta?.location}}</h3>
+                <h3><b>Precio:</b> {{ruta?.price}}</h3>
+                <h3><b>Dia:</b> {{ruta?.schedule?.day}}</h3>
+                <h3><b>Hora de inicio:</b> {{ruta?.schedule?.startTime | date : 'h a'}}</h3>
+                <h3><b>Hora de finalización:</b> {{ruta?.schedule?.endTime | date : 'h a'}}</h3>
+              </ion-label>
+            </div>
           </ion-item>
         </ion-card-content>
     </ion-card>

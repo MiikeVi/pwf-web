@@ -49,6 +49,9 @@ export interface WalkPaths {
   schedule: Schedule;
   price: number;
   shared: boolean;
+  available: boolean;
+  pets: Pet[];
+  maxPets: number;
 }
 
 export enum CareTakerType {

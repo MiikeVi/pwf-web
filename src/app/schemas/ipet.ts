@@ -9,6 +9,7 @@ export interface Pet {
   medication: boolean;
   behaviors: Behaviors[];
   owner: string;
+  isActive: boolean;
 }
 
 export enum Breed {

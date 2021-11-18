@@ -31,6 +31,7 @@ export class ModalCreatePetComponent implements OnInit {
     breed: undefined,
     medication: undefined,
     behaviors: this.behaviors,
+    isActive: true,
   };
 
   constructor(
