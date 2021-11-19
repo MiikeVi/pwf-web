@@ -44,7 +44,8 @@ export class CaretakersScreenPage implements OnInit {
 
       this.users = data.data.values.filter((user) => {
         const activeWalkPaths = user.petCareData?.walkerData?.walkPaths?.filter((walkPath) => walkPath.available);
-        if (activeWalkPaths?.length) {
+        const daysEnabled = user.petCareData?.careTakerData?.daysEnabled?.filter((day) => day.selected);
+        if (activeWalkPaths?.length || daysEnabled?.length) {
           return user;
         }
       });
