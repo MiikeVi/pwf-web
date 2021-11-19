@@ -3,10 +3,11 @@ import { AuthService } from '../../../services/auth.service';
 import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { ModalSendRequestComponent } from 'src/app/shared/components/modal-send-request/modal-send-request.component';
 import { UserService } from 'src/app/services/user.service';
-import { CareTakerType, Days, Day, DogsType, DogsTypes, HomeType, User, WalkPaths } from 'src/app/schemas/iuser';
+import { CareTakerType, Days, Day, DogsType, DogsTypes, HomeType, User, WalkPaths, DayEnable } from 'src/app/schemas/iuser';
 import { createPatch } from 'rfc6902';
 import { ModalCreateWalkpathComponent } from 'src/app/shared/components/modal-create-walkpath/modal-create-walkpath.component';
 import { ImageService } from 'src/app/services/image-store.service';
+import { JSONPatch } from 'src/app/types/json-patch.types';
 
 
 @Component({
@@ -21,10 +22,11 @@ export class MyProfileScreenPage implements OnInit {
   homeTypes = Object.values(HomeType);
   caretakerTypes = Object.values(CareTakerType);
   dogsTypes: DogsType[] = Object.values(DogsTypes).map((dogsType) => ({dogsType, selected: false}));
-  days: Day[] = Object.values(Days).map((day) => ({day, selected: false}));
+  daysEnableds = [];
   avatarUrl = '';
   loadingImage;
   rutas: any;
+  daysRaw = ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];
 
   constructor(
     public alertController: AlertController,
@@ -35,9 +37,9 @@ export class MyProfileScreenPage implements OnInit {
     private navController: NavController,
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     // eslint-disable-next-line no-underscore-dangle
-    this.getUser();
+    await this.getUser();
     this.avatarUrl = `https://pwf-api.herokuapp.com/${this.data.avatar}`;
     this.userClone = JSON.parse(JSON.stringify(this.data));
     this.dogsTypes.forEach((element, index) => {
@@ -45,11 +47,63 @@ export class MyProfileScreenPage implements OnInit {
         this.dogsTypes[index].selected = true;
       }
     });
-    this.days.forEach((element, index) => {
-      if (this.data?.petCareData?.careTakerData?.days.includes (element.day)) {
-        this.days[index].selected = true;
+
+    this.daysEnableds = this.data.petCareData?.careTakerData?.daysEnabled;
+    this.filterOlderDays();
+
+    for(let i = 0; i < 10; i++){
+      let date;
+
+      if(i === 0){
+          date = new Date();
+      }else{
+          date = new Date(Date.now() + i*24*60*60*1000);
       }
-    });
+      this.checkIfExist(date);
+    }
+
+    this.daysEnableds.sort((a,b)=>{
+      const aDate = new Date(a.day);
+      const bDate = new Date (b.day);
+      if(new Date(aDate.setHours(0,0,0,0)).getTime() < new Date(bDate.setHours(0,0,0,0)).getTime()){
+          return -1;
+      }
+      if(new Date(aDate.setHours(0,0,0,0)).getTime() > new Date(bDate.setHours(0,0,0,0)).getTime()){
+          return 1;
+      }
+
+      return 0;
+  });
+  console.log(this.daysEnableds);
+  }
+
+  checkIfExist(date){
+    if(!this.daysEnableds.find((element)=>{
+      const elementDate = new Date (element.day);
+        if(new Date(date.setHours(0,0,0,0)).getTime() === new Date(elementDate.setHours(0,0,0,0)).getTime()){
+            return true;
+        }
+    })){
+        this.daysEnableds.push({day: date, selected: false, ordered: false});
+    }
+}
+
+  filterOlderDays(){
+    const todayDate = new Date();
+    const temporalArray = [];
+
+    for(const element of this.daysEnableds){
+      const elementDate = new Date (element.day);
+        if(new Date(elementDate.setHours(0,0,0,0)).getTime() >= new Date(todayDate.setHours(0,0,0,0)).getTime())
+        {
+            temporalArray.push(element);
+        }
+    }
+    this.daysEnableds = temporalArray;
+}
+
+  formatedDate(date){
+    return `${this.daysRaw[new Date (date).getDay()]} ${new Date(date).toISOString().slice(0, 10).split('-').reverse().join('/')}`;
   }
 
   async onSubmitTemplate() {
@@ -185,26 +239,26 @@ export class MyProfileScreenPage implements OnInit {
   }
 
   async patchCareTaker() {
-    this.data.petCareData.careTakerData.days = this.days.map ((day) => {
-      if (day.selected) {
-        return day.day;
-      }
-    }).filter((day) => day);
 
     this.data.petCareData.careTakerData.dogsType = this.dogsTypes.map ((dogsType) => {
       if (dogsType.selected) {
         return dogsType.dogsType;
       }
     }).filter((dogsType) => dogsType);
+    console.log(this.daysEnableds);
+    this.data.petCareData.careTakerData.daysEnabled = this.daysEnableds.filter( day => day.selected === true);
+    const patchUser: JSONPatch = [{
+      op: 'replace',
+      path: '/petCareData',
+      value: this.data.petCareData
+    }];
 
-    const patch = createPatch(this.userClone, this.data);
     // eslint-disable-next-line no-underscore-dangle
-    const patchedUser = await this.userService.patchUser((this.data as any)._id, patch as any);
+    this.userService.patchUser(this.data._id ,patchUser);
 
-    if (patchedUser) {
       this.getUser();
       this.presentAlertConfirm();
-    }
+
   }
 
 }

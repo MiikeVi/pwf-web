@@ -1,5 +1,5 @@
 import { Pet } from './ipet';
-import { Days, WalkPaths } from './iuser';
+import { DayEnable, Days, WalkPaths } from './iuser';
 
 export interface Order {
     createdAt: Date;

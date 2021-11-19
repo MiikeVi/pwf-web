@@ -141,13 +141,19 @@
         </ion-card-header>
         <ion-card-content>
           <form #formCaretaker="ngForm" (ngSubmit)="patchCareTaker()">
+
             <ion-list>
               <ion-card-header>
                 Selecciona tus dias disponibles
               </ion-card-header>
-              <ion-item *ngFor="let day of days">
-                <ion-label>{{day.day}}</ion-label>
-                <ion-checkbox value={{day}} [(ngModel)]="day.selected" name="day"></ion-checkbox>
+              <ion-item *ngFor="let daysEnabled of daysEnableds">
+                <ion-label>{{formatedDate(daysEnabled.day)}}</ion-label>
+                <div *ngIf="daysEnabled.ordered">
+                  <ion-checkbox disabled checked={{daysEnabled.selected}} [(ngModel)]="daysEnabled.selected" name="day"></ion-checkbox>
+                </div>
+                <div *ngIf="!daysEnabled.ordered">
+                  <ion-checkbox  [(ngModel)]="daysEnabled.selected" name="day"></ion-checkbox>
+                </div>
               </ion-item>
               <br>
 

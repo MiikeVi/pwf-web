@@ -69,11 +69,13 @@
               Selecciona el dia del cuidado
             </ion-card-header>
             
-            <ion-radio-group name="day" [(ngModel)]="newOrder.day">
-              <ion-item *ngFor="let day of days">
-                <ion-label>{{day}}</ion-label>
-                <ion-radio value={{day}} name={{day}}></ion-radio>
-              </ion-item>
+            <ion-radio-group name="day" [(ngModel)]="newOrder.dayService">
+              <div *ngFor="let daysEnabled of daysEnableds; index as i">
+                <ion-item *ngIf="!daysEnabled.ordered">
+                  <ion-label>{{formatedDate(daysEnabled.day)}}</ion-label>
+                  <ion-radio value={{daysEnabled.day}} name="dayService" (click)="setCurrentDay(i)"></ion-radio>
+                </ion-item>
+              </div>
             </ion-radio-group>
             
             <ion-item>

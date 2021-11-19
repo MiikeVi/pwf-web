@@ -20,6 +20,9 @@ import { JSONPatch } from 'src/app/types/json-patch.types';
 })
 export class ModalCreateOrderComponent implements OnInit {
   @Input() caretaker: User;
+  currentDate;
+  data: any = {} as any;
+  userClone: User;
   user: User;
   orderTypes = Object.values(OrderType);
   orderStatus = Object.values(OrderStatus);
@@ -29,6 +32,8 @@ export class ModalCreateOrderComponent implements OnInit {
   routes: any;
   selectedRoute: WalkPaths;
   selectedPet: Pet;
+  daysRaw = ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];
+  daysEnableds = [];
 
   newOrder: any = {
     charge: '0',
@@ -53,6 +58,8 @@ export class ModalCreateOrderComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.getUser();
+    this.userClone = JSON.parse(JSON.stringify(this.data));
     this.getPets();
     this.userId = this.authService.getUser().sub;
     this.sharedDataService.getCurrentPets().subscribe((pets) => {
@@ -67,7 +74,7 @@ export class ModalCreateOrderComponent implements OnInit {
       this.newOrder.orderType = 'Paseo';
     }
     this.routes = this.caretaker?.petCareData?.walkerData?.walkPaths;
-    console.log(this.routes);
+    this.daysEnableds = this.caretaker.petCareData.careTakerData.daysEnabled;
   }
 
   onChangeRoute(selectedRoute) {
@@ -87,7 +94,12 @@ export class ModalCreateOrderComponent implements OnInit {
     this.modalController.dismiss();
   }
 
+  formatedDate(date){
+    return `${this.daysRaw[new Date (date).getDay()]} ${new Date (date).toISOString().slice(0, 10).split('-').reverse().join('/')}`;
+  }
+
   async createOrder() {
+
     let order: Order;
 
     if (this.newOrder.orderType === OrderType.care) {
@@ -154,8 +166,32 @@ export class ModalCreateOrderComponent implements OnInit {
 
     }
     await this.orderService.createOrder(order);
+    this.daysEnableds[this.currentDate].ordered = true;
+    this.data.petCareData.careTakerData.daysEnabled = this.daysEnableds;
+    console.log(this.data.petCareData.careTakerData.daysEnabled);
+
+    const patchUser: JSONPatch = [{
+      op: 'replace',
+      path: '/petCareData',
+      value: this.data.petCareData
+    }];
+
+    // eslint-disable-next-line no-underscore-dangle
+    const patchedUser = await this.userService.patchUser((this.data as any)._id, patchUser as any);
+    console.log(patchedUser);
+
     this.router.navigateByUrl('home/');
     this.router.navigateByUrl('home/ordenes');
     this.dismiss();
+  }
+
+  setCurrentDay(i){
+    this.currentDate = i;
+  }
+
+  async getUser() {
+    // eslint-disable-next-line no-underscore-dangle
+    this.data = (await this.userService.getUser(this.authService.getUser().sub)).data;
+    console.log(this.data);
   }
 }

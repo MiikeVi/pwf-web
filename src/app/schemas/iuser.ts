@@ -37,6 +37,7 @@ export interface CareTakerData {
   availability: string;
   days: Days[];
   dogsType: string[];
+  daysEnabled: DayEnable[];
 };
 
 export interface WalkerData {
@@ -84,6 +85,12 @@ export enum Days{
 export interface Day {
   day: Days;
   selected: boolean;
+}
+
+export interface DayEnable {
+  day: Date;
+  selected: boolean;
+  ordered: boolean;
 }
 
 export enum DogsTypes {
