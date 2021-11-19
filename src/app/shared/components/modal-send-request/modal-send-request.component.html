@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons>
+        <ion-button (click)="dismiss()">
+          <ion-icon name="arrow-back-outline"></ion-icon>
+        </ion-button>
+        <ion-title class="ion-text-center">Enviar Solicitud</ion-title>
+        <img src="../../../../assets/logo.png" width="70" height="60" slot="end">
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-card>
+    <ion-card-content>
+      <ion-item>
+        <h1>Solicitud</h1>
+      </ion-item>
+      <form #formulario="ngForm" (ngSubmit)="createRequest()">
+        <div *ngIf="this.data.petCareData === undefined">
+          <ion-card-header>
+            Tipo de Petición
+          </ion-card-header>
+          <ion-radio-group name="type" [(ngModel)]="request.type">
+            <ion-item *ngFor="let caretakerType of caretakerTypes">
+              <ion-label>{{caretakerType}}</ion-label>
+              <ion-radio name={{caretakerType}} slot="start" value={{caretakerType}}></ion-radio>
+            </ion-item>
+          </ion-radio-group>
+        </div>
+        <ion-item>
+          <ion-textarea name="bio" [(ngModel)]="request.bio" rows="6" cols="20" placeholder="Redacte un párrafo resumido del por qué quiere ser un paseador o cuidador de perros, puede agregar su experiencia en el rubro, experiencia con animales o experiencia veterinaria si es que la posee."></ion-textarea>
+        </ion-item>
+        <ion-button type="submit" expand="full">
+          Enviar <ion-icon name="checkmark-outline" style="text-align: center"></ion-icon>
+        </ion-button>
+      </form>
+    </ion-card-content>
+
+  </ion-card>
+</ion-content>

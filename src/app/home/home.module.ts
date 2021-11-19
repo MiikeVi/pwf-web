@@ -3,8 +3,11 @@ import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { HomePage } from './home.page';
+import { SharedModule } from '../shared/shared.module';
 
 import { HomePageRoutingModule } from './home-routing.module';
+
+import {MatExpansionModule} from '@angular/material/expansion';
 
 
 @NgModule({
@@ -12,7 +15,9 @@ import { HomePageRoutingModule } from './home-routing.module';
     CommonModule,
     FormsModule,
     IonicModule,
-    HomePageRoutingModule
+    HomePageRoutingModule,
+    SharedModule,
+    MatExpansionModule,
   ],
   declarations: [HomePage]
 })

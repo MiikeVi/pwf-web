@@ -1,0 +1,115 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons>
+        <ion-back-button defaultHref="home"></ion-back-button>
+        <ion-title class="ion-text-center">Mis ordenes</ion-title>
+        <img src="../../../../assets/logo.png" width="70" height="60" slot="end">
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<ion-item>
+  <ion-segment (ionChange)="tabChanged($event)" value="ordenes">
+    <ion-segment-button value="ordenes">
+      <ion-label>Órdenes</ion-label>
+    </ion-segment-button>
+    <ion-segment-button *ngIf="user?.careTakerEnabled" value="ordenes_caretaker">
+        <ion-label>CareTaker</ion-label>
+      </ion-segment-button>
+  </ion-segment>
+
+</ion-item>
+<div *ngFor="let order of selectedOrders">
+  <ion-card>
+    <ion-item>
+      <ion-icon name="clipboard-outline" slot="start"></ion-icon>
+      <ion-label>{{ order.createdAt | date:'shortDate'}}</ion-label>
+      <div [ngSwitch]="order.orderStatus">
+        <div *ngSwitchCase="statusAccepted">
+          <ion-button 
+          size="small"
+          fill="outline"
+          slot="end"
+          color="success"
+          >{{order.orderStatus}}
+        </ion-button>
+        </div>
+        <div *ngSwitchCase="statusPending">
+          <ion-button 
+            size="small"
+            fill="outline"
+            slot="end"
+            color="warning"
+            >{{order.orderStatus}}
+          </ion-button>
+        </div>
+        <div *ngSwitchCase="statusCancelled">
+          <ion-button 
+            size="small"
+            fill="outline"
+            slot="end"
+            color="danger"
+            >{{order.orderStatus}}
+          </ion-button>
+        </div>
+        <div *ngSwitchCase="statusFinished">
+          <ion-button 
+            size="small"
+            fill="outline"
+            slot="end"
+            color="medium"
+            >{{order.orderStatus}}
+          </ion-button>
+        </div>
+        <div *ngSwitchCase="statusInProgress">
+          <ion-button 
+            size="small"
+            fill="outline"
+            slot="end"
+            >{{order.orderStatus}}
+          </ion-button>
+        </div>
+      </div>
+    </ion-item>
+  
+    <ion-card-content>
+      <p>Tipo de orden: {{ order.orderType }}</p>
+      <p>Precio total: {{ order.charge }}</p>
+      <ion-button
+        (click)="onClickOrder(order)"
+        size="small">
+        Ver detalles
+      </ion-button>
+      <div *ngIf="selectedTab === 'ordenes_caretaker'">
+        <div *ngIf="order.orderStatus === statusPending">
+          <ion-button
+            (click)="onAcceptOrder(order)"
+            size="small">
+            Aceptar
+          </ion-button>
+          <ion-button
+            (click)="onCancelOrder(order)"
+            size="small">
+            Rechazar
+          </ion-button>
+        </div>
+        <div *ngIf="order.orderStatus === statusAccepted">
+          <ion-button
+            (click)="onStartOrderService(order)"
+            size="small">
+            Iniciar cuidado/paseo
+          </ion-button>
+        </div>
+        <div *ngIf="order.orderStatus === statusInProgress">
+          <ion-button
+            (click)="onFinishOrder(order)"
+            size="small">
+            Finalizar
+          </ion-button>
+        </div>
+     </div>
+    </ion-card-content>
+  </ion-card>
+</div>
+</ion-content>

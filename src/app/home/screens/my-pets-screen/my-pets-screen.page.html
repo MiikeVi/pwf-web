@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons>
+        <ion-back-button defaultHref="home"></ion-back-button>
+        <ion-title class="ion-text-center">Mis Mascotas</ion-title>
+        <img src="../../../../assets/logo.png" width="70" height="60" slot="end">
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let pet of pets ">
+      <ion-label>
+        <h2>Nombre: {{pet.name}}</h2>
+        <h3>Edad: {{pet.age}}</h3>
+        <p>Tipo: {{pet.type}}</p>
+      </ion-label>
+      <ion-buttons slot="end">
+        <ion-button fill="clear" color="primary" (click)="openModalTracking(this.pet)">
+          <ion-icon name="map-outline"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" color="warning" (click)="openModalEdit(this.pet)">
+          <ion-icon name="create-outline"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" color="danger" (click)="deletePet(pet)">
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
+
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="openModalCreate()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>
+
