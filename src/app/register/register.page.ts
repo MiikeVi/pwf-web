@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
+import { cities } from 'src/app/utils/districts';
 
 @Component({
   selector: 'app-register',
@@ -9,6 +10,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
+  cities = cities;
+  districts;
+  selectedDistrict;
+  selectedCity;
+  cityOptions: string[];
 
   data = {
     name: '',
@@ -33,7 +39,6 @@ export class RegisterPage implements OnInit {
     this.userService.createUser(this.data).then(result =>{
       if (result){
         this.presentAlertConfirm();
-        console.log(this.data);
       }
       else {
         this.presentAlertConfirmError();
@@ -66,6 +71,20 @@ export class RegisterPage implements OnInit {
   }
 
   ngOnInit() {
+    this.districts = cities.map((region) =>  region.name);
+  }
+
+  setCityValues(regionSelected) {
+    this.cities.forEach((region) => {
+      if (regionSelected === region.name) {
+        this.cityOptions = region.communes;
+      }
+    });
+    this.data.region = regionSelected;
+  }
+
+  onChangeCity(city: string) {
+    this.data.city = city;
   }
 
 }

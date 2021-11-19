@@ -44,18 +44,20 @@
           </ion-button>
         </div>
       </div>
-
     </ion-item>
   
     <ion-card-content>
       <p>Servicio: {{ order.orderType }}</p>
-      <p>Fecha de inicio: {{ order.startDateService | date: 'shortDate' }} </p>
-      <p>Fecha de termino: {{ order.endDateService | date: 'shortDate' }} </p>
-      <p>Hora inicio: {{ order.startDateService | date: 'shortTime' }} </p>
-      <p>Hora de termino: {{ order.endDateService | date: 'shortTime' }}</p>
-      <p>Ruta: {{ order.walkPath?.location || 'No aplica' }}</p>
-      <p >Cuidador/Paseador: <a (click)="goToUser()">{{ order.careTakerId  }}</a></p>
-      <p>Mascota: {{ order.pet?.name }}</p>
+      <div *ngIf="order.orderType === 'Paseo'">
+        <p>Hora inicio: {{ order?.walkPath?.schedule?.startTime | date: 'h a' }} </p>
+        <p>Hora de termino: {{ order?.walkPath?.schedule?.endTime | date: 'h a' }}</p>
+        <p>Ruta: {{ order?.walkPath?.location }}</p>
+      </div>
+      <div *ngIf="order.orderType === 'Cuidado'">
+        <p>Fecha inicio: {{ order?.dayService?.day | date: 'shortDate' }}</p>
+      </div>
+      <p >Cuidador/Paseador: <a (click)="goToUser()">{{ careTakerName }}</a></p>
+      <p>Mascota: {{ petName }}</p>
       <p>Precio total: {{ order.charge }}</p>
     </ion-card-content>
   </ion-card>

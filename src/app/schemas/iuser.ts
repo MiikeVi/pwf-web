@@ -46,9 +46,11 @@ export interface WalkerData {
 }
 
 export interface WalkPaths {
+  id: string;
   location: string;
   schedule: Schedule;
   price: number;
+  sharedPrice: number;
   shared: boolean;
   available: boolean;
   pets: Pet[];

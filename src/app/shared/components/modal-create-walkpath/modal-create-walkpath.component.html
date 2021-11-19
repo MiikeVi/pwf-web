@@ -28,40 +28,46 @@
           <ion-input name="location" type="text" [(ngModel)]="newWalkpath.location" required></ion-input>
         </ion-item>
 
-
-        <ion-radio-group name="shared" [(ngModel)]="newWalkpath.shared" required>
+        <ion-radio-group name="shared" required>
           <ion-card-header>
             Servicio Compartido
           </ion-card-header>
           <ion-item>
             <ion-label>Si</ion-label>
-            <ion-radio value={{true}} slot="start"></ion-radio>
+            <ion-radio (click)="onChangeShared(true)" value=true slot="start"></ion-radio>
           </ion-item>
           <ion-item>
             <ion-label>No</ion-label>
-            <ion-radio value={{false}} slot="start"></ion-radio>
+            <ion-radio (click)="onChangeShared(false)" value=false slot="start"></ion-radio>
           </ion-item>
         </ion-radio-group>
 
         <ion-item>
           <ion-label position="floating">Precio:</ion-label>
-          <ion-input name="price" type="number" [(ngModel)]="newWalkpath.price" required></ion-input>
+          <ion-input name="price" type="number" pattern="^[0-9]*$" [(ngModel)]="newWalkpath.price" required></ion-input>
         </ion-item>
+        <div *ngIf="newWalkpath.shared">
+          <ion-item>
+            <ion-label position="floating">Precio compartido:</ion-label>
+            <ion-input name="price" type="number" pattern="^[0-9]*$" [(ngModel)]="newWalkpath.sharedPrice" required></ion-input>
+          </ion-item>
+        </div>
 
         <ion-item>
           <ion-label>Hora de inicio</ion-label>
           <ion-datetime display-format="h A" picker-format="h A" name="startTime" [(ngModel)]="newWalkpath.schedule.startTime"></ion-datetime>
         </ion-item>
+        <div *ngIf="newWalkpath.shared">
+          <ion-item>
+            <ion-label>Cantidad max mascotas:</ion-label>
+            <ion-select interface="popover" name="walkPath" required [(ngModel)]="newWalkpath.maxPets">
+              <ion-select-option [value]="1">1</ion-select-option>
+              <ion-select-option [value]="2">2</ion-select-option>
+              <ion-select-option [value]="3">3</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </div>
 
-        <ion-item>
-          <ion-label>Cantidad max mascotas:</ion-label>
-          <ion-select interface="popover" name="walkPath" required [(ngModel)]="newWalkpath.maxPets">
-            <ion-select-option [value]="1">1</ion-select-option>
-            <ion-select-option [value]="2">2</ion-select-option>
-            <ion-select-option [value]="3">3</ion-select-option>
-          </ion-select>
-        </ion-item>
-        
         <br>
         <ion-button type="submit" expand="full" (click)="createWalkpath()" [disabled]="formulario.invalid">
           Agregar Ruta <ion-icon name="checkmark-outline" style="text-align: center"></ion-icon>

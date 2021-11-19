@@ -14,8 +14,6 @@
   <ion-card>
   <ion-card-content>
     <form #formulario="ngForm" (ngSubmit)="onSubmitTemplate()">
-
-      
       <ion-item>
         <ion-label position="floating">Nombre</ion-label>
         <ion-input name="name" value={{petClone.name}} [(ngModel)]="petClone.name" required></ion-input>
@@ -88,19 +86,19 @@
       </ion-list>
 
       <ion-list>
-        <ion-radio-group name="medication" value={{petClone.medication}} required [(ngModel)]="petClone.medication">
+        <ion-radio-group name="medication"required [(ngModel)]="petClone.medication">
           <ion-list-header>
             <ion-label>Requiere medicación</ion-label>
           </ion-list-header>
       
           <ion-item>
             <ion-label>Sí</ion-label>
-            <ion-radio name="yes" slot="start" value="true"></ion-radio>
+            <ion-radio name="yes" slot="start" value={{true}}></ion-radio>
           </ion-item>
       
           <ion-item>
             <ion-label>No</ion-label>
-            <ion-radio name="no" slot="start" value="false"></ion-radio>
+            <ion-radio name="no" slot="start" value={{false}}></ion-radio>
           </ion-item>
         </ion-radio-group>
       </ion-list>

@@ -1,16 +1,15 @@
-import { Pet } from './ipet';
-import { DayEnable, Days, WalkPaths } from './iuser';
+import { DayEnable, WalkPaths } from './iuser';
 
 export interface Order {
     createdAt: Date;
     charge: number;
     startDateService?: Date;
-    dayService?: Days;
+    dayService?: DayEnable;
     endDateService?: Date;
     userId: string;
     careTakerId: string;
     orderStatus: OrderStatus;
-    pet: Pet;
+    pet: string;
     orderType: OrderType;
     shared?: boolean;
     walkPath?: WalkPaths;

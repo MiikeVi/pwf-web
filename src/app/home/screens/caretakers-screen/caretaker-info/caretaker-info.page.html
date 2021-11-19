@@ -44,6 +44,9 @@
         <ion-card-title>Rutas de paseador</ion-card-title>
       </ion-card-header>
       <ion-card-content>
+        <div *ngIf="!rutas.length">
+          No hay paseos disponibles
+        </div>
           <ion-item *ngFor="let ruta of rutas">
             <div *ngIf="ruta.available">
               <ion-label>
@@ -52,6 +55,7 @@
                 <h3><b>Dia:</b> {{ruta?.schedule?.day}}</h3>
                 <h3><b>Hora de inicio:</b> {{ruta?.schedule?.startTime | date : 'h a'}}</h3>
                 <h3><b>Hora de finalización:</b> {{ruta?.schedule?.endTime | date : 'h a'}}</h3>
+                <p>_____________________________</p>
               </ion-label>
             </div>
           </ion-item>
@@ -68,10 +72,12 @@
         <ion-item>
           <ion-label>
             <h3><b>Tipo de residencia:</b> {{this.caretakerSelected.petCareData.careTakerData.home}}</h3>
-            <h3><b>Cuidado por mas de un dia:</b> {{this.caretakerSelected.petCareData.careTakerData.availability}}</h3>
             <h3><b>Dias disponibles:</b>
-            <div *ngFor="let day of days">
-              {{day}}
+            <div *ngIf="!daysEnableds?.length">
+              <p>No hay días disponibles</p>
+            </div>
+            <div *ngFor="let day of daysEnableds">
+              {{day.day | date:'d/M/yy'}}
             </div></h3>
             <h3><b>Tipos de perros para cuidar:</b>
             <div *ngFor="let dogsType of dogsTypes">

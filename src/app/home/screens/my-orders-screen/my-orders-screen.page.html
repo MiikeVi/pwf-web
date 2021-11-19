@@ -17,7 +17,6 @@
     <ion-segment-button *ngIf="user?.careTakerEnabled" value="ordenes_caretaker">
         <ion-label>CareTaker</ion-label>
       </ion-segment-button>
-    
   </ion-segment>
 
 </ion-item>
@@ -25,7 +24,7 @@
   <ion-card>
     <ion-item>
       <ion-icon name="clipboard-outline" slot="start"></ion-icon>
-      <ion-label>{{ order.createdAt }}</ion-label>
+      <ion-label>{{ order.createdAt | date:'shortDate'}}</ion-label>
       <div [ngSwitch]="order.orderStatus">
         <div *ngSwitchCase="statusAccepted">
           <ion-button 
@@ -71,21 +70,18 @@
             >{{order.orderStatus}}
           </ion-button>
         </div>
-        
-
       </div>
-      
     </ion-item>
   
     <ion-card-content>
       <p>Tipo de orden: {{ order.orderType }}</p>
-     <p>Precio total: {{ order.charge }}</p>
-     <ion-button
-          (click)="onClickOrder(order)"
-          size="small">
-          Ver detalles
+      <p>Precio total: {{ order.charge }}</p>
+      <ion-button
+        (click)="onClickOrder(order)"
+        size="small">
+        Ver detalles
       </ion-button>
-     <div *ngIf="selectedTab === 'ordenes_caretaker'">
+      <div *ngIf="selectedTab === 'ordenes_caretaker'">
         <div *ngIf="order.orderStatus === statusPending">
           <ion-button
             (click)="onAcceptOrder(order)"
@@ -116,7 +112,4 @@
     </ion-card-content>
   </ion-card>
 </div>
-
-
 </ion-content>
-

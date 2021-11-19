@@ -88,7 +88,6 @@ export class ModalSendRequestComponent implements OnInit {
     }
     //Si es Cuidador y quiere ser Paseador
     else {
-
       const walkerData = {
         walkPaths : [],
       };
@@ -118,7 +117,6 @@ export class ModalSendRequestComponent implements OnInit {
         {
           text: 'Aceptar',
           handler: () => {
-            console.log('Confirm Okay');
           }
         }
       ]

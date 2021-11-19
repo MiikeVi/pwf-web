@@ -16,14 +16,20 @@ export class CaretakerInfoPage implements OnInit {
   rutas;
   days;
   dogsTypes;
+  daysEnableds;
 
-  constructor(private userService: UserService, private modalController: ModalController, private router: Router) { }
+  constructor(
+    private userService: UserService,
+    private modalController: ModalController,
+    private router: Router,
+  ) { }
 
   ngOnInit() {
       this.caretakerSelected = this.userService.caretakerSelected;
       this.rutas = this.caretakerSelected.petCareData?.walkerData?.walkPaths;
       this.days = this.caretakerSelected.petCareData?.careTakerData?.days;
       this.dogsTypes = this.caretakerSelected.petCareData?.careTakerData?.dogsType;
+      this.daysEnableds = this.caretakerSelected.petCareData?.careTakerData?.daysEnabled;
   }
 
   getUserStars(user: User) {
