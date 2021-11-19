@@ -4,7 +4,7 @@
         <ion-button (click)="dismiss()">
           <ion-icon name="arrow-back-outline"></ion-icon>
         </ion-button>
-        <ion-title class="ion-text-center">Contratar Paseador / Cuidador</ion-title>
+        <ion-title class="ion-text-center">Contratar</ion-title>
         <img src="../../../../assets/logo.png" width="70" height="60" slot="end">
       </ion-buttons>
   </ion-toolbar>
@@ -52,23 +52,23 @@
         </ion-item>
 
         <ion-item>
-              <ion-item>
-                <ion-label>Seleccione su mascota</ion-label>
-                <ion-select (ionChange)="onChangePet(selectedPet)" interface="popover" name="pet" required [(ngModel)]="selectedPet">
-                  <div *ngFor="let pet of pets">
-                    <div *ngIf="pet.isActive">
-                      <ion-select-option [value]="pet">{{pet.name}}</ion-select-option>
-                    </div>
-                  </div>
-                </ion-select>
-              </ion-item>
+          <ion-card-header>Seleccione su mascota</ion-card-header>
+          <ion-select (ionChange)="onChangePet(selectedPet)" interface="popover" name="pet" required [(ngModel)]="selectedPet">
+            <div *ngFor="let pet of pets">
+              <div *ngIf="pet.isActive">
+                <ion-select-option [value]="pet">{{pet.name}}</ion-select-option>
+              </div>
+            </div>
+          </ion-select>
         </ion-item>
 
-        <div *ngIf="newOrder.orderType === 'Cuidado'">
+        <div *ngIf="newOrder.orderType === 'Cuidado' && daysEnableds">
             <ion-card-header>
               Selecciona el dia del cuidado
             </ion-card-header>
-            
+            <div *ngIf="!daysEnableds.length">
+              <p>No hay días disponibles</p>
+            </div>
             <ion-radio-group name="day" [(ngModel)]="newOrder.dayService">
               <div *ngFor="let daysEnabled of daysEnableds; index as i">
                 <ion-item *ngIf="!daysEnabled.ordered">
@@ -85,7 +85,7 @@
         
         <div *ngIf="newOrder.orderType === 'Paseo'">
           <ion-item>
-            <ion-label>Seleccione una ruta</ion-label>
+            <ion-card-header>Seleccione una ruta</ion-card-header>
             <ion-select (ionChange)="onChangeRoute(selectedRoute)" interface="popover" name="walkPath" required [(ngModel)]="selectedRoute">
               <div *ngFor="let route of routes">
                 <div *ngIf="route.available">
@@ -94,28 +94,37 @@
               </div>
             </ion-select>
           </ion-item>
-
+          
           <ion-item>
             <ion-radio-group name="shared" required [(ngModel)]="newOrder.shared">
               <ion-card-header>
                 <ion-label>Servicio compartido</ion-label>
               </ion-card-header>
-                <ion-item>
-                  <ion-label>Si</ion-label>
-                  <ion-radio name="yes" value={{true}} slot="start"></ion-radio>
-                </ion-item>
-                <div *ngIf="!(selectedRoute?.shared && selectedRoute?.pets?.length)">
+                <div *ngIf="selectedRoute?.shared && !selectedRoute?.pets?.length">
+                  <ion-item >
+                    <ion-label>Si</ion-label>
+                    <ion-radio (click)="onChangeMode(true)" name="yes" value={{true}} slot="start"></ion-radio>
+                  </ion-item>
                   <ion-item>
                     <ion-label>No</ion-label>
-                    <ion-radio name="no" value={{false}} slot="start"></ion-radio>
+                    <ion-radio (click)="onChangeMode(false)" name="no" value={{false}} slot="start"></ion-radio>
                   </ion-item>
                 </div>
-                
+                <div *ngIf="!(selectedRoute?.shared )">
+                  <ion-item>
+                    <ion-label>No</ion-label>
+                    <ion-radio (click)="onChangeMode(false)" name="no" value={{false}} slot="start"></ion-radio>
+                  </ion-item>
+
+                </div>
+                <ion-item>
+                  <ion-label>Precio: {{price}}</ion-label>
+                </ion-item>
             </ion-radio-group>
           </ion-item>
 
           <ion-item>
-            <ion-label>Dia de servicio</ion-label>
+            <ion-card-header>Dia de servicio</ion-card-header>
             <ion-datetime name="dayService" display-format="DD-MM" picker-format="DD-MM" [required]="true" [(ngModel)]="newOrder.dayService"></ion-datetime>
           </ion-item>
 

@@ -91,7 +91,6 @@ export class ModalCreatePetComponent implements OnInit {
           {
             text: 'Aceptar',
             handler: () => {
-              console.log('Confirm Okay');
             }
           }
         ]
@@ -105,7 +104,6 @@ export class ModalCreatePetComponent implements OnInit {
           {
             text: 'Aceptar',
             handler: () => {
-              console.log('Confirm Okay');
             }
           }
         ]
@@ -113,6 +111,5 @@ export class ModalCreatePetComponent implements OnInit {
     }
     await this.alert.present();
   }
-
   presentAlertConfirm() {}
 }

@@ -93,7 +93,6 @@ export class TrackingModalComponent implements OnInit {
     await this.alert.present();
   }
 
-
   async getUser(id: any){
     return (await this.userService.getUser(id)).data;
   }

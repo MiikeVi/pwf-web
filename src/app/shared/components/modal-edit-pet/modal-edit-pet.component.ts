@@ -46,7 +46,7 @@ export class ModalEditPetComponent implements OnInit {
   async onSubmitTemplate() {
     this.petClone.age = parseInt(this.petClone.age, 10);
     this.petClone.weight = parseInt(this.petClone.weight, 10);
-    this.petClone.medication = this.petClone.medication === 'true';
+    this.petClone.medication = this.petClone.medication;
     this.petClone.behaviors = this.behaviors.map((behavior) => {
       if (behavior.selected) {
         return behavior.behavior;
@@ -72,7 +72,6 @@ export class ModalEditPetComponent implements OnInit {
           {
             text: 'Aceptar',
             handler: () => {
-              console.log('Confirm Okay');
             }
           }
         ]
@@ -81,12 +80,11 @@ export class ModalEditPetComponent implements OnInit {
       this.alert = await this.alertController.create({
         cssClass: 'my-custom-class',
         header: '',
-        message: 'No se pudo actualizada mascota',
+        message: 'No se pudo actualizar la mascota',
         buttons: [
           {
             text: 'Aceptar',
             handler: () => {
-              console.log('Confirm Okay');
             }
           }
         ]

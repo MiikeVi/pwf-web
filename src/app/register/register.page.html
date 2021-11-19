@@ -49,16 +49,24 @@
           <ion-input name="address" type="text"  value="{{data.address}}" [(ngModel)]="data.address" required></ion-input>
         </ion-item>
         <ion-item>
-          <ion-label position="floating">Región</ion-label>
-          <ion-input name="region" type="text"  value="{{data.region}}" [(ngModel)]="data.region" required></ion-input>
+          <ion-label>Región</ion-label>
+          <ion-select name="region" (ionChange)="setCityValues(selectedDistrict)" [(ngModel)]="selectedDistrict">
+            <div *ngFor="let district of districts">
+              <ion-select-option [value]="district" >{{district}}</ion-select-option> 
+            </div> 
+          </ion-select>
         </ion-item>
-        <ion-item>
-          <ion-label position="floating">Ciudad</ion-label>
-          <ion-input name="city" type="text"  value="{{data.city}}" [(ngModel)]="data.city" required></ion-input>
+        <ion-item *ngIf="selectedDistrict">
+          <ion-label>Ciudad</ion-label>
+          <ion-select (ionChange)="onChangeCity(selectedCity)" name="city" [(ngModel)]="selectedCity" >
+            <div *ngFor="let city of cityOptions">
+              <ion-select-option [value]="city" >{{city}}</ion-select-option>
+            </div>
+          </ion-select>
         </ion-item>
         <ion-item>
           <ion-label position="floating">Teléfono o Celular</ion-label>
-          <ion-input name="phoneNumber" type="number"  value="{{data.phoneNumber}}" [(ngModel)]="data.phoneNumber" required></ion-input>
+          <ion-input name="phoneNumber" type="number" pattern="^[0-9]*$" value="{{data.phoneNumber}}" [(ngModel)]="data.phoneNumber" required></ion-input>
         </ion-item>
         <ion-item>
           <ion-label position="floating">Password</ion-label>

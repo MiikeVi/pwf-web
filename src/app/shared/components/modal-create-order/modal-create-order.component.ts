@@ -1,10 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalController } from '@ionic/angular';
-import { createPatch } from 'rfc6902';
+import { ModalController, NavController } from '@ionic/angular';
 import { Order, OrderStatus, OrderType } from 'src/app/schemas/iorder';
 import { Pet } from 'src/app/schemas/ipet';
-import { Day, Days, User, WalkPaths } from 'src/app/schemas/iuser';
+import { Days, User, WalkPaths } from 'src/app/schemas/iuser';
 import { AuthService } from 'src/app/services/auth.service';
 import { OrderService } from 'src/app/services/order.service';
 import { PetService } from 'src/app/services/pet.service';
@@ -34,9 +33,11 @@ export class ModalCreateOrderComponent implements OnInit {
   selectedPet: Pet;
   daysRaw = ['Domingo','Lunes','Martes','Miercoles','Jueves','Viernes','Sabado'];
   daysEnableds = [];
+  price: number;
+  sharedOptions: boolean[];
 
   newOrder: any = {
-    charge: '0',
+    charge: 0,
     startDateService: Date,
     endDateService: Date,
     orderStatus: undefined,
@@ -55,6 +56,7 @@ export class ModalCreateOrderComponent implements OnInit {
     private userService: UserService,
     private orderService: OrderService,
     private router: Router,
+    private navController: NavController,
   ) { }
 
   ngOnInit() {
@@ -73,12 +75,22 @@ export class ModalCreateOrderComponent implements OnInit {
     {
       this.newOrder.orderType = 'Paseo';
     }
+
     this.routes = this.caretaker?.petCareData?.walkerData?.walkPaths;
-    this.daysEnableds = this.caretaker.petCareData.careTakerData.daysEnabled;
+    this.daysEnableds = this.caretaker?.petCareData?.careTakerData?.daysEnabled || [];
   }
 
   onChangeRoute(selectedRoute) {
     this.selectedRoute = selectedRoute;
+    if(this.selectedRoute.shared) {
+      this.sharedOptions = [];
+      this.sharedOptions.push(true);
+      this.sharedOptions.push(false);
+    }
+    if(!this.selectedRoute.shared) {
+      this.sharedOptions = [];
+      this.sharedOptions.push(false);
+    }
   }
 
   onChangePet(selectedPet) {
@@ -99,7 +111,6 @@ export class ModalCreateOrderComponent implements OnInit {
   }
 
   async createOrder() {
-
     let order: Order;
 
     if (this.newOrder.orderType === OrderType.care) {
@@ -113,7 +124,8 @@ export class ModalCreateOrderComponent implements OnInit {
         // eslint-disable-next-line no-underscore-dangle
         careTakerId: (this.caretaker as any)._id,
         orderStatus: OrderStatus.pending,
-        pet: this.selectedPet,
+        // eslint-disable-next-line no-underscore-dangle
+        pet: (this.selectedPet as any)._id,
         orderType: this.newOrder.orderType,
       };
     } else {
@@ -124,16 +136,18 @@ export class ModalCreateOrderComponent implements OnInit {
         // eslint-disable-next-line no-underscore-dangle
         careTakerId: (this.caretaker as any)._id,
         orderStatus: OrderStatus.pending,
-        pet: this.selectedPet,
+        // eslint-disable-next-line no-underscore-dangle
+        pet: (this.selectedPet as any)._id,
         orderType: this.newOrder.orderType,
         shared: this.newOrder.shared,
         walkPath: this.selectedRoute,
         description: this.newOrder.description || '',
       };
-      // eslint-disable-next-line max-len
-      const actualWalkPaths = this.caretaker.petCareData.walkerData.walkPaths.filter((walkPath) => walkPath !== this.selectedRoute);
 
-      if(this.selectedRoute.pets.length <= this.selectedRoute.maxPets) {
+      // eslint-disable-next-line max-len
+      const actualWalkPaths = this.caretaker.petCareData.walkerData.walkPaths.filter((walkPath) => walkPath.id !== this.selectedRoute.id);
+
+      if(this.selectedRoute.pets.length < this.selectedRoute.maxPets) {
         // eslint-disable-next-line no-underscore-dangle
         this.selectedRoute.pets.push((this.selectedPet as any)._id);
         const patchPet: JSONPatch = [
@@ -143,7 +157,6 @@ export class ModalCreateOrderComponent implements OnInit {
             value: false,
           }
         ];
-
         // eslint-disable-next-line no-underscore-dangle
         this.petService.patchPet((this.selectedPet as any)._id, patchPet);
       }
@@ -160,27 +173,26 @@ export class ModalCreateOrderComponent implements OnInit {
           value: careTakerCopy.petCareData,
         }
       ];
-
       // eslint-disable-next-line no-underscore-dangle
       await this.userService.patchUser((this.caretaker as any)._id, patchRoute);
-
     }
     await this.orderService.createOrder(order);
-    this.daysEnableds[this.currentDate].ordered = true;
-    this.data.petCareData.careTakerData.daysEnabled = this.daysEnableds;
-    console.log(this.data.petCareData.careTakerData.daysEnabled);
 
-    const patchUser: JSONPatch = [{
-      op: 'replace',
-      path: '/petCareData',
-      value: this.data.petCareData
-    }];
+    if (this.daysEnableds.length && this.newOrder.orderType === OrderType.care) {
+      this.daysEnableds[this.currentDate].ordered = true;
+      this.data.petCareData.careTakerData.daysEnabled = this.daysEnableds;
+      const patchCare: JSONPatch = [
+        {
+          op: 'replace',
+          path: '/petCareData',
+          value: this.data.petCareData,
+        },
+      ];
+      // eslint-disable-next-line no-underscore-dangle
+      await this.userService.patchUser((this.data as any)._id, patchCare as any);
+    }
 
-    // eslint-disable-next-line no-underscore-dangle
-    const patchedUser = await this.userService.patchUser((this.data as any)._id, patchUser as any);
-    console.log(patchedUser);
-
-    this.router.navigateByUrl('home/');
+    this.navController.navigateRoot('/home');
     this.router.navigateByUrl('home/ordenes');
     this.dismiss();
   }
@@ -189,9 +201,17 @@ export class ModalCreateOrderComponent implements OnInit {
     this.currentDate = i;
   }
 
+  onChangeMode(value: boolean) {
+    if (value) {
+      this.price = this.selectedRoute.sharedPrice;
+    } else {
+      this.price = this.selectedRoute.price;
+    }
+    this.newOrder.charge = this.price;
+  }
+
   async getUser() {
     // eslint-disable-next-line no-underscore-dangle
     this.data = (await this.userService.getUser(this.authService.getUser().sub)).data;
-    console.log(this.data);
   }
 }

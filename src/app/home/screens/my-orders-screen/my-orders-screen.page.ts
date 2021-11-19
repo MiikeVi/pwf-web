@@ -47,7 +47,6 @@ export class MyOrdersScreenPage implements OnInit {
     this.ordersService.getUserOrders(this.authService.getUser().sub).then((orders) => {
       this.orders = orders.data.values;
       this.selectedOrders = orders.data.values;
-
     });
     if (this.user?.careTakerEnabled) {
       this.ordersService.getCareTakerOrders(this.authService.getUser().sub).then((careTakerOrders) => {
@@ -71,7 +70,6 @@ export class MyOrdersScreenPage implements OnInit {
       cssClass: 'my-custom-class',
       componentProps: { order }
     });
-
     modal.present();
   }
 
@@ -107,13 +105,14 @@ export class MyOrdersScreenPage implements OnInit {
     this.ordersService.patchOrder((order as any)._id, patch).then(async () => {
       // eslint-disable-next-line no-underscore-dangle
       this.selectedOrders =  (await this.ordersService.getCareTakerOrders((this.user as any)._id)).data.values;
+
+      this.updateWalkPathsAndCareTaker(order);
     });
     this.ordersService.desactivateGeolocation();
     // TO-DO notify to userId
   }
 
-  onCancelOrder(order) {
-
+  onCancelOrder(order: Order) {
     const patch: JSONPatch = [
       {
         op: 'replace',
@@ -124,78 +123,9 @@ export class MyOrdersScreenPage implements OnInit {
 
     // eslint-disable-next-line no-underscore-dangle
     this.ordersService.patchOrder((order as any)._id, patch).then(async () => {
-
-    const patchPet: JSONPatch = [
-      {
-        op: 'replace',
-        path: '/isActive',
-        value: true,
-      }
-    ];
-
-    if (order.walkPath){
-      //update walkPath
-      const actualWalkPaths = this.user.petCareData.walkerData.walkPaths.filter((walkPath) => {
-        // eslint-disable-next-line no-underscore-dangle
-        if (!walkPath.pets.includes((order.pet as any)._id)) {
-          return true;
-        }
-        return false;
-      });
-
-      const orderWalkPath = JSON.parse(JSON.stringify(order.walkPath));
-      const newPets = orderWalkPath.pets.filter((pet) => pet !== order.pet);
-      orderWalkPath.pets = newPets;
-
-      const userCopy = JSON.parse(JSON.stringify(this.user));
-
-      if(orderWalkPath.pets.length <= orderWalkPath.maxPets) {
-        orderWalkPath.available = true;
-      }
-
-      const updatedWalkPaths = [...actualWalkPaths, orderWalkPath];
-
-      userCopy.petCareData.walkerData.walkPaths = updatedWalkPaths;
-
-      const patchRoute: JSONPatch = [
-        {
-          op: 'replace',
-          path: '/petCareData',
-          value: userCopy.petCareData,
-        }
-      ];
-      // eslint-disable-next-line no-underscore-dangle
-      await this.userService.patchUser(userCopy._id, patchRoute);
-    }
-
-    if (order.dayService) {
-    // eslint-disable-next-line no-underscore-dangle
-    this.petService.patchPet((order as any)._id, patchPet);
-
-    this.user.petCareData.careTakerData.daysEnabled.find((element)=>{
-      const elementDate = new Date (element.day);
-      const aDate = new Date (order.dayService);
-      console.log(element.day);
-        if(new Date(aDate.setHours(0,0,0,0)).getTime() === new Date(elementDate.setHours(0,0,0,0)).getTime()){
-            element.ordered = false;
-        }
+      this.updateWalkPathsAndCareTaker(order);
+      // TO-DO notify to userId
     });
-
-    const patchUser: JSONPatch = [{
-      op: 'replace',
-      path: '/petCareData',
-      value: this.user.petCareData
-    }];
-
-    // eslint-disable-next-line no-underscore-dangle
-    this.userService.patchUser(((this.user as any)._id), patchUser);
-
-    }
-
-    // eslint-disable-next-line no-underscore-dangle
-    this.selectedOrders =  (await this.ordersService.getCareTakerOrders((this.user as any)._id)).data.values;
-    });
-    // TO-DO notify to userId
   }
 
 
@@ -205,7 +135,7 @@ export class MyOrdersScreenPage implements OnInit {
         op: 'replace',
         path: '/orderStatus',
         value: OrderStatus.inProgress,
-      }
+      },
     ];
     // eslint-disable-next-line no-underscore-dangle
     this.ordersService.patchOrder((order as any)._id, patch).then(async () => {
@@ -239,4 +169,66 @@ export class MyOrdersScreenPage implements OnInit {
     this.user = (await this.userService.getUser(this.authService.getUser().sub)).data;
   }
 
+  async updateWalkPathsAndCareTaker(order: any) {
+    const patchPet: JSONPatch = [
+      {
+        op: 'replace',
+        path: '/isActive',
+        value: true,
+      }
+    ];
+
+    if (order.walkPath){
+      //update walkPath
+      const actualWalkPaths = this.user.petCareData.walkerData.walkPaths.filter((walkPath) => walkPath.id !== order.walkPath.id);
+      const orderWalkPath = JSON.parse(JSON.stringify(order.walkPath));
+      // eslint-disable-next-line no-underscore-dangle
+      const newPets = orderWalkPath.pets.filter((pet) => pet !== order.pet);
+      // eslint-disable-next-line no-underscore-dangle
+      orderWalkPath.pets = newPets;
+
+      const userCopy = JSON.parse(JSON.stringify(this.user));
+
+      if(orderWalkPath.pets.length < orderWalkPath.maxPets) {
+        orderWalkPath.available = true;
+      }
+
+      const updatedWalkPaths = [...actualWalkPaths, orderWalkPath];
+      userCopy.petCareData.walkerData.walkPaths = updatedWalkPaths;
+      const patchRoute: JSONPatch = [
+        {
+          op: 'replace',
+          path: '/petCareData',
+          value: userCopy.petCareData,
+        },
+      ];
+      // eslint-disable-next-line no-underscore-dangle
+      await this.userService.patchUser(userCopy._id, patchRoute);
+    }
+
+    if (order.dayService) {
+      const userclone = JSON.parse(JSON.stringify(this.user));
+      userclone.petCareData.careTakerData.daysEnabled.find((element)=>{
+        const elementDate = new Date (element.day);
+        const aDate = new Date (order.dayService);
+          if(new Date(aDate.setHours(0,0,0,0)).getTime() === new Date(elementDate.setHours(0,0,0,0)).getTime()){
+            element.ordered = false;
+          }
+      });
+
+      const patchUser: JSONPatch = [{
+        op: 'replace',
+        path: '/petCareData',
+        value: userclone.petCareData,
+      }];
+
+      // eslint-disable-next-line no-underscore-dangle
+      this.userService.patchUser(((userclone as any)._id), patchUser);
+    }
+    // eslint-disable-next-line no-underscore-dangle
+    this.petService.patchPet((order as any).pet, patchPet);
+
+    // eslint-disable-next-line no-underscore-dangle
+    this.ngOnInit();
+  }
 }

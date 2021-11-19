@@ -20,57 +20,60 @@
 
     <ion-card-content>
       <form #formulario="ngForm">
-
         <ion-item>
           <ion-label position="floating">Nombre</ion-label>
           <ion-input name="name" value={{data.name}} disabled></ion-input>
         </ion-item>
-
         <ion-item>
           <ion-label position="floating">Email</ion-label>
           <ion-input name="email" value={{data.email}} disabled [(ngModel)]="data.email"></ion-input>
         </ion-item>
-
         <ion-item>
           <ion-label position="floating">Fecha de Nacimiento</ion-label>
-         <ion-datetime  disabled
-                        name="birthday"
-                        [value]=""
-                        displayFormat="DD MMM YYYY"
-                        monthShortNames="Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre"
-                        cancelText="Cancelar"
-                        doneText="Aceptar"
-                        [(ngModel)]="data.birthdate"></ion-datetime>
+          <ion-datetime
+            disabled
+            name="birthday"
+            [value]=""
+            displayFormat="DD MMM YYYY"
+            monthShortNames="Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre"
+            cancelText="Cancelar"
+            doneText="Aceptar"
+            [(ngModel)]="data.birthdate">
+          </ion-datetime>
         </ion-item>
-
         <ion-item>
          <ion-label position="floating">Tu dirección</ion-label>
           <ion-input name="adress" [(ngModel)]="data.address"></ion-input>
         </ion-item>
-
-       <ion-item>
-         <ion-label position="floating">Tu dirección 2</ion-label>
-          <ion-input name="address2" [(ngModel)]="data.address2"></ion-input>
-       </ion-item>
-
-       <ion-item>
-          <ion-label position="floating">Teléfono</ion-label>
-           <ion-input name="phoneNumber" [(ngModel)]="data.phoneNumber"></ion-input>
-         </ion-item>
-
-         <ion-item>
-          <ion-label position="floating">Teléfono 2</ion-label>
-           <ion-input name="phoneNumber2" [(ngModel)]="data.phoneNumber2"></ion-input>
-         </ion-item>
-
         <ion-item>
-          <ion-label position="floating">Ciudad</ion-label>
-          <ion-input name="city" [(ngModel)]="data.address"></ion-input>
+          <ion-label position="floating">Tu dirección 2</ion-label>
+          <ion-input name="address2" [(ngModel)]="data.address2"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Teléfono</ion-label>
+          <ion-input name="phoneNumber" [(ngModel)]="data.phoneNumber"></ion-input>
         </ion-item>
 
         <ion-item>
-          <ion-label position="floating">Codigo Postal</ion-label>
-          <ion-input name="postalCode" [(ngModel)]="data.address2"></ion-input>
+          <ion-label position="floating">Teléfono 2</ion-label>
+          <ion-input name="phoneNumber2" [(ngModel)]="data.phoneNumber2"></ion-input>
+        </ion-item>
+        
+        <ion-item>
+          <ion-label>Región</ion-label>
+          <ion-select placeholder={{data.region}} name="region" (ionChange)="setCityValues(selectedDistrict)" [(ngModel)]="selectedDistrict">
+            <div *ngFor="let district of districts">
+              <ion-select-option [value]="district" >{{district}}</ion-select-option> 
+            </div> 
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>Ciudad</ion-label>
+          <ion-select placeholder={{data.city}} (ionChange)="onChangeCity(selectedCity)" name="city" [(ngModel)]="selectedCity" >
+            <div *ngFor="let city of cityOptions">
+              <ion-select-option [value]="city" >{{city}}</ion-select-option>
+            </div>
+          </ion-select>
         </ion-item>
         <br>
         <ion-button type="submit" expand="full" (click)="onSubmitTemplate()">
@@ -96,8 +99,6 @@
       </ion-card-content>
     </ion-card>
   </div>
-    
-
 
   <div>
     <div *ngIf="data.petCareData?.walkerData">
@@ -109,6 +110,9 @@
         </ion-card-header>
         <ion-card-content>
           <ion-list>
+            <div *ngIf="!rutas.length">
+              No existen rutas
+            </div>
             <ion-item *ngFor="let ruta of rutas">
               <ion-label>
                 <h2>Dia: {{ruta.schedule.day}}</h2>
@@ -156,20 +160,6 @@
                 </div>
               </ion-item>
               <br>
-
-              <ion-card-header>
-                ¿Puedes cuidar a una mascota por dias continuos?
-              </ion-card-header>
-              <ion-radio-group name="availability" value={{data.petCareData.careTakerData.availability}} [(ngModel)]="data.petCareData.careTakerData.availability">
-                <ion-item>
-                  <ion-label>Si</ion-label>
-                  <ion-radio slot="start" value="Si"></ion-radio>
-                </ion-item>
-                <ion-item>
-                  <ion-label>No</ion-label>
-                  <ion-radio slot="start" value="No"></ion-radio>
-                </ion-item>
-              </ion-radio-group>
               
               <ion-card-header>
                 ¿Que tipo de hogar tienes?
@@ -191,8 +181,6 @@
                 </ion-item>
               </ion-list>
               <br>
-
-
             </ion-list>
             <ion-button expand="full" type="submit">
               Guardar Cambios <ion-icon name="checkmark-outline" style="text-align: center"></ion-icon>
@@ -202,5 +190,4 @@
       </ion-card>
     </div>
   </div>
-
 </ion-content>  

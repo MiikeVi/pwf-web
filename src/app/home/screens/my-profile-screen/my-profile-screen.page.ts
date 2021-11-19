@@ -8,6 +8,7 @@ import { createPatch } from 'rfc6902';
 import { ModalCreateWalkpathComponent } from 'src/app/shared/components/modal-create-walkpath/modal-create-walkpath.component';
 import { ImageService } from 'src/app/services/image-store.service';
 import { JSONPatch } from 'src/app/types/json-patch.types';
+import { cities } from 'src/app/utils/districts';
 
 
 @Component({
@@ -16,6 +17,11 @@ import { JSONPatch } from 'src/app/types/json-patch.types';
   styleUrls: ['./my-profile-screen.page.scss'],
 })
 export class MyProfileScreenPage implements OnInit {
+  cities = cities;
+  districts;
+  selectedDistrict;
+  selectedCity;
+  cityOptions: string[];
 
   data: any = {} as any;
   userClone: User;
@@ -38,6 +44,7 @@ export class MyProfileScreenPage implements OnInit {
   ) {}
 
   async ngOnInit() {
+    this.districts = cities.map((region) =>  region.name);
     // eslint-disable-next-line no-underscore-dangle
     await this.getUser();
     this.avatarUrl = `https://pwf-api.herokuapp.com/${this.data.avatar}`;
@@ -48,7 +55,7 @@ export class MyProfileScreenPage implements OnInit {
       }
     });
 
-    this.daysEnableds = this.data.petCareData?.careTakerData?.daysEnabled;
+    this.daysEnableds = this.data.petCareData?.careTakerData?.daysEnabled || [];
     this.filterOlderDays();
 
     for(let i = 0; i < 10; i++){
@@ -62,45 +69,43 @@ export class MyProfileScreenPage implements OnInit {
       this.checkIfExist(date);
     }
 
-    this.daysEnableds.sort((a,b)=>{
+    this.daysEnableds?.sort((a,b)=>{
       const aDate = new Date(a.day);
       const bDate = new Date (b.day);
       if(new Date(aDate.setHours(0,0,0,0)).getTime() < new Date(bDate.setHours(0,0,0,0)).getTime()){
-          return -1;
+        return -1;
       }
       if(new Date(aDate.setHours(0,0,0,0)).getTime() > new Date(bDate.setHours(0,0,0,0)).getTime()){
-          return 1;
+        return 1;
       }
-
       return 0;
-  });
-  console.log(this.daysEnableds);
+    });
   }
 
   checkIfExist(date){
-    if(!this.daysEnableds.find((element)=>{
+    if(!this.daysEnableds?.find((element)=>{
       const elementDate = new Date (element.day);
         if(new Date(date.setHours(0,0,0,0)).getTime() === new Date(elementDate.setHours(0,0,0,0)).getTime()){
-            return true;
+          return true;
         }
     })){
-        this.daysEnableds.push({day: date, selected: false, ordered: false});
+      this.daysEnableds?.push({day: date, selected: false, ordered: false});
     }
-}
+  }
 
   filterOlderDays(){
     const todayDate = new Date();
     const temporalArray = [];
-
-    for(const element of this.daysEnableds){
-      const elementDate = new Date (element.day);
-        if(new Date(elementDate.setHours(0,0,0,0)).getTime() >= new Date(todayDate.setHours(0,0,0,0)).getTime())
-        {
-            temporalArray.push(element);
+    if(this.daysEnableds) {
+      for(const element of this.daysEnableds){
+        const elementDate = new Date (element.day);
+        if(new Date(elementDate.setHours(0,0,0,0)).getTime() >= new Date(todayDate.setHours(0,0,0,0)).getTime()){
+          temporalArray.push(element);
         }
+      }
+      this.daysEnableds = temporalArray;
     }
-    this.daysEnableds = temporalArray;
-}
+  }
 
   formatedDate(date){
     return `${this.daysRaw[new Date (date).getDay()]} ${new Date(date).toISOString().slice(0, 10).split('-').reverse().join('/')}`;
@@ -108,10 +113,8 @@ export class MyProfileScreenPage implements OnInit {
 
   async onSubmitTemplate() {
     const patch = createPatch(this.userClone, this.data);
-
     // eslint-disable-next-line no-underscore-dangle
     const patchedUser = await this.userService.patchUser((this.data as any)._id, patch as any);
-
     if(patchedUser) {
       this.presentAlertConfirm();
     }
@@ -136,7 +139,6 @@ export class MyProfileScreenPage implements OnInit {
         }
       ]
     });
-
     await modal.present();
   }
 
@@ -155,12 +157,11 @@ export class MyProfileScreenPage implements OnInit {
         {
           text: 'Aceptar',
           handler: () => {
-            console.log('Confirm Okay');
+
           }
         }
       ]
     });
-
     await alert.present();
   }
 
@@ -195,16 +196,20 @@ export class MyProfileScreenPage implements OnInit {
     });
 
     modal.onDidDismiss().then(async newWalkpath => {
-      if(newWalkpath.data !== undefined)
-      {
+      if(newWalkpath.data !== undefined){
         const endTime = new Date(newWalkpath.data.schedule.startTime);
         const finalEndTime = this.addHoursToDate(endTime);
         newWalkpath.data.schedule.endTime = finalEndTime;
         newWalkpath.data.available = true;
         newWalkpath.data.pets = [];
         this.data?.petCareData?.walkerData?.walkPaths.push(newWalkpath.data);
-
-        const patch = createPatch(this.userClone, this.data);
+        const patch: JSONPatch = [
+          {
+            op: 'replace',
+            path: '/petCareData',
+            value: this.data.petCareData,
+          },
+        ];
         // eslint-disable-next-line no-underscore-dangle
         const patchedUser = await this.userService.patchUser((this.data as any)._id, patch as any);
 
@@ -213,7 +218,6 @@ export class MyProfileScreenPage implements OnInit {
         }
       }
     });
-
     return await modal.present();
   }
 
@@ -222,31 +226,32 @@ export class MyProfileScreenPage implements OnInit {
     const addMlSeconds = 60 * 60000;
     const newDateObj = new Date(numberOfMlSeconds + addMlSeconds);
     return newDateObj;
-}
+  }
 
   async deleteWalkpath(walkPath: WalkPaths) {
     const newWalkpaths = this.rutas.filter((ruta) => ruta !== walkPath);
-
     this.data.petCareData.walkerData.walkPaths = newWalkpaths;
-
-    const patch = createPatch(this.userClone, this.data);
+    const patch: JSONPatch = [
+      {
+        op: 'replace',
+        path: '/petCareData',
+        value: this.data.petCareData,
+      }
+    ];
     // eslint-disable-next-line no-underscore-dangle
     const patchedUser = await this.userService.patchUser((this.data as any)._id, patch as any);
-
     if(patchedUser) {
       this.getUser();
     }
   }
 
   async patchCareTaker() {
-
     this.data.petCareData.careTakerData.dogsType = this.dogsTypes.map ((dogsType) => {
       if (dogsType.selected) {
         return dogsType.dogsType;
       }
     }).filter((dogsType) => dogsType);
-    console.log(this.daysEnableds);
-    this.data.petCareData.careTakerData.daysEnabled = this.daysEnableds.filter( day => day.selected === true);
+    this.data.petCareData.careTakerData.daysEnabled = this.daysEnableds?.filter( day => day.selected === true);
     const patchUser: JSONPatch = [{
       op: 'replace',
       path: '/petCareData',
@@ -255,10 +260,20 @@ export class MyProfileScreenPage implements OnInit {
 
     // eslint-disable-next-line no-underscore-dangle
     this.userService.patchUser(this.data._id ,patchUser);
-
-      this.getUser();
-      this.presentAlertConfirm();
-
+    this.getUser();
+    this.presentAlertConfirm();
   }
 
+  setCityValues(regionSelected) {
+    this.cities.forEach((region) => {
+      if (regionSelected === region.name) {
+        this.cityOptions = region.communes;
+      }
+    });
+    this.data.region = regionSelected;
+  }
+
+  onChangeCity(city: string) {
+    this.data.city = city;
+  }
 }

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { filter } from 'rxjs/operators';
 import { User } from 'src/app/schemas/iuser';
+import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 
 import { cities } from 'src/app/utils/districts';
@@ -23,10 +24,6 @@ export class CaretakersScreenPage implements OnInit {
       val: 'Location',
       isChecked: false,
     },
-    {
-      val: 'Reputation',
-      isChecked: false,
-    }
   ];
 
   cities = cities;
@@ -36,16 +33,16 @@ export class CaretakersScreenPage implements OnInit {
   selectedDistrict;
   selectedCity;
 
-  constructor(private userService: UserService, private router: Router) { }
+  constructor(private userService: UserService, private authService: AuthService, private router: Router) { }
 
   ngOnInit() {
     this.districts = cities.map((region) =>  region.name);
     return this.userService.getCaretakerUsers().then((data) => {
-
       this.users = data.data.values.filter((user) => {
         const activeWalkPaths = user.petCareData?.walkerData?.walkPaths?.filter((walkPath) => walkPath.available);
         const daysEnabled = user.petCareData?.careTakerData?.daysEnabled?.filter((day) => day.selected);
-        if (activeWalkPaths?.length || daysEnabled?.length) {
+        // eslint-disable-next-line no-underscore-dangle
+        if ((activeWalkPaths?.length || daysEnabled?.length) && ((user as any)._id !== this.authService.getUser().sub)) {
           return user;
         }
       });
@@ -71,7 +68,6 @@ export class CaretakersScreenPage implements OnInit {
     } else {
       this.expanded = false;
     }
-
   }
 
   applyFilters() {
@@ -82,23 +78,26 @@ export class CaretakersScreenPage implements OnInit {
     if(this.selectedCity) {
       this.userService.getCaretakerUsers(this.selectedCity).then((data) => {
         this.users = data.data.values.filter((user) => {
-        const activeWalkPaths = user.petCareData.walkerData.walkPaths.filter((walkPath) => walkPath.available);
-        if (activeWalkPaths.length) {
-          return user;
-        }
-      });
+          const activeWalkPaths = user.petCareData?.walkerData?.walkPaths.filter((walkPath) => walkPath.available);
+          const daysEnabled = user.petCareData?.careTakerData?.daysEnabled?.filter((day) => day.selected);
+          // eslint-disable-next-line no-underscore-dangle
+          if ((activeWalkPaths?.length || daysEnabled?.length) && ((user as any)._id !== this.authService.getUser().sub)) {
+            return user;
+          }
+        });
       });
     } else {
       this.userService.getCaretakerUsers().then((data) => {
         this.users = data.data.values.filter((user) => {
-        const activeWalkPaths = user.petCareData.walkerData.walkPaths.filter((walkPath) => walkPath.available);
-        if (activeWalkPaths.length) {
-          return user;
-        }
-      });
+          const activeWalkPaths = user.petCareData?.walkerData?.walkPaths.filter((walkPath) => walkPath.available);
+          const daysEnabled = user.petCareData?.careTakerData?.daysEnabled?.filter((day) => day.selected);
+          // eslint-disable-next-line no-underscore-dangle
+          if ((activeWalkPaths?.length || daysEnabled?.length) && ((user as any)._id !== this.authService.getUser().sub)) {
+            return user;
+          }
+        });
       });
     }
-
   }
 
   setCityValues(regionSelected) {
@@ -110,9 +109,9 @@ export class CaretakersScreenPage implements OnInit {
   }
 
   resetFilter(isChecked) {
-      if (!isChecked) {
-        this.selectedCity = undefined;
-        this.selectedDistrict = undefined;
-      }
+    if (!isChecked) {
+      this.selectedCity = undefined;
+      this.selectedDistrict = undefined;
+    }
   }
 }
