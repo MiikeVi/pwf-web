@@ -58,7 +58,12 @@
       </div>
       <p >Cuidador/Paseador: <a (click)="goToUser()">{{ careTakerName }}</a></p>
       <p>Mascota: {{ petName }}</p>
-      <p>Precio total: {{ order.charge }}</p>
+      <div *ngIf="order.orderType === 'Cuidado'">
+        <p>Precio total: Por definir</p>
+      </div>
+      <div *ngIf="order.orderType === 'Paseo'">
+        <p>Precio total: {{order.charge}}</p>
+      </div>
     </ion-card-content>
   </ion-card>
 </ion-content>

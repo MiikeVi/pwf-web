@@ -36,6 +36,8 @@
           <ion-label position="floating">Fecha de Nacimiento</ion-label>
           <ion-datetime
             name="birthdate"
+            [max]="'2003'"
+            [min]="'1920'"
             [value]=""
             displayFormat="DD MMM YYYY"
             monthShortNames="Enero, Febrero, Marzo, Abril, Mayo, Junio, Julio, Agosto, Septiembre, Octubre, Noviembre, Diciembre"
@@ -50,7 +52,7 @@
         </ion-item>
         <ion-item>
           <ion-label>Región</ion-label>
-          <ion-select name="region" (ionChange)="setCityValues(selectedDistrict)" [(ngModel)]="selectedDistrict">
+          <ion-select required name="region" (ionChange)="setCityValues(selectedDistrict)" [(ngModel)]="selectedDistrict">
             <div *ngFor="let district of districts">
               <ion-select-option [value]="district" >{{district}}</ion-select-option> 
             </div> 
@@ -58,7 +60,7 @@
         </ion-item>
         <ion-item *ngIf="selectedDistrict">
           <ion-label>Ciudad</ion-label>
-          <ion-select (ionChange)="onChangeCity(selectedCity)" name="city" [(ngModel)]="selectedCity" >
+          <ion-select required (ionChange)="onChangeCity(selectedCity)" name="city" [(ngModel)]="selectedCity" >
             <div *ngFor="let city of cityOptions">
               <ion-select-option [value]="city" >{{city}}</ion-select-option>
             </div>
@@ -70,7 +72,7 @@
         </ion-item>
         <ion-item>
           <ion-label position="floating">Password</ion-label>
-          <ion-input name="password" type="password" value="{{data.password}}" [(ngModel)]="data.password" required></ion-input>
+          <ion-input name="password" pattern="^.{4,16}$" type="password" value="{{data.password}}" [(ngModel)]="data.password" required></ion-input>
         </ion-item>
         <br>
         <ion-button type="submit" expand="full" [disabled]="formulario.invalid">

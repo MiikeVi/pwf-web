@@ -76,7 +76,7 @@
             <div *ngIf="!daysEnableds?.length">
               <p>No hay días disponibles</p>
             </div>
-            <div *ngFor="let day of daysEnableds">
+            <div *ngFor="let day of getAvailableDays()">
               {{day.day | date:'d/M/yy'}}
             </div></h3>
             <h3><b>Tipos de perros para cuidar:</b>

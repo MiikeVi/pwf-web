@@ -35,15 +35,18 @@ export class RegisterPage implements OnInit {
     public userService: UserService,
     private router: Router) {}
 
-  onSubmitTemplate() {
-    this.userService.createUser(this.data).then(result =>{
-      if (result){
-        this.presentAlertConfirm();
-      }
-      else {
-        this.presentAlertConfirmError();
-      }
-    });
+  async onSubmitTemplate() {
+        this.userService.createUser(this.data).then(result =>{
+          console.log(result);
+          if (result.data !== ''){
+            this.presentAlertConfirm();
+          }
+          else if (result.data === ''){
+            this.presentAlertEmailExists();
+          } else {
+            this.presentAlertConfirmError();
+          }
+        });
   }
 
   async presentAlertConfirm() {
@@ -65,6 +68,16 @@ export class RegisterPage implements OnInit {
       cssClass: 'my-custom-class',
       header: '',
       message: 'Su perfil no ha podido ser creado, revise que los campos esten bien rellenados.',
+    });
+
+    await alert.present();
+  }
+
+  async presentAlertEmailExists() {
+    const alert = await this.alertController.create({
+      cssClass: 'my-custom-class',
+      header: '',
+      message: 'Ya existe una cuenta con el correo ingresado.',
     });
 
     await alert.present();

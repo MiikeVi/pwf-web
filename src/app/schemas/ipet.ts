@@ -27,9 +27,6 @@ export enum Breed {
 export enum PetType {
   perro = 'Perro',
   gato = 'Gato',
-  conejo  = 'Conejo',
-  tortuga = 'Tortuga',
-  hamster = 'Hamster',
 }
 export interface Behavior {
   behavior: Behaviors;

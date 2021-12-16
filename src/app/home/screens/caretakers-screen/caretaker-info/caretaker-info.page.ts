@@ -36,6 +36,10 @@ export class CaretakerInfoPage implements OnInit {
     return Array(user.stars);
   }
 
+  getAvailableDays() {
+    return this.daysEnableds.filter((day) => !day.ordered);
+  }
+
   async openModalCreateOrder(caretaker: any) {
     const modal = await this.modalController.create({
       component: ModalCreateOrderComponent,

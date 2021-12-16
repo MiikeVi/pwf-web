@@ -48,7 +48,8 @@ export class TrackingModalComponent implements OnInit {
     });
 
     // eslint-disable-next-line no-underscore-dangle
-    const orderFiltred = this.orders.filter((order) => (order.pet = this.pet && order.orderStatus === 'en progreso'));
+    const orderFiltred = this.orders.filter((order) => (order.pet === this.pet._id && order.orderStatus === 'en progreso'));
+    // eslint-disable-next-line no-underscore-dangle
     if (orderFiltred[0]?.careTakerId)
     {
         this.getUser(orderFiltred[0].careTakerId).then((data) => {

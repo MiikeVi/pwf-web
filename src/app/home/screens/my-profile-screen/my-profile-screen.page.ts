@@ -9,6 +9,7 @@ import { ModalCreateWalkpathComponent } from 'src/app/shared/components/modal-cr
 import { ImageService } from 'src/app/services/image-store.service';
 import { JSONPatch } from 'src/app/types/json-patch.types';
 import { cities } from 'src/app/utils/districts';
+import { OrderService } from 'src/app/services/order.service';
 
 
 @Component({
@@ -41,6 +42,7 @@ export class MyProfileScreenPage implements OnInit {
     private userService: UserService,
     private imageStoreService:  ImageService,
     private navController: NavController,
+    private orderService: OrderService
   ) {}
 
   async ngOnInit() {
@@ -168,6 +170,7 @@ export class MyProfileScreenPage implements OnInit {
   logout() {
     this.navController.navigateRoot('/login');
     this.authService.logout();
+    this.orderService.desactivateGeolocation();
   }
 
   async selectImage() {

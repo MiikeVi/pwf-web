@@ -180,16 +180,29 @@ export class ModalCreateOrderComponent implements OnInit {
 
     if (this.daysEnableds.length && this.newOrder.orderType === OrderType.care) {
       this.daysEnableds[this.currentDate].ordered = true;
-      this.data.petCareData.careTakerData.daysEnabled = this.daysEnableds;
+      if (this.caretaker?.petCareData?.careTakerData) {
+        this.caretaker.petCareData.careTakerData.daysEnabled = this.daysEnableds;
+      }
+
       const patchCare: JSONPatch = [
         {
           op: 'replace',
           path: '/petCareData',
-          value: this.data.petCareData,
+          value: this.caretaker.petCareData,
         },
       ];
       // eslint-disable-next-line no-underscore-dangle
-      await this.userService.patchUser((this.data as any)._id, patchCare as any);
+      await this.userService.patchUser((this.caretaker as any)._id, patchCare as any);
+
+      const patchPet: JSONPatch = [
+        {
+          op: 'replace',
+          path: '/isActive',
+          value: false,
+        }
+      ];
+      // eslint-disable-next-line no-underscore-dangle
+      this.petService.patchPet((this.selectedPet as any)._id, patchPet);
     }
 
     this.navController.navigateRoot('/home');

@@ -87,7 +87,7 @@ export class ModalSendRequestComponent implements OnInit {
 
     }
     //Si es Cuidador y quiere ser Paseador
-    else {
+    else if (this.data?.petCareData?.type === 'Cuidador'){
       const walkerData = {
         walkPaths : [],
       };
@@ -95,6 +95,26 @@ export class ModalSendRequestComponent implements OnInit {
       this.data.petCareData.bio = this.request.bio;
       this.data.petCareData.type = CareTakerType.both;
       this.data.petCareData.walkerData = walkerData;
+    }
+    else {
+
+      this.data.petCareData = {};
+
+      const careTakerData = {
+        home: '',
+        availability: '',
+        days: [],
+        dogsType: []
+      };
+
+      const walkerData = {
+        walkPaths : [],
+      };
+
+      this.data.petCareData.bio = this.request.bio || '';
+      this.data.petCareData.type = CareTakerType.both;
+      this.data.petCareData.walkerData = walkerData;
+      this.data.petCareData.careTakerData = careTakerData;
     }
 
     this.data.careTakerEnabled = true;

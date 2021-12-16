@@ -44,7 +44,7 @@ export class AuthService {
   login(credentials: { email: string; password: string }): Observable<any> {
     return from(axios({
       method: 'post',
-      url: 'https://pwf-api.herokuapp.com/api/auth/login',
+      url: 'http://pwf-api.herokuapp.com/api/auth/login',
       data: {
         email: credentials.email,
         password: credentials.password,

@@ -24,6 +24,7 @@ export class LoginPage implements OnInit {
   }
 
   login() {
+    this.credentials.email = this.credentials.email.toLocaleLowerCase();
     this.authService.login(this.credentials).subscribe(async res => {
 
       if (typeof (res) !== 'string') {
@@ -33,7 +34,7 @@ export class LoginPage implements OnInit {
           buttons: ['OK'],
         }).then(alert => alert.present());
       } else {
-        this.router.navigateByUrl('home/buscar-cuidadores');
+        this.router.navigateByUrl('home');
       }
     });
   }

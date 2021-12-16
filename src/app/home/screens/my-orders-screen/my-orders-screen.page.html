@@ -75,7 +75,12 @@
   
     <ion-card-content>
       <p>Tipo de orden: {{ order.orderType }}</p>
-      <p>Precio total: {{ order.charge }}</p>
+      <div *ngIf="order.orderType === 'Cuidado'">
+        <p>Precio total: Por definir</p>
+      </div>
+      <div *ngIf="order.orderType === 'Paseo'">
+        <p>Precio total: {{order.charge}}</p>
+      </div>
       <ion-button
         (click)="onClickOrder(order)"
         size="small">

@@ -49,7 +49,7 @@
       <ion-list>
         <ion-item *ngFor="let user of users ">
           <ion-avatar slot="start">
-            <img src="https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes.png">
+            <img src={{user.avatar}}>
           </ion-avatar>
           <ion-label>
             <h3>{{user.name}}</h3>
